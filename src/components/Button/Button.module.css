@@ -1,0 +1,32 @@
+.wrapIcon {
+  position: relative;
+}
+
+.cartList {
+  display: none;
+  position: absolute;
+  right: 0;
+  width: 300px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  min-height: 150px;
+  z-index: 5;
+}
+
+.wrapIcon:hover > .cartList {
+  display: block;
+}
+
+.user {
+  display: none;
+  position: absolute;
+  right: 0;
+  width: 200px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  z-index: 5;
+}
+
+.wrapIcon:hover > .user {
+  display: block;
+}
