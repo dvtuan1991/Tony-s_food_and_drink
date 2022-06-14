@@ -1,16 +1,17 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
+
+import LayoutAdmin from "components/Layout/LayoutAdmin";
 import LayoutCus from "./components/Layout/LayoutCustomer ";
 import HomePage from "./pages/app/HomePage";
+import AdminHomePage from "pages/admin/AdminHomePage";
+import Container from "components/Layout/Container";
+
 
 function App() {
   return (
-    <LayoutCus>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-    </LayoutCus>
+    <>
+      <Container  />
+    </>
   );
 }
 
