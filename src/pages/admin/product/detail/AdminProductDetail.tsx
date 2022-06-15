@@ -1,9 +1,8 @@
+import ProductAdminDetail from "modules/admin/product/ProductAdminDetail"
 
 const AdminProductDetail = () => {
   return (
-    <div>
-      
-    </div>
+    <ProductAdminDetail />
   )
 }
 

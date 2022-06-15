@@ -1,6 +1,6 @@
 import { Col, Row, Typography } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
-import { IProduct } from "../../types/Product";
+import { IProduct } from "../../types/product.model";
 import HotProduct from "../Product/HotProduct";
 
 const { Text } = Typography;
