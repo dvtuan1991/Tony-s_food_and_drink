@@ -11,12 +11,14 @@ import _ from "lodash";
 
 import { IProduct } from "types/product.model";
 import { ICategory } from "types/category.model";
-import { fetchApi } from "helpers/function";
+import { fetchApi, openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import styles from './product.module.css';
 import { defaultValidateMessages } from "helpers/common";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "antd/lib/button";
+import MainHeaderAdmin from "components/Main/MainHeaderAdmin";
+import { Space } from "antd";
 
 interface FormProduct {
   name: string;
@@ -32,8 +34,8 @@ interface FormProduct {
 const { Option } = Select
 const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ product, isCreate }) => {
   const inputUploadRef = useRef<any>();
-  const location = useLocation();
-
+  const [form] = Form.useForm();
+  const navigate = useNavigate()
   const [listCategory, setListCategory] = useState<ICategory[]>();
   const [file, setFile] = useState<File>();
 
@@ -41,6 +43,9 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
     inputUploadRef.current && inputUploadRef.current.click();
   };
 
+  const handleClickCancel = () => {
+    form.setFieldsValue(initFormValue)
+  }
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target?.files;
     if (files) {
@@ -83,7 +88,7 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
   const handleClickSubmitForm = async (value: FormProduct) => {
     const formData = new FormData();
     if (isCreate && !file) {
-      alert('need Image')
+      openNotification("error", "Image required")
     }
     if (isCreate && file) {
       formData.append('name', value.name);
@@ -98,6 +103,10 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
         method: 'POST',
         body: formData
       })
+      if (res.ok) {
+        openNotification("success", "Create product succes")
+        navigate('/admin/product')
+      }
     }
     if (!isCreate && product) {
       if (file || !_.isEqual(value, initFormValue)) {
@@ -114,10 +123,11 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
           body: formData
         })
         if (res.ok) {
-
+          openNotification("success", "Update product success")
+          navigate("/admin/product")
         }
       } else {
-        alert('Nothing change')
+        navigate("/admin/product")
       }
     }
   };
@@ -133,6 +143,7 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
 
   return (
     <>
+      <MainHeaderAdmin />
       {initFormValue &&
         <Form
           labelCol={{ span: 'auto' }}
@@ -192,12 +203,20 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
                       </Form.Item>
                     </div>
                   </Col>
+                  <Col span={10} >
+                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                      <Space>
+
+                        <Button type="primary" htmlType="submit" className="text-black">
+                          Save
+                        </Button>
+                        <Button  className="text-orange-900" danger onClick={handleClickCancel}>
+                          Cancel
+                        </Button>
+                      </Space>
+                    </Form.Item>
+                  </Col>
                 </Row>
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                  <Button type="primary" htmlType="submit">
-                    Save
-                  </Button>
-                </Form.Item>
               </Col>
             </Row>
           </div>
