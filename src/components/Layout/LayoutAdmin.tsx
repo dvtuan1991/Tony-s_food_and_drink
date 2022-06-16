@@ -14,10 +14,10 @@ const LayoutAdmin = () => {
       </Col>
       <Col span={20}>
         <div className="container">
-          <main>
-            <Outlet />
-          </main>
-        </div>
+            <main>
+              <Outlet />
+            </main>
+          </div>
       </Col>
     </Row>
   )

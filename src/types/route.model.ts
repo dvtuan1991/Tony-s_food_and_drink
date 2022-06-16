@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode } from "react";
+import {  ReactNode } from "react";
 
 export interface IRoute {
   path: string;

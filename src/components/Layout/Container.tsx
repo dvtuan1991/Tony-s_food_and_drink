@@ -9,9 +9,10 @@ import { adminRouter } from 'routes/routes.routes';
 import styles from './Layout.module.css'
 
 const Container = () => {
-  const renderRoute = adminRouter.map(route => (
+  const renderRouteAdmin = adminRouter.map(route => (
     <Route key={route.path} path={route.path} element={route.element} />
-  ))
+  ));
+
   return (
     <>
       <Routes>
@@ -19,7 +20,7 @@ const Container = () => {
           <Route path="/app" element={<HomePage />} />
         </Route>
         <Route element={<LayoutAdmin />} >
-          {renderRoute}
+          {renderRouteAdmin}
         </Route>
       </Routes>
     </>

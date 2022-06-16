@@ -3,6 +3,7 @@ import AdminCategoryDetail from "pages/admin/category/detail/AdminCategoryDetail
 import AdminCategories from "pages/admin/category/list/AdminCategories";
 import AdminOrderDetai from "pages/admin/order/detail/AdminOrderDetai";
 import AdminOrders from "pages/admin/order/list/AdminOrders";
+import CreateProduct from "pages/admin/product/create/CreateProduct";
 import AdminProductDetail from "pages/admin/product/detail/AdminProductDetail";
 import AdminProducts from "pages/admin/product/list/AdminProducts";
 import { IRoute } from "types/route.model";
@@ -35,7 +36,7 @@ export const adminRouter: IRoute[] = [
   },
   {
     path: PATH_ADMIN_PRODUCT_CREATE,
-    element: <AdminProductDetail />
+    element: <CreateProduct />
   },
   {
     path: PATH_ADMIN_ORDER,
