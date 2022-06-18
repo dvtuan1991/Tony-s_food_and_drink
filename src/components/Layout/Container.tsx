@@ -1,12 +1,10 @@
-import { FC, ReactNode } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import AdminHomePage from 'pages/admin/AdminHomePage';
 import HomePage from 'pages/app/HomePage';
 import LayoutAdmin from './LayoutAdmin';
 import LayoutCustomer from './LayoutCustomer ';
 import { adminRouter } from 'routes/routes.routes';
-import styles from './Layout.module.css'
+
 
 const Container = () => {
   const renderRouteAdmin = adminRouter.map(route => (
