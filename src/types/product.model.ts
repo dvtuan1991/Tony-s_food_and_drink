@@ -8,4 +8,5 @@ export interface IProduct {
   decription: string;
   isStock: boolean;
   priority: number;
+  ordinalNum: number;
 }

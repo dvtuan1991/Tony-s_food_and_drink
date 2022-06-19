@@ -10,7 +10,7 @@ const NavBarAdmin = () => {
     { label: <Link to={'/admin/order'}>Order</Link>, key: "order" },
   ]
   return (
-    <div className="relative h-full" >
+    <div className="" >
       <Menu items={items} mode="vertical" theme="dark" className="p-5 h-full" />
     </div>
   )

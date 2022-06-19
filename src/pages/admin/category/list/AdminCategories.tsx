@@ -1,7 +1,8 @@
+import CategoryAdminLists from "modules/admin/category/CategoryAdminLists"
 
 const AdminCategories = () => {
   return (
-    <div>AdminCategories</div>
+    <CategoryAdminLists />
   )
 }
 

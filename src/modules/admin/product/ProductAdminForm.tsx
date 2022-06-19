@@ -8,6 +8,9 @@ import TextArea from "antd/lib/input/TextArea";
 import Radio from "antd/lib/radio";
 import InputNumber from "antd/lib/input-number";
 import _ from "lodash";
+import Button from "antd/lib/button";
+import { useNavigate } from "react-router-dom";
+import { Space } from "antd";
 
 import { IProduct } from "types/product.model";
 import { ICategory } from "types/category.model";
@@ -15,10 +18,7 @@ import { fetchApi, openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import styles from './product.module.css';
 import { defaultValidateMessages } from "helpers/common";
-import { useLocation, useNavigate } from "react-router-dom";
-import Button from "antd/lib/button";
 import MainHeaderAdmin from "components/Main/MainHeaderAdmin";
-import { Space } from "antd";
 
 interface FormProduct {
   name: string;
@@ -67,12 +67,13 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
         name: '',
         decription: '',
         categoryId: null,
-        newPrice: 0,
-        oldPrice: 0,
+        newPrice: 1,
+        oldPrice: 1,
         isStock: 'yes',
         priority: 0,
       }
-    } else if (product) {
+    }
+    if (product) {
       return {
         name: product.name,
         decription: product.decription,
@@ -143,7 +144,6 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
 
   return (
     <>
-      <MainHeaderAdmin />
       {initFormValue &&
         <Form
           labelCol={{ span: 'auto' }}
@@ -151,6 +151,7 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
           layout="vertical"
           validateMessages={defaultValidateMessages}
           initialValues={initFormValue}
+          form={form}
           onFinish={handleClickSubmitForm}
         >
           <div className="p-5">
@@ -159,7 +160,12 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
                 <Row justify="center" gutter={16}>
                   <Col span={8}>
                     <div className={styles['image-box']} onClick={handleClickImage}>
-                      <img src={file ? URL.createObjectURL(file) : product?.thumbnail} className='w-full block h-[170px]' />
+                      {
+                        isCreate
+                          ? file ? <img src={URL.createObjectURL(file)} alt='product' /> : <></>
+                          : <img src={file ? URL.createObjectURL(file) : `${SERVICE_API}/${product?.thumbnail}`} alt='product' className='w-full block h-[170px]' />
+                      }
+
                     </div>
                     <input type='file' hidden ref={inputUploadRef} onChange={handleFileChange} />
                   </Col>
@@ -185,36 +191,38 @@ const ProductAdminForm: FC<{ product?: IProduct, isCreate?: boolean }> = ({ prod
                   </Col>
                   <Col span={6}>
                     <div className={styles["input-box"]}>
-                      <Form.Item name='newPrice' label='New Price' rules={[{ required: true, min: 1, max: 100, type: "number" }]}>
+                      <Form.Item name='newPrice' label='New Price' rules={[{ required: true, min: 1, max: 100, type: "number" }]} >
                         <InputNumber addonAfter="$" min={1} max={100} />
                       </Form.Item>
                       <Form.Item name='oldPrice' label='Old Price' rules={[{ min: 1, max: 100, type: "number" }]}>
                         <InputNumber addonAfter="$" min={1} max={100} />
                       </Form.Item>
-                      <Form.Item name='isStock' label='Is Stock'>
+                      <Form.Item name='isStock' label='Is Stock' className="mb-3" >
                         <Radio.Group options={['yes', 'no']} />
                       </Form.Item>
                     </div>
                   </Col>
                   <Col span={14}>
                     <div className={styles["input-box"]}>
-                      <Form.Item name='decription' label="Decription">
-                        <TextArea rows={5} />
+                      <Form.Item name='decription' label="Decription"
+                        rules={[{ required: true }]}
+                      >
+                        <TextArea rows={6} />
                       </Form.Item>
                     </div>
-                  </Col>
-                  <Col span={10} >
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Form.Item wrapperCol={{ offset: 8, span: 16 }} className='mt-5'>
                       <Space>
-
                         <Button type="primary" htmlType="submit" className="text-black">
                           Save
                         </Button>
-                        <Button  className="text-orange-900" danger onClick={handleClickCancel}>
+                        <Button className="text-orange-900" danger onClick={handleClickCancel}>
                           Cancel
                         </Button>
                       </Space>
                     </Form.Item>
+                  </Col>
+                  <Col span={10} >
+
                   </Col>
                 </Row>
               </Col>
