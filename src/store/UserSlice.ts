@@ -6,14 +6,14 @@ interface InitUserState {
 }
 const initUserState: InitUserState = {
   user: {} as IUser
-}
+};
 
 const userSlice = createSlice({
   name: 'users',
   initialState: initUserState,
   reducers: {}
-})
+});
 
-export const { } = userSlice.actions;
+// export const { } = userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer;

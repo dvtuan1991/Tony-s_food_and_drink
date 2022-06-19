@@ -1,9 +1,7 @@
-import ProductAdminForm from "modules/admin/product/ProductAdminForm"
+import ProductAdminForm from "modules/admin/product/ProductAdminForm";
 
 const CreateProduct = () => {
-  return (
-    <ProductAdminForm isCreate={true} />
-  )
-}
+  return <ProductAdminForm isCreate={true} />;
+};
 
-export default CreateProduct
+export default CreateProduct;

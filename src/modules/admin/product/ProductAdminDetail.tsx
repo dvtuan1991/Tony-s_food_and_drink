@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 
 import { SERVICE_API } from "constants/configs";
 import { fetchApi } from "helpers/function";
@@ -13,24 +13,20 @@ const ProductAdminDetail = () => {
   const getData = useCallback(async () => {
     if (id) {
       const product: IProduct = await fetchApi(`${SERVICE_API}/product/${id}`);
-      console.log(product)
+      console.log(product);
       if (product) {
         setProduct(product);
       } else {
-        navigate('/')
+        navigate("/");
       }
     }
   }, [id]);
 
   useEffect(() => {
-    getData()
+    getData();
   }, [getData]);
 
-  return (
-    <>
-      {product && <ProductAdminForm product={product} />}
-    </>
-  )
-}
+  return <>{product && <ProductAdminForm product={product} />}</>;
+};
 
-export default ProductAdminDetail
+export default ProductAdminDetail;

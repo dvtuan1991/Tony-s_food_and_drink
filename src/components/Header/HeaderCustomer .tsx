@@ -6,7 +6,7 @@ import NavbarCustomer from "../NavBar/NavbarCustomer";
 import ButtonCart from "../Button/ButtonCart";
 import ButtonUser from "../Button/ButtonUser";
 import { RootState } from "../../store";
-import mylogo from '../../assets/mylogo.png'
+import mylogo from "../../assets/mylogo.png";
 
 const HeaderCustomer = () => {
   const { user } = useSelector((state: RootState) => state.users);

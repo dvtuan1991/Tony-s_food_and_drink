@@ -1,4 +1,4 @@
-import  Menu  from "antd/lib/menu";
+import Menu from "antd/lib/menu";
 
 const NavbarCustomer = () => {
   const items = [
@@ -17,15 +17,11 @@ const NavbarCustomer = () => {
     {
       label: "Contact Us",
       key: "contactUs",
-    }
+    },
   ];
   return (
     <>
-      <Menu
-        items={items}
-        mode="horizontal"
-        className="border-0"
-      />
+      <Menu items={items} mode="horizontal" className="border-0" />
     </>
   );
 };

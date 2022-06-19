@@ -1,9 +1,7 @@
-import ProductAdminLists from "modules/admin/product/ProductAdminLists"
+import ProductAdminLists from "modules/admin/product/ProductAdminLists";
 
 const AdminProducts = () => {
-  return (
-    <ProductAdminLists />
-  )
-}
+  return <ProductAdminLists />;
+};
 
-export default AdminProducts
+export default AdminProducts;

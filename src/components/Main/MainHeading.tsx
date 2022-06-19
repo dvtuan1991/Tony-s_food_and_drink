@@ -20,7 +20,7 @@ const MainHeading = () => {
     <Row justify="space-around" align="middle">
       <Col span={12}>
         <p className="text-4xl font-bold">
-          Order your <span className="text-[#ea2251]" >favorites</span>
+          Order your <span className="text-[#ea2251]">favorites</span>
         </p>
         <Text>Quick & Delicious</Text>
       </Col>

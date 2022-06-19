@@ -1,12 +1,12 @@
-import React from 'react'
-import MainHeading from '../components/Main/MainHeading'
+import React from "react";
+import MainHeading from "../components/Main/MainHeading";
 
 const HomePageContent = () => {
   return (
     <>
       <MainHeading />
     </>
-  )
-}
+  );
+};
 
-export default HomePageContent
+export default HomePageContent;

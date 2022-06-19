@@ -1,8 +1,5 @@
-
 const AdminCategoryDetail = () => {
-  return (
-    <div>AdminCategoryDetail</div>
-  )
-}
+  return <div>AdminCategoryDetail</div>;
+};
 
 export default AdminCategoryDetail;

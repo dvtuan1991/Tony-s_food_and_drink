@@ -29,14 +29,14 @@ export const defaultValidateMessages = {
   string: {
     len: "${label} must be exactly ${len} characters",
     min: "'${label}' must be at least ${min} characters",
-    max: 'this field can not longer than ${max} character ',
+    max: "this field can not longer than ${max} character ",
     range: "'${label}' must be between ${min} and ${max} characters",
   },
   number: {
     len: "value must equal ${len}",
     min: "value cannot be less than ${min}",
     max: "value cannot be greater than ${max}",
-    range: 'value must be between ${min} and ${max}',
+    range: "value must be between ${min} and ${max}",
   },
   array: {
     len: "'${label}' must be exactly ${len} in length",

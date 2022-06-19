@@ -1,4 +1,3 @@
-
 import Container from "components/Layout/Container";
 
 function App() {
@@ -8,5 +7,4 @@ function App() {
     </>
   );
 }
-
 export default App;

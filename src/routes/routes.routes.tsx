@@ -46,4 +46,4 @@ export const adminRouter: IRoute[] = [
     path: PATH_ADMIN_ORDER_DETAIL,
     element: <AdminOrderDetai />
   }
-]
+];

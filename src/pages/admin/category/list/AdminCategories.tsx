@@ -1,9 +1,7 @@
-import CategoryAdminLists from "modules/admin/category/CategoryAdminLists"
+import CategoryAdminLists from "modules/admin/category/CategoryAdminLists";
 
 const AdminCategories = () => {
-  return (
-    <CategoryAdminLists />
-  )
-}
+  return <CategoryAdminLists />;
+};
 
-export default AdminCategories
+export default AdminCategories;

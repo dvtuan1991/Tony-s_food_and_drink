@@ -1,9 +1,7 @@
-import ProductAdminDetail from "modules/admin/product/ProductAdminDetail"
+import ProductAdminDetail from "modules/admin/product/ProductAdminDetail";
 
 const AdminProductDetail = () => {
-  return (
-    <ProductAdminDetail />
-  )
-}
+  return <ProductAdminDetail />;
+};
 
-export default AdminProductDetail
+export default AdminProductDetail;
