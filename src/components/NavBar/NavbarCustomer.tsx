@@ -4,26 +4,22 @@ const NavbarCustomer = () => {
   const items = [
     {
       label: "Home",
-      key: "home",
+      key: "home"
     },
     {
       label: "Category",
-      key: "Category",
+      key: "Category"
     },
     {
       label: "Order",
-      key: "order",
+      key: "order"
     },
     {
       label: "Contact Us",
-      key: "contactUs",
-    },
+      key: "contactUs"
+    }
   ];
-  return (
-    <>
-      <Menu items={items} mode="horizontal" className="border-0" />
-    </>
-  );
+  return <Menu items={items} mode="horizontal" className="border-0" />;
 };
 
 export default NavbarCustomer;

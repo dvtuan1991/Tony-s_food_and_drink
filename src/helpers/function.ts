@@ -11,9 +11,8 @@ export const setLimitTring = (string: string, limit: number = 80) => {
   if (string) {
     if (string.length > limit) {
       return string.substring(0, limit) + "...";
-    } else {
-      return string;
     }
+    return string;
   }
 };
 
@@ -22,6 +21,10 @@ export const openNotification = (type: NotificationType, message: string) => {
   notification[type]({
     message,
     placement: "top",
-    duration: 2,
+    duration: 2
   });
+};
+
+export const isVietnamesePhoneNumber = (number: string) => {
+  return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
 };
