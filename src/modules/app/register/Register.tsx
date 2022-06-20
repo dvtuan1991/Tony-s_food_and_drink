@@ -1,4 +1,3 @@
-import { notification } from "antd";
 import Button from "antd/lib/button";
 import Col from "antd/lib/col";
 import Form from "antd/lib/form";
@@ -23,7 +22,6 @@ interface RegisterForm {
 const Register = () => {
   const navigate = useNavigate();
   const handleClickSubmit = async (value: RegisterForm) => {
-    console.log(value);
     const { confirm, ...data } = value;
     const res = await fetch(`${SERVICE_API}/user`, {
       method: "POST",

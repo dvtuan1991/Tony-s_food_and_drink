@@ -4,13 +4,44 @@ import Col from "antd/lib/col";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Row from "antd/lib/row";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
+import { addUser } from "store/UserSlice";
+import { SERVICE_API } from "constants/configs";
+import { openNotification } from "helpers/function";
 import styles from "../app.module.css";
 
 const Login = () => {
-  const handleClickSubmit = (value: { userName: string; password: string }) => {
-    console.log(value);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleClickSubmit = async (value: {
+    userName: string;
+    password: string;
+  }) => {
+    const data = { username: value.userName, password: value.password };
+    const res = await fetch(`${SERVICE_API}/auth/login`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      const result = await res.json();
+      localStorage.setItem("access_token", result.access_token);
+      dispatch(addUser(result.user));
+      if (result.user.isAdmin) {
+        navigate("/admin");
+      }
+      if (!result.user.isAdmin) {
+        navigate("/");
+      }
+    }
+    if (!res.ok) {
+      openNotification("error", "Error");
+    }
   };
   return (
     <Row justify="center">

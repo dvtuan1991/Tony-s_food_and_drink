@@ -10,6 +10,7 @@ import mylogo from "../../assets/mylogo.png";
 
 const HeaderCustomer = () => {
   const { user } = useSelector((state: RootState) => state.users);
+  console.log(user);
   return (
     <header>
       <Row justify="space-between" align="middle" className="pt-3 mb-7">
@@ -32,7 +33,13 @@ const HeaderCustomer = () => {
             <Col>
               <ButtonCart />
             </Col>
-            <Col>{user ? <ButtonUser /> : <Button>Log In</Button>}</Col>
+            <Col>
+              {user.userName ? (
+                <ButtonUser user={user} />
+              ) : (
+                <Button>Log In</Button>
+              )}
+            </Col>
           </Row>
         </Col>
       </Row>
