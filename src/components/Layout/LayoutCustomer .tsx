@@ -1,12 +1,10 @@
 import { Col, Row } from "antd";
-import React from "react";
+import { Outlet } from "react-router-dom";
 
 import styles from "./Layout.module.css";
 import HeaderCustomer from "../Header/HeaderCustomer ";
 
-const LayoutCustomer: React.FC<{ children?: React.ReactNode }> = ({
-  children,
-}) => {
+const LayoutCustomer = () => {
   return (
     <div className="container mx-auto my-0">
       <div className={styles.wrapper}>
@@ -14,7 +12,9 @@ const LayoutCustomer: React.FC<{ children?: React.ReactNode }> = ({
           <Col span={24}>
             <HeaderCustomer />
           </Col>
-          <Col span={24}>{children}</Col>
+          <Col span={24}>
+            <Outlet />
+          </Col>
         </Row>
       </div>
     </div>
