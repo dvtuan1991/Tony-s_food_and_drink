@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import Row from "antd/lib/row";
 import { Outlet, useNavigate } from "react-router-dom";
 import Col from "antd/lib/col";
@@ -12,24 +12,29 @@ const LayoutAdmin = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.users);
 
-  useEffect(() => {
-    if (!user.isAdmin) {
-      navigate("/");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   console.log(user.isAdmin);
+  //   if (!user.isAdmin) {
+  //     navigate("/");
+  //   }
+  // }, [user.isAdmin]);
   return (
     <Row>
-      <Col span={4} className=" bg-[#001529]">
-        <NavBarAdmin />
-      </Col>
-      <Col span={20}>
-        <div className="container">
-          <main>
-            <MainHeaderAdmin />
-            <Outlet />
-          </main>
-        </div>
-      </Col>
+      {user.isAdmin && (
+        <>
+          <Col span={4} className=" bg-[#001529]">
+            <NavBarAdmin />
+          </Col>
+          <Col span={20}>
+            <div className="container">
+              <main>
+                <MainHeaderAdmin />
+                <Outlet />
+              </main>
+            </div>
+          </Col>
+        </>
+      )}
     </Row>
   );
 };

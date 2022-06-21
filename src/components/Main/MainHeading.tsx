@@ -8,7 +8,7 @@ const MainHeading = () => {
   const [listProduct, setListProduct] = useState<IProduct[]>();
 
   const getData = useCallback(async () => {
-    const fetchData = await fetch(`http://localhost:5000/product`);
+    const fetchData = await fetch(`http://localhost:5000/product/hot`);
     const list: IProduct[] = await fetchData.json();
     setListProduct(list);
   }, []);

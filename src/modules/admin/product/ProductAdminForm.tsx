@@ -8,7 +8,7 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
+  useState
 } from "react";
 import Input from "antd/lib/input/Input";
 import Select from "antd/lib/select";
@@ -24,8 +24,9 @@ import { IProduct } from "types/product.model";
 import { ICategory } from "types/category.model";
 import { fetchApi, openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
-import styles from "./product.module.css";
 import { defaultValidateMessages } from "helpers/common";
+import SelectCategory from "components/SelectCategory/SelectCategory";
+import styles from "./product.module.css";
 
 interface FormProduct {
   name: string;
@@ -41,12 +42,11 @@ interface FormProduct {
 const { Option } = Select;
 const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
   product,
-  isCreate,
+  isCreate
 }) => {
   const inputUploadRef = useRef<any>();
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [listCategory, setListCategory] = useState<ICategory[]>();
   const [file, setFile] = useState<File>();
 
   const handleClickImage = () => {
@@ -81,7 +81,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         newPrice: 1,
         oldPrice: 1,
         isStock: "yes",
-        priority: 0,
+        priority: 0
       };
     }
     if (product) {
@@ -92,7 +92,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         newPrice: product.newPrice,
         oldPrice: product.oldPrice,
         isStock: product.isStock ? "yes" : "no",
-        priority: product.priority,
+        priority: product.priority
       };
     }
   }, [product, isCreate]);
@@ -113,7 +113,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
       formData.append("file", file);
       const res = await fetch(`${SERVICE_API}/product`, {
         method: "POST",
-        body: formData,
+        body: formData
       });
       if (res.ok) {
         openNotification("success", "Create product succes");
@@ -132,7 +132,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         file && formData.append("file", file);
         const res = await fetch(`${SERVICE_API}/product/${product.id}`, {
           method: "PUT",
-          body: formData,
+          body: formData
         });
         if (res.ok) {
           openNotification("success", "Update product success");
@@ -144,19 +144,8 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
     }
   };
 
-  const getCategoryData = useCallback(async () => {
-    const responseListCategory: ICategory[] = await fetchApi(
-      `${SERVICE_API}/category`
-    );
-    setListCategory(responseListCategory);
-  }, []);
-
-  useEffect(() => {
-    getCategoryData();
-  }, [getCategoryData]);
-
   return (
-    <>
+    <div>
       {initFormValue && (
         <Form
           labelCol={{ span: "auto" }}
@@ -210,25 +199,14 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
                       >
                         <Input placeholder="Food Name" />
                       </Form.Item>
-                      {listCategory && (
-                        <Form.Item
-                          name="categoryId"
-                          label="Category Name"
-                          rules={[{ required: true }]}
-                        >
-                          <Select allowClear={true}>
-                            {listCategory.map((category) => (
-                              <Option
-                                key={category.id}
-                                value={category.id}
-                                label={category.name.toLocaleUpperCase()}
-                              >
-                                {category.name}
-                              </Option>
-                            ))}
-                          </Select>
-                        </Form.Item>
-                      )}
+                      <Form.Item
+                        name="categoryId"
+                        label="Category Name"
+                        rules={[{ required: true }]}
+                      >
+                        <SelectCategory />
+                      </Form.Item>
+
                       <Form.Item name="priority" label="Priority">
                         <Input />
                       </Form.Item>
@@ -240,7 +218,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
                         name="newPrice"
                         label="New Price"
                         rules={[
-                          { required: true, min: 1, max: 100, type: "number" },
+                          { required: true, min: 1, max: 100, type: "number" }
                         ]}
                       >
                         <InputNumber addonAfter="$" min={1} max={100} />
@@ -293,14 +271,13 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
                       </Space>
                     </Form.Item>
                   </Col>
-                  <Col span={10}></Col>
                 </Row>
               </Col>
             </Row>
           </div>
         </Form>
       )}
-    </>
+    </div>
   );
 };
 

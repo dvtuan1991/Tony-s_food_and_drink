@@ -1,0 +1,8 @@
+.search-box {
+  width: 100%;
+  height: 120px;
+  padding: 1.5rem;
+  background-color: transparent;
+  display: flex;
+  justify-content: space-around;
+}

@@ -1,16 +1,13 @@
-import React from "react";
 import { Button, Col, Row } from "antd";
-import { useSelector } from "react-redux";
 
 import NavbarCustomer from "../NavBar/NavbarCustomer";
 import ButtonCart from "../Button/ButtonCart";
 import ButtonUser from "../Button/ButtonUser";
-import { RootState } from "../../store";
+
 import mylogo from "../../assets/mylogo.png";
 
 const HeaderCustomer = () => {
-  const { user } = useSelector((state: RootState) => state.users);
-  console.log(user);
+  
   return (
     <header>
       <Row justify="space-between" align="middle" className="pt-3 mb-7">
@@ -33,12 +30,8 @@ const HeaderCustomer = () => {
             <Col>
               <ButtonCart />
             </Col>
-            <Col>
-              {user.userName ? (
-                <ButtonUser user={user} />
-              ) : (
-                <Button>Log In</Button>
-              )}
+            <Col> 
+                <ButtonUser  />
             </Col>
           </Row>
         </Col>
