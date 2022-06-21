@@ -1,0 +1,9 @@
+.ant-avatar-circle.ant-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.anticon.anticon-close-circle {
+  display: inline-flex;
+}
