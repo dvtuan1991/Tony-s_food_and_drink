@@ -14,6 +14,7 @@ const Container = () => {
   const accessToken = localStorage.getItem("access_token");
   console.log(accessToken);
   const { user } = useSelector((state: RootState) => state.users);
+  console.log(user);
   const dispatch = useDispatch();
   const renderRouteApp = appRouter.map((route) => (
     <Route key={route.path} path={route.path} element={route.element} />
@@ -23,23 +24,29 @@ const Container = () => {
     <Route key={route.path} path={route.path} element={route.element} />
   ));
 
-  const getData = useCallback(async () => {
-    if (!user.userName && accessToken) {
+  const getData = useCallback(
+    async (token: string) => {
       const responseUser = await fetch(`${SERVICE_API}/auth/user`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (responseUser.ok) {
         const userResult = await responseUser.json();
+        console.log(userResult);
+
         dispatch(addUser(userResult));
       }
-    }
-  }, [accessToken, user.userName, dispatch]);
+    },
+    [accessToken, dispatch]
+  );
 
   useEffect(() => {
-    getData();
-  }, [getData]);
+    console.log("effect");
+    if (!user.userName && !!accessToken) {
+      getData(accessToken);
+    }
+  }, [getData, accessToken, user]);
   return (
     <Routes>
       <Route element={<LayoutCustomer />}>

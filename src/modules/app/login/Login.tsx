@@ -7,9 +7,9 @@ import Row from "antd/lib/row";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
-import { addUser } from "store/UserSlice";
 import { SERVICE_API } from "constants/configs";
-import { openNotification } from "helpers/function";
+import { fetchApi, openNotification } from "helpers/function";
+import { addUser } from "store/UserSlice";
 import styles from "../app.module.css";
 
 const Login = () => {
@@ -31,11 +31,17 @@ const Login = () => {
     if (res.ok) {
       const result = await res.json();
       localStorage.setItem("access_token", result.access_token);
-      dispatch(addUser(result.user));
-      if (result.user.isAdmin) {
+      const responseUser = await fetch(`${SERVICE_API}/auth/user`, {
+        headers: {
+          Authorization: `Bearer ${result.access_token}`
+        }
+      });
+      const user = await responseUser.json();
+      dispatch(addUser(user));
+      if (user.isAdmin) {
         navigate("/admin");
       }
-      if (!result.user.isAdmin) {
+      if (!user.isAdmin) {
         navigate("/");
       }
     }

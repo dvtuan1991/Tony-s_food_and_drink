@@ -1,14 +1,22 @@
+import Typography from "antd/lib/typography";
 import Avatar from "antd/lib/avatar/avatar";
-import { FC } from "react";
+import UserOutlined from "@ant-design/icons/UserOutlined";
+import { useSelector } from "react-redux";
 
-import { IUser } from "types/User";
-
+import { RootState } from "store";
+import { SERVICE_API } from "constants/configs";
 import styles from "./Button.module.css";
 
-const ButtonUser: FC<{user: IUser}>  = ({user}) => {
+const { Text } = Typography;
+const ButtonUser = () => {
+  const { user } = useSelector((state: RootState) => state.users);
   return (
     <div className={styles.wrapIcon}>
-      <Avatar src="https://vietnamtravel.com/images/2020/05/banh-khot.jpg.webp" />
+      {user?.userName && user.avatar && (
+        <Avatar src={`${SERVICE_API}/${user.avatar}`} />
+      )}
+      {user.userName && !user.avatar && <Avatar>{user.name}</Avatar>}
+      {!user.userName && <Avatar icon={<UserOutlined />} />}
       <div className={styles.user}>{""}</div>
     </div>
   );
