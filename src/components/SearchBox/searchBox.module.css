@@ -6,8 +6,6 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-}
-
-.search-box  > div > div {
-  margin-bottom: 0;
+  margin-top: 2.5rem;
+  border: 1px solid #ccc;  
 }
