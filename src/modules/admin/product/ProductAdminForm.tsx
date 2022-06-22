@@ -1,15 +1,7 @@
 import Row from "antd/lib/row";
 import Form from "antd/lib/form";
 import Col from "antd/lib/col";
-import {
-  ChangeEvent,
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import { ChangeEvent, FC, useMemo, useRef, useState } from "react";
 import Input from "antd/lib/input/Input";
 import Select from "antd/lib/select";
 import TextArea from "antd/lib/input/TextArea";
@@ -21,8 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { Space } from "antd";
 
 import { IProduct } from "types/product.model";
-import { ICategory } from "types/category.model";
-import { fetchApi, openNotification } from "helpers/function";
+import { openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import { defaultValidateMessages } from "helpers/common";
 import SelectCategory from "components/SelectCategory/SelectCategory";
@@ -39,7 +30,6 @@ interface FormProduct {
   file?: File;
 }
 
-const { Option } = Select;
 const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
   product,
   isCreate
@@ -199,14 +189,11 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
                       >
                         <Input placeholder="Food Name" />
                       </Form.Item>
-                      <Form.Item
-                        name="categoryId"
-                        label="Category Name"
-                        rules={[{ required: true }]}
-                      >
-                        <SelectCategory />
-                      </Form.Item>
-
+                      <SelectCategory
+                        label={"Category Name"}
+                        selectName={"categoryId"}
+                        rules={[{ required: true}]}
+                      />
                       <Form.Item name="priority" label="Priority">
                         <Input />
                       </Form.Item>

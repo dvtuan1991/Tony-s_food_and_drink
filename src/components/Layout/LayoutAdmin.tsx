@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 import Row from "antd/lib/row";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Col from "antd/lib/col";
 
 import NavBarAdmin from "components/NavBar/NavBarAdmin";
@@ -12,12 +12,14 @@ const LayoutAdmin = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.users);
 
-  // useEffect(() => {
-  //   console.log(user.isAdmin);
-  //   if (!user.isAdmin) {
-  //     navigate("/");
-  //   }
-  // }, [user.isAdmin]);
+  if (Object.keys(user).length > 0 && !user.isAdmin) {
+    return <Navigate to={"/"} />;
+  }
+
+  if (!localStorage.getItem("access_token")) {
+    return <Navigate to={"/"} />;
+  }
+
   return (
     <Row>
       {user.isAdmin && (

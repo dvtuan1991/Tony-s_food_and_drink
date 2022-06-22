@@ -12,9 +12,7 @@ import LayoutCustomer from "./LayoutCustomer ";
 
 const Container = () => {
   const accessToken = localStorage.getItem("access_token");
-  console.log(accessToken);
   const { user } = useSelector((state: RootState) => state.users);
-  console.log(user);
   const dispatch = useDispatch();
   const renderRouteApp = appRouter.map((route) => (
     <Route key={route.path} path={route.path} element={route.element} />
