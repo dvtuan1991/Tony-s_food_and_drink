@@ -119,6 +119,7 @@
         "depth": 3
       }
     ],
+    "no-nested-ternary": "off",
     "camelcase": "off",
     "import/name": "off",
     "no-underscore-dangle": "off",
