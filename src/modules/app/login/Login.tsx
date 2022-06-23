@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { SERVICE_API } from "constants/configs";
 import { fetchApi, openNotification } from "helpers/function";
-import { addUser } from "store/UserSlice";
+import { addUser } from "store/userSlice";
 import styles from "../app.module.css";
 
 const Login = () => {

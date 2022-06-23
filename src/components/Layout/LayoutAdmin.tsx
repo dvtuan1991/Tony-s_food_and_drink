@@ -1,6 +1,5 @@
-import { Fragment, useEffect } from "react";
 import Row from "antd/lib/row";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Col from "antd/lib/col";
 
 import NavBarAdmin from "components/NavBar/NavBarAdmin";
@@ -9,7 +8,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 
 const LayoutAdmin = () => {
-  const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.users);
 
   if (Object.keys(user).length > 0 && !user.isAdmin) {

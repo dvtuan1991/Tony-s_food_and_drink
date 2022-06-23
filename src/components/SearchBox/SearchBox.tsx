@@ -20,7 +20,7 @@ const SearchBox = () => {
         </div>
         <div className="w-1/3 flex">
           <div className="w-4/5">
-            <SelectCategory label={""} selectName={""} />
+            <SelectCategory label={""} selectName={"categoryId"} />
           </div>
           <Form.Item>
             <Button
