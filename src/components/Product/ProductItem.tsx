@@ -3,9 +3,10 @@ import Typography from "antd/lib/typography";
 import Col from "antd/lib/col";
 import Button from "antd/lib/button";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
 
 import { RootState } from "store";
-import { addCart } from "store/cart.slice";
+import { createCart } from "store/cart.slice";
 import { SERVICE_API } from "constants/configs";
 import { IProduct } from "types/product.model";
 import ProductImage from "./ProductImage";
@@ -14,11 +15,10 @@ import styles from "./product.module.css";
 const { Title, Text } = Typography;
 const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
   const { user } = useSelector((state: RootState) => state.users);
-  const dispatch = useDispatch();
+  const dispatch: Dispatch<any> = useDispatch();
   const handleClickAdd = async () => {
     let userId: number = -1;
     const guestId = localStorage.getItem("guestId");
-    dispatch(addCart());
     if (user.userName) {
       userId = user.id;
     }
@@ -36,20 +36,8 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
         userId = responseId;
         localStorage.setItem("guestId", responseId);
       }
-      const responseAddOrder = await fetch(`${SERVICE_API}/order`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          productId: product.id,
-          isNew: true
-        })
-      });
-      if (responseAddOrder.ok) {
-        const jsonOrder = await responseAddOrder.json();
-        console.log(jsonOrder);
-      }
     }
+    dispatch(createCart({ userId, productId: product.id, isNew: true }));
   };
   return (
     <Col span={8}>

@@ -6,12 +6,13 @@ import { adminRouter, appRouter } from "routes/routes.routes";
 import { RootState } from "store";
 import HomePage from "pages/app/HomePage";
 import { SERVICE_API } from "constants/configs";
-import { addUser, setLoading, setNoLoading } from "store/userSlice";
+import { addUser, setLoading, setNoLoading } from "store/user.slice";
 import LayoutAdmin from "./LayoutAdmin";
 import LayoutCustomer from "./LayoutCustomer ";
 
 const Container = () => {
   const accessToken = localStorage.getItem("access_token");
+  const guestId = localStorage.getItem("guestId");
   const { user, isUserLoading } = useSelector(
     (state: RootState) => state.users
   );
@@ -45,7 +46,6 @@ const Container = () => {
   );
 
   useEffect(() => {
-    console.log("effect");
     if (!user.userName && !!accessToken) {
       getData(accessToken);
     }
