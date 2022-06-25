@@ -6,12 +6,14 @@ interface InitCartState {
   total: number;
   carts: ICart[];
   isCartLoading: boolean;
+  error: any;
 }
 
 const initCartState: InitCartState = {
   total: 0,
   carts: [],
-  isCartLoading: false
+  isCartLoading: false,
+  error: undefined
 };
 
 export const createCart = createAsyncThunk(
@@ -33,6 +35,18 @@ export const createCart = createAsyncThunk(
     if (responseAddOrder.ok) {
       const result = await responseAddOrder.json();
       return result;
+    }
+  }
+);
+
+export const getOrderByUserId = createAsyncThunk(
+  "order/getOrderByUserId",
+  async (id: number) => {
+    try {
+      const response = await fetch(`${SERVICE_API}/order/${id}?status=cart`);
+      return await response.json();
+    } catch (error) {
+      return error;
     }
   }
 );
@@ -68,6 +82,7 @@ const cartSlice = createSlice({
         updateUserIdInCart.fulfilled,
         (state, action: PayloadAction<ICart[]>) => {
           state.carts = action.payload;
+          state.total = state.carts.length;
         }
       )
 
@@ -77,6 +92,23 @@ const cartSlice = createSlice({
       .addCase(createCart.fulfilled, (state, action: PayloadAction<ICart>) => {
         action.payload;
         state.carts.push(action.payload);
+        state.total = state.carts.length;
+        state.isCartLoading = false;
+      })
+
+      .addCase(getOrderByUserId.pending, (state) => {
+        state.isCartLoading = true;
+      })
+      .addCase(
+        getOrderByUserId.fulfilled,
+        (state, action: PayloadAction<ICart[]>) => {
+          state.carts = action.payload;
+          state.total = action.payload.length;
+          state.isCartLoading = false;
+        }
+      )
+      .addCase(getOrderByUserId.rejected, (state, action: any) => {
+        state.error = action.payload;
         state.isCartLoading = false;
       });
   }

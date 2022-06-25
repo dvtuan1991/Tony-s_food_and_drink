@@ -12,7 +12,6 @@ import LayoutCustomer from "./LayoutCustomer ";
 
 const Container = () => {
   const accessToken = localStorage.getItem("access_token");
-  const guestId = localStorage.getItem("guestId");
   const { user, isUserLoading } = useSelector(
     (state: RootState) => state.users
   );

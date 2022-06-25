@@ -5,9 +5,12 @@ import Typography from "antd/lib/typography";
 import Slider from "antd/lib/slider";
 import InputNumber from "antd/lib/input-number";
 import { Button } from "antd";
+import { useDispatch } from "react-redux";
+import { changeFilterPrice } from "store/product.slice";
 
 const { Title } = Typography;
 const ProductSlide = () => {
+  const dispatch = useDispatch();
   const [min, setMin] = useState<number>(1);
   const [max, setMax] = useState<number>(100);
 
@@ -23,6 +26,11 @@ const ProductSlide = () => {
   const handleChangeMax = (value: number) => {
     setMax(Number(value));
   };
+
+  const handleClickSubmit = () => {
+    dispatch(changeFilterPrice({ min, max }));
+  };
+
   return (
     <Row>
       <Title level={5}>Price</Title>
@@ -61,7 +69,7 @@ const ProductSlide = () => {
             />
           </Col>
           <Col>
-            <Button>Submit</Button>
+            <Button onClick={handleClickSubmit}>Submit</Button>
           </Col>
         </Row>
       </Col>

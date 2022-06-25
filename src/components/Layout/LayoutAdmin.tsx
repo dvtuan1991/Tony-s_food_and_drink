@@ -1,11 +1,11 @@
-import Row from "antd/lib/row";
-import { Navigate, Outlet } from "react-router-dom";
-import Col from "antd/lib/col";
 
+import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { RootState } from "store";
 import NavBarAdmin from "components/NavBar/NavBarAdmin";
 import MainHeaderAdmin from "components/Main/MainHeaderAdmin";
-import { useSelector } from "react-redux";
-import { RootState } from "store";
+import styles from "./layout.module.css";
 
 const LayoutAdmin = () => {
   const { user } = useSelector((state: RootState) => state.users);
@@ -19,23 +19,19 @@ const LayoutAdmin = () => {
   }
 
   return (
-    <Row>
+    <>
+      <NavBarAdmin />
       {user.isAdmin && (
-        <>
-          <Col span={4} className=" bg-[#001529]">
-            <NavBarAdmin />
-          </Col>
-          <Col span={20}>
-            <div className="container">
-              <main>
-                <MainHeaderAdmin />
-                <Outlet />
-              </main>
+        <div className={styles["main-admin"]}>
+          <main>
+            <MainHeaderAdmin />
+            <div className="px-5 bg-[#ccceba]">
+              <Outlet />
             </div>
-          </Col>
-        </>
+          </main>
+        </div>
       )}
-    </Row>
+    </>
   );
 };
 

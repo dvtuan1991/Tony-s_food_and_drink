@@ -4,8 +4,8 @@ import Pagination from "antd/lib/pagination";
 
 import { fetchApi } from "helpers/function";
 import { PAGE_SIZE, SERVICE_API } from "constants/configs";
-import CategoryTable from "./CategoryTable";
 import ModalEditable from "components/Modal/ModalEditable";
+import CategoryTable from "./CategoryTable";
 
 const CategoryAdminLists = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -14,14 +14,6 @@ const CategoryAdminLists = () => {
 
   const handleClickPagination = (index: number) => {
     setPageIndex(index);
-  };
-  const handleClickDelete = async (id: number) => {
-    const responseDelete = await fetch(`${SERVICE_API}/category/${id}/delete`, {
-      method: "DELETE",
-    });
-    if (responseDelete.ok) {
-      getData(pageIndex);
-    }
   };
 
   const getData = useCallback(
@@ -36,6 +28,14 @@ const CategoryAdminLists = () => {
     [pageIndex]
   );
 
+  const handleClickDelete = async (id: number) => {
+    const responseDelete = await fetch(`${SERVICE_API}/category/${id}/delete`, {
+      method: "DELETE"
+    });
+    if (responseDelete.ok) {
+      getData(pageIndex);
+    }
+  };
   useEffect(() => {
     getData(pageIndex);
   }, [getData, pageIndex]);
@@ -56,6 +56,9 @@ const CategoryAdminLists = () => {
         showSizeChanger={false}
         onChange={handleClickPagination}
         className="pl-5"
+        style={{
+          backgroundColor: "#ccceba"
+        }}
       />
     </>
   );

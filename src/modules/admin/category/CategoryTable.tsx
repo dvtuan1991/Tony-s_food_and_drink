@@ -16,12 +16,12 @@ const CategoryTable: FC<{
       dataIndex: "ordinalNum",
       key: "ordinalNum",
       align: "center" as "center",
-      width: "5%",
+      width: "5%"
     },
     {
       title: "Name",
       dataIndex: "name",
-      key: "categoryname",
+      key: "categoryname"
     },
     {
       title: "Action",
@@ -38,12 +38,12 @@ const CategoryTable: FC<{
             className="text-red-700"
           />
         </Space>
-      ),
-    },
+      )
+    }
   ];
 
   return (
-    <div className="pt-5 pb-5">
+    <div className="py-5">
       <Table
         dataSource={data}
         pagination={false}

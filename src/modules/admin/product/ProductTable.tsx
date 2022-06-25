@@ -82,7 +82,7 @@ const ProductTable: FC<{
     },
   ];
   return (
-    <div className="px-5">
+    <div className="py-5">
       <Table
         dataSource={data}
         pagination={false}

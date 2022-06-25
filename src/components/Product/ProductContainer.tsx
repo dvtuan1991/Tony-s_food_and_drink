@@ -1,29 +1,52 @@
 import Row from "antd/lib/row";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import Pagination from "antd/lib/pagination";
 
-import { SERVICE_API } from "constants/configs";
-import { fetchApi } from "helpers/function";
-import { IProduct } from "types/product.model";
+import { RootState } from "store";
+import { getListProductApp } from "store/product.slice";
+import { APP_PAGE_SIZE } from "constants/configs";
+import SelectSort from "components/SelectCategory/SelectSort";
 import ProductItem from "./ProductItem";
 
 const ProductContainer = () => {
-  const [listProduct, setListProduct] = useState<IProduct[]>();
-
-  const getData = useCallback(async () => {
-    const fetchListProduct = await fetchApi(`${SERVICE_API}/product`);
-    setListProduct(fetchListProduct);
-  }, []);
-
+  const [pageIndex, setPageIndex] = useState<number>(1);
+  const { productList, sortType, filterList, totalProduct } = useSelector(
+    (state: RootState) => state.products
+  );
+  const dispatch: Dispatch<any> = useDispatch();
+  const handleClickPagi = (index: number) => {
+    setPageIndex(index);
+  };
   useEffect(() => {
-    getData();
-  }, [getData]);
+    const sortAndFilter = {
+      sortType,
+      filterList
+    };
+    dispatch(getListProductApp({ sortAndFilter, pageIndex }));
+  }, [sortType, dispatch, filterList.price, pageIndex]);
   return (
-    <Row gutter={16}>
-      {listProduct &&
-        listProduct.map((product) => (
-          <ProductItem product={product} key={product.id} />
-        ))}
-    </Row>
+    <div className="flex flex-col">
+      <div className="flex  w-1/5 py-5 self-end">
+        <SelectSort />
+      </div>
+      <Row gutter={16}>
+        {productList.length > 0 &&
+          productList.map((product) => (
+            <ProductItem product={product} key={product.id} />
+          ))}
+      </Row>
+      <div className="mb-5">
+        <Pagination
+          current={pageIndex}
+          showSizeChanger={false}
+          pageSize={APP_PAGE_SIZE}
+          total={totalProduct}
+          onChange={handleClickPagi}
+        />
+      </div>
+    </div>
   );
 };
 

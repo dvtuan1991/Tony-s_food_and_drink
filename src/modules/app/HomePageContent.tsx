@@ -5,7 +5,7 @@ import ProductContainer from "components/Product/ProductContainer";
 
 import SearchBox from "components/SearchBox/SearchBox";
 import ProductSlide from "components/Slide/ProductSlide";
-import MainHeading from "../components/Main/MainHeading";
+import MainHeading from "../../components/Main/MainHeading";
 
 const HomePageContent = () => {
   return (
