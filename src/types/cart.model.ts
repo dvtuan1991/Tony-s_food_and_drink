@@ -1,11 +1,13 @@
 export interface ICart {
-  id: number;
+  id: string;
   productId: number;
   userId: number;
   isNew?: boolean;
   isConfirm?: boolean;
   isSuccess?: boolean;
   isCancel?: boolean;
-  quantity?: number;
+  quantity: number;
+  price: number;
+  productName?: string;
   orderListId?: string;
 }

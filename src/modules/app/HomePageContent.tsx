@@ -15,7 +15,7 @@ const HomePageContent = () => {
       <div className="mt-12">
         <Row gutter={8}>
           <Col span={6}>
-            <div className="p-5">
+            <div className="pr-1">
               <CategoryCheckBox />
               <ProductSlide />
             </div>

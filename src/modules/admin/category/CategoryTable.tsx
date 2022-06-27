@@ -1,15 +1,14 @@
 import Space from "antd/lib/space";
 import Table, { ColumnsType } from "antd/lib/table";
-import ActionButton from "components/Button/ActionButton";
-import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { FC } from "react";
 
 import { ICategory } from "types/category.model";
 import ModalEditable from "components/Modal/ModalEditable";
+import PopConfirmDelete from "components/Button/PopConfirmDelete";
 
 const CategoryTable: FC<{
   data: ICategory[];
-  handleClickDelete: (id: number) => void;
+  handleClickDelete: (id: number | string) => void;
 }> = ({ data, handleClickDelete }) => {
   const colums: ColumnsType<ICategory> = [
     {
@@ -31,11 +30,10 @@ const CategoryTable: FC<{
       render: (record: ICategory) => (
         <Space>
           <ModalEditable record={record} />
-          <ActionButton
-            icon={<DeleteOutlined />}
+          <PopConfirmDelete
+            title={"Are you sure to delete this category"}
             id={record.id}
-            action={handleClickDelete}
-            className="text-red-700"
+            handleConfirmDelete={handleClickDelete}
           />
         </Space>
       )
@@ -48,7 +46,7 @@ const CategoryTable: FC<{
         dataSource={data}
         pagination={false}
         columns={colums}
-        className="min-h-[150px]"
+        className="min-h-[300px]"
         rowKey={(record) => record.id}
       />
     </div>

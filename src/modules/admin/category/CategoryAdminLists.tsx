@@ -2,9 +2,10 @@ import { useCallback, useState, useEffect } from "react";
 import { ICategory } from "types/category.model";
 import Pagination from "antd/lib/pagination";
 
-import { fetchApi } from "helpers/function";
+import { fetchApi, openNotification } from "helpers/function";
 import { PAGE_SIZE, SERVICE_API } from "constants/configs";
 import ModalEditable from "components/Modal/ModalEditable";
+import { IProduct } from "types/product.model";
 import CategoryTable from "./CategoryTable";
 
 const CategoryAdminLists = () => {
@@ -28,12 +29,24 @@ const CategoryAdminLists = () => {
     [pageIndex]
   );
 
-  const handleClickDelete = async (id: number) => {
-    const responseDelete = await fetch(`${SERVICE_API}/category/${id}/delete`, {
-      method: "DELETE"
-    });
-    if (responseDelete.ok) {
-      getData(pageIndex);
+  const handleClickDelete = async (id: number | string) => {
+    const responseProduct: IProduct[] = await fetchApi(
+      `${SERVICE_API}/product/category/${id}`
+    );
+    if (responseProduct.length > 0) {
+      console.log(responseProduct.length);
+    }
+    if (responseProduct.length === 0) {
+      const responseDelete = await fetch(
+        `${SERVICE_API}/category/${id}/delete`,
+        {
+          method: "DELETE"
+        }
+      );
+      if (responseDelete.ok) {
+        getData(pageIndex);
+        openNotification("success", "Delete Success");
+      }
     }
   };
   useEffect(() => {
@@ -55,10 +68,7 @@ const CategoryAdminLists = () => {
         current={pageIndex}
         showSizeChanger={false}
         onChange={handleClickPagination}
-        className="pl-5"
-        style={{
-          backgroundColor: "#ccceba"
-        }}
+        className="pb-5"
       />
     </>
   );

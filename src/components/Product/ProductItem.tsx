@@ -37,7 +37,14 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
         localStorage.setItem("guestId", responseId);
       }
     }
-    dispatch(createCart({ userId, productId: product.id, isNew: true }));
+    dispatch(
+      createCart({
+        userId,
+        productId: product.id,
+        price: product.newPrice,
+        isNew: true
+      })
+    );
   };
   return (
     <Col span={8}>
@@ -52,7 +59,7 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
         <div className={styles["product-item_footer"]}>
           <Button
             block
-            className="bg-[#ea2251] rounded hover:bg-[#ea2251] hover:text-white text-white"
+            className="bg-[#ea2251] rounded hover:bg-[#ea2251] hover:text-white text-white focus:bg-[#ea2251] focus:text-white"
             onClick={handleClickAdd}
           >
             Add To Cart

@@ -15,7 +15,7 @@ const LayoutCustomer = () => {
   const { user } = useSelector((state: RootState) => state.users);
   const dispatch: Dispatch<any> = useDispatch();
   useEffect(() => {
-    if (user.id) {
+    if (user.id || user.id === 0) {
       dispatch(getOrderByUserId(user.id));
     }
     if (guestId) {
@@ -23,18 +23,18 @@ const LayoutCustomer = () => {
     }
   }, [dispatch, user.id, guestId]);
   return (
-    <div className="container mx-auto my-0">
-      <div className={styles.wrapper}>
-        <Row>
-          <Col span={24}>
-            <HeaderCustomer />
-          </Col>
-          <Col span={24}>
-            <Outlet />
-          </Col>
-        </Row>
-      </div>
+    // <div className="container mx-auto my-0">
+    <div className={styles.wrapper}>
+      <Row>
+        <Col span={24} className="bg-white">
+          <HeaderCustomer />
+        </Col>
+        <Col span={24}>
+          <Outlet />
+        </Col>
+      </Row>
     </div>
+    // </div>
   );
 };
 

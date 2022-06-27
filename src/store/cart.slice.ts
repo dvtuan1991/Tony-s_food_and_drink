@@ -1,10 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { SERVICE_API } from "constants/configs";
 import { ICart } from "types/cart.model";
 
 interface InitCartState {
   total: number;
   carts: ICart[];
+  cartsCheckOut: ICart[];
+  totalPrice: number;
   isCartLoading: boolean;
   error: any;
 }
@@ -12,6 +15,8 @@ interface InitCartState {
 const initCartState: InitCartState = {
   total: 0,
   carts: [],
+  cartsCheckOut: [],
+  totalPrice: 0,
   isCartLoading: false,
   error: undefined
 };
@@ -21,16 +26,18 @@ export const createCart = createAsyncThunk(
   async ({
     userId,
     productId,
+    price,
     isNew
   }: {
     userId: number;
     productId: number;
+    price: number;
     isNew: boolean;
   }) => {
     const responseAddOrder = await fetch(`${SERVICE_API}/order`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, productId, isNew })
+      body: JSON.stringify({ userId, productId, price, isNew })
     });
     if (responseAddOrder.ok) {
       const result = await responseAddOrder.json();
@@ -42,11 +49,9 @@ export const createCart = createAsyncThunk(
 export const getOrderByUserId = createAsyncThunk(
   "order/getOrderByUserId",
   async (id: number) => {
-    try {
-      const response = await fetch(`${SERVICE_API}/order/${id}?status=cart`);
-      return await response.json();
-    } catch (error) {
-      return error;
+    const response = await fetch(`${SERVICE_API}/order/${id}?status=cart`);
+    if (response.ok) {
+      return response.json();
     }
   }
 );
@@ -68,12 +73,47 @@ export const updateUserIdInCart = createAsyncThunk(
   }
 );
 
+export const updateCart = createAsyncThunk(
+  "order/updateCart",
+  async (cart: ICart) => {
+    const response = await fetch(`${SERVICE_API}/order/${cart.id}/update`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(cart)
+    });
+    if (response.ok) {
+      return response.json();
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "carts",
   initialState: initCartState,
   reducers: {
     addCart: (state) => {
       state.total += 1;
+    },
+    changeQuantity: (state, action) => {
+      state.carts.forEach((cart) => {
+        if (cart.id === action.payload.id) {
+          cart.quantity = action.payload.quantity;
+        }
+      });
+    },
+    setTotalPrice: (state, action) => {
+      state.totalPrice = action.payload.reduce(
+        (total: number, cart: ICart) => (total += cart.price),
+        0
+      );
+      state.cartsCheckOut = action.payload;
+    },
+    clearCart: (state) => {
+      state.total = 0;
+      state.carts = [];
     }
   },
   extraReducers: (builder) => {
@@ -89,12 +129,14 @@ const cartSlice = createSlice({
       .addCase(createCart.pending, (state) => {
         state.isCartLoading = true;
       })
-      .addCase(createCart.fulfilled, (state, action: PayloadAction<ICart>) => {
-        action.payload;
-        state.carts.push(action.payload);
-        state.total = state.carts.length;
-        state.isCartLoading = false;
-      })
+      .addCase(
+        createCart.fulfilled,
+        (state, action: PayloadAction<ICart[]>) => {
+          state.carts = action.payload;
+          state.total = state.carts.length;
+          state.isCartLoading = false;
+        }
+      )
 
       .addCase(getOrderByUserId.pending, (state) => {
         state.isCartLoading = true;
@@ -110,9 +152,22 @@ const cartSlice = createSlice({
       .addCase(getOrderByUserId.rejected, (state, action: any) => {
         state.error = action.payload;
         state.isCartLoading = false;
+      })
+
+      .addCase(updateCart.pending, (state) => {
+        state.isCartLoading = true;
+      })
+      .addCase(updateCart.fulfilled, (state, action: PayloadAction<ICart>) => {
+        state.carts.forEach((cart) => {
+          if (cart.id === action.payload.id) {
+            cart = action.payload;
+          }
+        });
+        state.isCartLoading = false;
       });
   }
 });
 
-export const { addCart } = cartSlice.actions;
+export const { addCart, changeQuantity, setTotalPrice, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;

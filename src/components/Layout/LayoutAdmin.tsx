@@ -1,4 +1,3 @@
-
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -19,19 +18,21 @@ const LayoutAdmin = () => {
   }
 
   return (
-    <>
-      <NavBarAdmin />
+    <div>
       {user.isAdmin && (
-        <div className={styles["main-admin"]}>
-          <main>
-            <MainHeaderAdmin />
-            <div className="px-5 bg-[#ccceba]">
-              <Outlet />
-            </div>
-          </main>
-        </div>
+        <>
+          <NavBarAdmin />
+          <div className={styles["main-admin"]}>
+            <main>
+              <MainHeaderAdmin />
+              <div className="px-5">
+                <Outlet />
+              </div>
+            </main>
+          </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 

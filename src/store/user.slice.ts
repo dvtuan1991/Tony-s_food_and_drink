@@ -18,6 +18,7 @@ const userSlice = createSlice({
     addUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
+
     setLoading: (state) => {
       state.isUserLoading = true;
     },

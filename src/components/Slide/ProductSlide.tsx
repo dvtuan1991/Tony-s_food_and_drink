@@ -1,6 +1,6 @@
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import Typography from "antd/lib/typography";
 import Slider from "antd/lib/slider";
 import InputNumber from "antd/lib/input-number";
@@ -31,6 +31,9 @@ const ProductSlide = () => {
     dispatch(changeFilterPrice({ min, max }));
   };
 
+  const renderFormat = (value: number | undefined): ReactNode =>
+    `$${value?.toFixed(2)}`;
+
   return (
     <Row>
       <Title level={5}>Price</Title>
@@ -48,6 +51,7 @@ const ProductSlide = () => {
             { backgroundColor: "#ea2251", borderColor: "#ea2251" },
             { backgroundColor: "#ea2251", borderColor: "#ea2251" }
           ]}
+          tipFormatter={renderFormat}
         />
       </Col>
       <Col span={24}>
@@ -68,10 +72,10 @@ const ProductSlide = () => {
               onChange={handleChangeMax}
             />
           </Col>
-          <Col>
-            <Button onClick={handleClickSubmit}>Submit</Button>
-          </Col>
         </Row>
+        <Col>
+          <Button onClick={handleClickSubmit}>Submit</Button>
+        </Col>
       </Col>
     </Row>
   );
