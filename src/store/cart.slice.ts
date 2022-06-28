@@ -46,8 +46,8 @@ export const createCart = createAsyncThunk(
   }
 );
 
-export const getOrderByUserId = createAsyncThunk(
-  "order/getOrderByUserId",
+export const getCartByUserId = createAsyncThunk(
+  "cart/getOrderByUserId",
   async (id: number) => {
     const response = await fetch(`${SERVICE_API}/order/${id}?status=cart`);
     if (response.ok) {
@@ -57,7 +57,7 @@ export const getOrderByUserId = createAsyncThunk(
 );
 
 export const updateUserIdInCart = createAsyncThunk(
-  "order/updateUserIdInCart",
+  "cart/updateUserIdInCart",
   async ({ userId, guestId }: { userId: number; guestId: number }) => {
     const response = await fetch(`${SERVICE_API}/order/updateuserid`, {
       method: "PUT",
@@ -74,7 +74,7 @@ export const updateUserIdInCart = createAsyncThunk(
 );
 
 export const updateCart = createAsyncThunk(
-  "order/updateCart",
+  "cart/updateCart",
   async (cart: ICart) => {
     const response = await fetch(`${SERVICE_API}/order/${cart.id}/update`, {
       method: "PUT",
@@ -94,9 +94,6 @@ const cartSlice = createSlice({
   name: "carts",
   initialState: initCartState,
   reducers: {
-    addCart: (state) => {
-      state.total += 1;
-    },
     changeQuantity: (state, action) => {
       const index = state.carts.findIndex(
         (cart) => cart.id === action.payload.id
@@ -112,6 +109,9 @@ const cartSlice = createSlice({
         (total: number, cart: ICart) => (total += cart.price),
         0
       );
+    },
+    changeCartToOrder: (state) => {
+      state.cartsCheckOut = [];
     },
 
     clearCart: (state) => {
@@ -141,18 +141,18 @@ const cartSlice = createSlice({
         }
       )
 
-      .addCase(getOrderByUserId.pending, (state) => {
+      .addCase(getCartByUserId.pending, (state) => {
         state.isCartLoading = true;
       })
       .addCase(
-        getOrderByUserId.fulfilled,
+        getCartByUserId.fulfilled,
         (state, action: PayloadAction<ICart[]>) => {
           state.carts = action.payload;
           state.total = action.payload.length;
           state.isCartLoading = false;
         }
       )
-      .addCase(getOrderByUserId.rejected, (state, action: any) => {
+      .addCase(getCartByUserId.rejected, (state, action: any) => {
         state.error = action.payload;
         state.isCartLoading = false;
       })
@@ -170,6 +170,6 @@ const cartSlice = createSlice({
   }
 });
 
-export const { addCart, changeQuantity, setCartCheckOut, clearCart } =
+export const { changeQuantity, setCartCheckOut, changeCartToOrder, clearCart } =
   cartSlice.actions;
 export default cartSlice.reducer;

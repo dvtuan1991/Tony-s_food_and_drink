@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
 import { RootState } from "store";
-import { getOrderByUserId } from "store/cart.slice";
+import { getCartByUserId } from "store/cart.slice";
 import HeaderCustomer from "../Header/HeaderCustomer ";
 import styles from "./layout.module.css";
 
@@ -16,10 +16,10 @@ const LayoutCustomer = () => {
   const dispatch: Dispatch<any> = useDispatch();
   useEffect(() => {
     if (user.id || user.id === 0) {
-      dispatch(getOrderByUserId(user.id));
+      dispatch(getCartByUserId(user.id));
     }
     if (guestId) {
-      dispatch(getOrderByUserId(Number(guestId)));
+      dispatch(getCartByUserId(Number(guestId)));
     }
   }, [dispatch, user.id, guestId]);
   return (
