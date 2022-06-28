@@ -77,12 +77,6 @@ const ProductTable: FC<{
             title={"Are you sure to delete this product?"}
             id={record.id}
           />
-          {/* <ActionButton
-            icon={<DeleteOutlined />}
-            id={record.id}
-            action={handleClickDelete}
-            className="text-red-700"
-          /> */}
         </Space>
       )
     }

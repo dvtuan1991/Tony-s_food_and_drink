@@ -8,17 +8,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { RootState } from "store";
-import { changePriceOutput, openNotification } from "helpers/function";
-import { setTotalPrice } from "store/cart.slice";
+import { changePriceOutput, getTotalPrice, openNotification } from "helpers/function";
+import { setCartCheckOut } from "store/cart.slice";
 import CartItem from "./CartItem";
 
 const { Title, Text } = Typography;
 
 const CartList = () => {
-  const { carts, totalPrice } = useSelector((state: RootState) => state.carts);
+  const { carts, isCartLoading, cartsCheckOut } = useSelector(
+    (state: RootState) => state.carts
+  );
+  const [isCheck, setIsCheck] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isCheck, setIsCheck] = useState<boolean>(false);
   const handleChangeCheckbox = (checkedValues: CheckboxValueType[]) => {
     if (checkedValues.length > 0) {
       setIsCheck(true);
@@ -26,7 +28,7 @@ const CartList = () => {
     if (checkedValues.length < 0) {
       setIsCheck(false);
     }
-    dispatch(setTotalPrice(checkedValues));
+    dispatch(setCartCheckOut(checkedValues));
   };
 
   const handleClickCheckOut = () => {
@@ -34,7 +36,7 @@ const CartList = () => {
       openNotification("warning", "You forgot choose food");
       return null;
     }
-    navigate("/checkout");
+    !isCartLoading && navigate("/checkout");
   };
 
   return (
@@ -81,7 +83,7 @@ const CartList = () => {
                   index < carts.length - 1 && "mb-3"
                 } w-full `}
               >
-                <Checkbox value={cart} className="seft-center mx-5" />
+                <Checkbox value={cart.id} className="seft-center mx-5" />
                 <CartItem cart={cart} />
               </div>
             </Col>
@@ -92,7 +94,7 @@ const CartList = () => {
         <Row>
           <Col span={6} push={18}>
             <div className="flex items-center justify-between p-5">
-              <Text>{`Total: ${changePriceOutput(totalPrice)}`}</Text>
+              <Text>{`Total: ${changePriceOutput(getTotalPrice(cartsCheckOut))}`}</Text>
               <Text
                 className="p-3 cursor-pointer bg-[#ea2251] text-white hover:border-[#ea2251] hover:text-black rounded"
                 onClick={handleClickCheckOut}

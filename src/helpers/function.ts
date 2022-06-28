@@ -1,4 +1,5 @@
 import notification from "antd/lib/notification";
+import { ICart } from "types/cart.model";
 
 export const fetchApi = async (url: string) => {
   const response = await fetch(url);
@@ -31,4 +32,11 @@ export const changePriceOutput = (price: number) => {
 
 export const isVietnamesePhoneNumber = (number: string) => {
   return /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/.test(number);
+};
+
+export const getTotalPrice = (carts: ICart[]) => {
+  if (carts.length === 0) {
+    return 0;
+  }
+  return carts.reduce((total, cart) => total + cart.price, 0);
 };

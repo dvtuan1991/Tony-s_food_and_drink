@@ -1,7 +1,7 @@
-import CheckOut from "modules/app/cart/CheckOut";
+import OrderCheckOut from "modules/app/cart/OrderCheckOut";
 
 const CartCheckOut = () => {
-  return <CheckOut />;
+  return <OrderCheckOut />;
 };
 
 export default CartCheckOut;

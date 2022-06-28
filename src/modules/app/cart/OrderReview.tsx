@@ -12,7 +12,7 @@ import Space from "antd/lib/space";
 import styles from "./cart.module.css";
 
 const { Title, Text } = Typography;
-const CheckOut = () => {
+const OrderReview = () => {
   const { cartsCheckOut, totalPrice } = useSelector(
     (state: RootState) => state.carts
   );
@@ -65,7 +65,7 @@ const CheckOut = () => {
       <div className={`${styles.card}`}>
         <Row align="middle">
           <Col span={16}>
-            <Text >Shipping</Text>
+            <Text>Shipping</Text>
           </Col>
           <Col span={8}>
             <Text>Free</Text>
@@ -78,7 +78,9 @@ const CheckOut = () => {
             <Title level={5}>SubTotal</Title>
           </Col>
           <Col span={8}>
-            <Text className="text-[#ea2251]">{changePriceOutput(totalPrice)}</Text>
+            <Text className="text-[#ea2251]">
+              {changePriceOutput(totalPrice)}
+            </Text>
           </Col>
         </Row>
       </div>
@@ -98,4 +100,4 @@ const CheckOut = () => {
   );
 };
 
-export default CheckOut;
+export default OrderReview;

@@ -3,6 +3,7 @@ import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import InputNumber from "antd/lib/input-number";
 import Space from "antd/lib/space";
+import Spin from "antd/lib/spin";
 import Typography from "antd/lib/typography";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -14,13 +15,14 @@ import { IProduct } from "types/product.model";
 import { fetchApi } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import PopConfirmDelete from "components/Button/PopConfirmDelete";
-import { updateCart } from "store/cart.slice";
+import { changeQuantity } from "store/cart.slice";
 
 const { Text } = Typography;
 const CartItem: FC<{ cart: ICart }> = ({ cart }) => {
   const { isCartLoading } = useSelector((state: RootState) => state.carts);
   const dispatch: Dispatch<any> = useDispatch();
   const [product, setProduct] = useState<IProduct>();
+
   const [productQuantity, setCartQuantity] = useState<number>(cart.quantity);
   const handleClickDelete = async () => {
     const res = await fetch(`${SERVICE_API}`);
@@ -28,13 +30,9 @@ const CartItem: FC<{ cart: ICart }> = ({ cart }) => {
 
   const handleChange = (value: number) => {
     setCartQuantity(value);
-  };
-
-  const handleBlur = () => {
     if (product) {
-      console.log("fetch");
-      const price = productQuantity * product.newPrice;
-      dispatch(updateCart({ ...cart, quantity: productQuantity, price }));
+      const price = value * product.newPrice;
+      dispatch(changeQuantity({ id: cart.id, quantity: value, price }));
     }
   };
 
@@ -48,6 +46,10 @@ const CartItem: FC<{ cart: ICart }> = ({ cart }) => {
   useEffect(() => {
     getData();
   }, [getData, cart]);
+
+  if (isCartLoading) {
+    return <Spin spinning={isCartLoading} />;
+  }
   return (
     <Row align="middle" className="w-full">
       {product && (
@@ -77,8 +79,6 @@ const CartItem: FC<{ cart: ICart }> = ({ cart }) => {
                   value={productQuantity}
                   onChange={handleChange}
                   disabled={isCartLoading}
-                  onBlur={handleBlur}
-                  onPressEnter={handleBlur}
                 />
               </Col>
               <Col span={6}>{`$${(productQuantity * product.newPrice).toFixed(

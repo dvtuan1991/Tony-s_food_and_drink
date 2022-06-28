@@ -98,19 +98,22 @@ const cartSlice = createSlice({
       state.total += 1;
     },
     changeQuantity: (state, action) => {
-      state.carts.forEach((cart) => {
-        if (cart.id === action.payload.id) {
-          cart.quantity = action.payload.quantity;
-        }
-      });
+      const index = state.carts.findIndex(
+        (cart) => cart.id === action.payload.id
+      );
+      state.carts[index].quantity = action.payload.quantity;
+      state.carts[index].price = action.payload.price;
     },
-    setTotalPrice: (state, action) => {
-      state.totalPrice = action.payload.reduce(
+    setCartCheckOut: (state, action) => {
+      state.cartsCheckOut = action.payload.map((item: string) => {
+        return state.carts.filter((cart) => cart.id === item)[0];
+      });
+      state.totalPrice = state.cartsCheckOut.reduce(
         (total: number, cart: ICart) => (total += cart.price),
         0
       );
-      state.cartsCheckOut = action.payload;
     },
+
     clearCart: (state) => {
       state.total = 0;
       state.carts = [];
@@ -158,16 +161,15 @@ const cartSlice = createSlice({
         state.isCartLoading = true;
       })
       .addCase(updateCart.fulfilled, (state, action: PayloadAction<ICart>) => {
-        state.carts.forEach((cart) => {
-          if (cart.id === action.payload.id) {
-            cart = action.payload;
-          }
-        });
+        const index = state.carts.findIndex(
+          (cart) => (cart.id = action.payload.id)
+        );
+        state.carts[index] = { ...action.payload };
         state.isCartLoading = false;
       });
   }
 });
 
-export const { addCart, changeQuantity, setTotalPrice, clearCart } =
+export const { addCart, changeQuantity, setCartCheckOut, clearCart } =
   cartSlice.actions;
 export default cartSlice.reducer;
