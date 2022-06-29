@@ -11,6 +11,7 @@ import AdminProducts from "pages/admin/product/list/AdminProducts";
 import Cart from "pages/app/Cart";
 import CartCheckOut from "pages/app/CartCheckOut";
 import HomePage from "pages/app/HomePage";
+import OrderPage from "pages/app/OrderPage";
 import { IRoute } from "types/route.model";
 import {
   PATH_ADMIN_CATEGORY,
@@ -22,12 +23,12 @@ import {
   PATH_ADMIN_PRODUCT,
   PATH_ADMIN_PRODUCT_CREATE,
   PATH_ADMIN_PRODUCT_DETAIL,
-  PATH_APP_CATEGORY,
   PATH_APP_HOME,
   PATH_LOGIN,
   PATH_REGISTER,
   PATH_APP_CART,
-  PATH_APP_CHECK_OUT
+  PATH_APP_CHECK_OUT,
+  PATH_APP_ORDER
 } from "./routes.paths";
 
 export const appRouter: IRoute[] = [
@@ -47,6 +48,10 @@ export const appRouter: IRoute[] = [
   {
     path: PATH_APP_CHECK_OUT,
     element: <CartCheckOut />
+  },
+  {
+    path: PATH_APP_ORDER,
+    element: <OrderPage />
   }
 ];
 

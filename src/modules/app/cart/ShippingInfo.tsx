@@ -1,5 +1,5 @@
 import Input from "antd/lib/input";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import Col from "antd/lib/col";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
@@ -12,6 +12,7 @@ import { isVietnamesePhoneNumber, openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import { changeCartToOrder, getCartByUserId } from "store/cart.slice";
 import { Dispatch } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
 interface InitFormUser {
   name: string;
@@ -23,16 +24,11 @@ const { Title } = Typography;
 const ShippingInfo = () => {
   const inputRef = useRef<any>();
   const dispatch: Dispatch<any> = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.users);
   const { totalPrice, cartsCheckOut } = useSelector(
     (state: RootState) => state.carts
   );
-  const [disable, setDisable] = useState(true);
-  useEffect(() => {
-    if (!user.id) {
-      setDisable(false);
-    }
-  }, [user.id]);
   const initFormValue: InitFormUser = useMemo(() => {
     if (user.id) {
       return {
@@ -97,6 +93,7 @@ const ShippingInfo = () => {
       dispatch(changeCartToOrder());
       dispatch(getCartByUserId(id));
       openNotification("success", "Order Sucess");
+      navigate("/");
     }
   };
 
@@ -112,7 +109,6 @@ const ShippingInfo = () => {
             labelAlign="left"
             initialValues={initFormValue}
             onFinish={handleSubmit}
-            disabled={disable}
           >
             <Form.Item
               label="Name"

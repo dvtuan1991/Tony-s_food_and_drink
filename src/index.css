@@ -3,11 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    background-color: rgb(251, 251, 251);
-  }
   .common-button {
-    border-color: #ea2251;
     color: #000;
   }
 

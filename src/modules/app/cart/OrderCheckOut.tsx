@@ -8,7 +8,7 @@ import { RootState } from "store";
 const OrderCheckOut = () => {
   const { cartsCheckOut } = useSelector((state: RootState) => state.carts);
   if (cartsCheckOut.length === 0) {
-   return <Navigate to={"/cart"} />;
+    return <Navigate to={"/cart"} />;
   }
   return (
     <div>
