@@ -41,6 +41,7 @@ export const createCart = createAsyncThunk(
     });
     if (responseAddOrder.ok) {
       const result = await responseAddOrder.json();
+      console.log(result);
       return result;
     }
   }

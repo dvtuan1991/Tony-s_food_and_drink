@@ -2,13 +2,14 @@ import { FC, useCallback, useEffect, useState } from "react";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import Typography from "antd/lib/typography";
+import Space from "antd/lib/space";
 
 import ProductImage from "components/Product/ProductImage";
 import { IProduct } from "types/product.model";
 import { ICart } from "types/cart.model";
-import ModalWriteReview from "components/Modal/ModalWriteReview";
-import { fetchApi } from "helpers/function";
+import { changePriceOutput, fetchApi } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
+import styles from "./order.module.css";
 
 const { Text } = Typography;
 const OrderDetail: FC<{ cart: ICart }> = ({ cart }) => {
@@ -24,25 +25,33 @@ const OrderDetail: FC<{ cart: ICart }> = ({ cart }) => {
     getData();
   }, [getData]);
   return (
-    <div>
+    <div className={styles["order-item"]}>
       {product && (
-        <Row>
-          <Col span={8}>
-            <div>
-              <ProductImage product={product} />
-            </div>
-            <Text>{product.name}</Text>
+        <Row align="middle">
+          <Col span={12}>
+            <Space size={"large"}>
+              <div className="w-32 h-auto p-1">
+                <ProductImage product={product} />
+              </div>
+              <div className="flex flex-col">
+                <Text className="capitalize">{product.name}</Text>
+                <Text className="text-[#ea2251] font-bold">{`x ${cart.quantity}`}</Text>
+              </div>
+            </Space>
           </Col>
-          <Col span={16}>
+          <Col span={12}>
             <Row align="middle">
               <Col span={8}>
-                <Text>{cart.quantity}</Text>
-              </Col>
-              <Col span={8}>
-                <Text>{cart.price}</Text>
-              </Col>
-              <Col span={8}>
-                <ModalWriteReview product={product} quantity={cart.quantity} />
+                {product.oldPrice && product.newPrice < product.oldPrice ? (
+                  <Space size={"small"}>
+                    <Text delete>{`${changePriceOutput(
+                      product.oldPrice
+                    )}`}</Text>
+                    <Text>{`${changePriceOutput(product.newPrice)}`}</Text>
+                  </Space>
+                ) : (
+                  <Text>{changePriceOutput(product.newPrice)}</Text>
+                )}
               </Col>
             </Row>
           </Col>

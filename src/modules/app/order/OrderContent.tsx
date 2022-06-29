@@ -24,13 +24,13 @@ const OrderContent = () => {
     return <span>No thing</span>;
   }
   return (
-    <Row>
+    <Row justify="center">
       {orders.length && (
         <>
-          <Col span={24}>
-            <Title level={5}>Your Order</Title>
+          <Col span={24} >
+            <Title level={3}>Your Order</Title>
           </Col>
-          <Col span={24}>
+          <Col span={24} >
             <Row>
               <Col span={24}>
                 {orders.map((order) => (
