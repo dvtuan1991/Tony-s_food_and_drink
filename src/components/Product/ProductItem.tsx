@@ -2,14 +2,50 @@ import { FC } from "react";
 import Typography from "antd/lib/typography";
 import Col from "antd/lib/col";
 import Button from "antd/lib/button";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
 
+import { RootState } from "store";
+import { createCart } from "store/cart.slice";
+import { SERVICE_API } from "constants/configs";
 import { IProduct } from "types/product.model";
 import ProductImage from "./ProductImage";
 import styles from "./product.module.css";
 
 const { Title, Text } = Typography;
-
 const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
+  const { user } = useSelector((state: RootState) => state.users);
+  const dispatch: Dispatch<any> = useDispatch();
+  const handleClickAdd = async () => {
+    let userId: number = -1;
+    const guestId = localStorage.getItem("guestId");
+    if (user.userName) {
+      userId = user.id;
+    }
+    if (!user.userName && guestId) {
+      userId = Number(guestId);
+    }
+    if (!user.userName && !guestId) {
+      const response = await fetch(`${SERVICE_API}/user`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
+      });
+      if (response.ok) {
+        const responseId = await response.json().then((result) => result.id);
+        userId = responseId;
+        localStorage.setItem("guestId", responseId);
+      }
+    }
+    dispatch(
+      createCart({
+        userId,
+        productId: product.id,
+        price: product.newPrice,
+        isNew: true
+      })
+    );
+  };
   return (
     <Col span={8}>
       <div className={styles["product-item"]}>
@@ -23,7 +59,8 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
         <div className={styles["product-item_footer"]}>
           <Button
             block
-            className="bg-[#ea2251] rounded hover:bg-[#ea2251] hover:text-white text-white"
+            className="bg-[#ea2251] rounded hover:bg-[#ea2251] hover:text-white text-white focus:bg-[#ea2251] focus:text-white"
+            onClick={handleClickAdd}
           >
             Add To Cart
           </Button>

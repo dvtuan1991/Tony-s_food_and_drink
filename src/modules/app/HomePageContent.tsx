@@ -4,7 +4,8 @@ import CategoryCheckBox from "components/CheckBox/CategoryCheckBox";
 import ProductContainer from "components/Product/ProductContainer";
 
 import SearchBox from "components/SearchBox/SearchBox";
-import MainHeading from "../components/Main/MainHeading";
+import ProductSlide from "components/Slide/ProductSlide";
+import MainHeading from "../../components/Main/MainHeading";
 
 const HomePageContent = () => {
   return (
@@ -14,7 +15,10 @@ const HomePageContent = () => {
       <div className="mt-12">
         <Row gutter={8}>
           <Col span={6}>
-            <CategoryCheckBox />
+            <div className="pr-1">
+              <CategoryCheckBox />
+              <ProductSlide />
+            </div>
           </Col>
           <Col span={18}>
             <ProductContainer />

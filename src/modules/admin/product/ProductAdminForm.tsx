@@ -43,9 +43,6 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
     inputUploadRef.current && inputUploadRef.current.click();
   };
 
-  const handleClickCancel = () => {
-    form.setFieldsValue(initFormValue);
-  };
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target?.files;
     if (files) {
@@ -86,6 +83,10 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
       };
     }
   }, [product, isCreate]);
+
+  const handleClickCancel = () => {
+    form.setFieldsValue(initFormValue);
+  };
 
   const handleClickSubmitForm = async (value: FormProduct) => {
     const formData = new FormData();
@@ -136,136 +137,136 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
 
   return (
     <div>
-      {initFormValue && (
-        <Form
-          labelCol={{ span: "auto" }}
-          wrapperCol={{ span: 24 }}
-          layout="vertical"
-          validateMessages={defaultValidateMessages}
-          initialValues={initFormValue}
-          form={form}
-          onFinish={handleClickSubmitForm}
-        >
-          <div className="p-5">
-            <Row justify="center">
-              <Col span={20}>
-                <Row justify="center" gutter={16}>
-                  <Col span={8}>
-                    <div
-                      className={styles["image-box"]}
-                      onClick={handleClickImage}
-                    >
-                      {isCreate ? (
-                        file ? (
-                          <img src={URL.createObjectURL(file)} alt="product" />
-                        ) : (
-                          <></>
-                        )
+      <Form
+        labelCol={{ span: "auto" }}
+        wrapperCol={{ span: 24 }}
+        layout="vertical"
+        validateMessages={defaultValidateMessages}
+        initialValues={initFormValue}
+        form={form}
+        onFinish={handleClickSubmitForm}
+      >
+        <div className="p-5">
+          <Row justify="center">
+            <Col span={20}>
+              <Row justify="center" gutter={16}>
+                <Col span={8}>
+                  <div
+                    className={styles["image-box"]}
+                    onClick={handleClickImage}
+                  >
+                    {isCreate ? (
+                      file ? (
+                        <img src={URL.createObjectURL(file)} alt="product" />
                       ) : (
-                        <img
-                          src={
-                            file
-                              ? URL.createObjectURL(file)
-                              : `${SERVICE_API}/${product?.thumbnail}`
-                          }
-                          alt="product"
-                          className="w-full block h-[170px]"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      hidden
-                      ref={inputUploadRef}
-                      onChange={handleFileChange}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <div className={`${styles["input-box"]} mb-4`}>
-                      <Form.Item
-                        name="name"
-                        label="Food Name"
-                        rules={[{ required: true, max: 50 }]}
-                      >
-                        <Input placeholder="Food Name" />
-                      </Form.Item>
-                      <SelectCategory
-                        label={"Category Name"}
-                        selectName={"categoryId"}
-                        rules={[{ required: true}]}
+                        <></>
+                      )
+                    ) : (
+                      <img
+                        src={
+                          file
+                            ? URL.createObjectURL(file)
+                            : `${SERVICE_API}/${product?.thumbnail}`
+                        }
+                        alt="product"
+                        className="w-full block h-[170px]"
                       />
-                      <Form.Item name="priority" label="Priority">
-                        <Input />
-                      </Form.Item>
-                    </div>
-                  </Col>
-                  <Col span={6}>
-                    <div className={styles["input-box"]}>
-                      <Form.Item
-                        name="newPrice"
-                        label="New Price"
-                        rules={[
-                          { required: true, min: 1, max: 100, type: "number" }
-                        ]}
-                      >
-                        <InputNumber addonAfter="$" min={1} max={100} />
-                      </Form.Item>
-                      <Form.Item
-                        name="oldPrice"
-                        label="Old Price"
-                        rules={[{ min: 1, max: 100, type: "number" }]}
-                      >
-                        <InputNumber addonAfter="$" min={1} max={100} />
-                      </Form.Item>
-                      <Form.Item
-                        name="isStock"
-                        label="Is Stock"
-                        className="mb-3"
-                      >
-                        <Radio.Group options={["yes", "no"]} />
-                      </Form.Item>
-                    </div>
-                  </Col>
-                  <Col span={14}>
-                    <div className={styles["input-box"]}>
-                      <Form.Item
-                        name="decription"
-                        label="Decription"
-                        rules={[{ required: true }]}
-                      >
-                        <TextArea rows={6} />
-                      </Form.Item>
-                    </div>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    hidden
+                    ref={inputUploadRef}
+                    onChange={handleFileChange}
+                  />
+                </Col>
+                <Col span={12}>
+                  <div className={`${styles["input-box"]} mb-4`}>
                     <Form.Item
-                      wrapperCol={{ offset: 8, span: 16 }}
-                      className="mt-5"
+                      name="name"
+                      label="Food Name"
+                      rules={[{ required: true, max: 50 }]}
                     >
-                      <Space>
-                        <Button
-                          type="primary"
-                          htmlType="submit"
-                          className="text-black"
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          className="text-orange-900"
-                          danger
-                          onClick={handleClickCancel}
-                        >
-                          Cancel
-                        </Button>
-                      </Space>
+                      <Input placeholder="Food Name" />
                     </Form.Item>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </div>
-        </Form>
-      )}
+                    <SelectCategory
+                      label={"Category Name"}
+                      selectName={"categoryId"}
+                      rules={[{ required: true }]}
+                    />
+                    <Form.Item name="priority" label="Priority">
+                      <Input />
+                    </Form.Item>
+                  </div>
+                </Col>
+                <Col span={6}>
+                  <div className={styles["input-box"]}>
+                    <Form.Item
+                      name="newPrice"
+                      label="New Price"
+                      rules={[
+                        { required: true, min: 1, max: 100, type: "number" }
+                      ]}
+                    >
+                      <InputNumber addonAfter="$" min={1} max={100} />
+                    </Form.Item>
+                    <Form.Item
+                      name="oldPrice"
+                      label="Old Price"
+                      rules={[{ min: 1, max: 100, type: "number" }]}
+                    >
+                      <InputNumber addonAfter="$" min={1} max={100} />
+                    </Form.Item>
+                    <Form.Item name="isStock" label="Is Stock" className="mb-3">
+                      <Radio.Group options={["yes", "no"]} />
+                    </Form.Item>
+                  </div>
+                </Col>
+                <Col span={14}>
+                  <div className={styles["input-box"]}>
+                    <Form.Item
+                      name="decription"
+                      label="Decription"
+                      rules={[{ required: true }]}
+                    >
+                      <TextArea rows={6} />
+                    </Form.Item>
+                  </div>
+                  <Form.Item
+                    wrapperCol={{ offset: 8, span: 16 }}
+                    className="mt-5"
+                  >
+                    <Space>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="text-black"
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        className="text-orange-900"
+                        danger
+                        onClick={handleClickCancel}
+                      >
+                        Cancel
+                      </Button>
+                    </Space>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </div>
+      </Form>
+      {/* )} */}
     </div>
   );
+};
+
+ProductAdminForm.defaultProps = {
+  product: {} as IProduct,
+  isCreate: false
 };
 
 export default ProductAdminForm;

@@ -2,6 +2,15 @@
   .wrapper {
     width: 1240px;
     margin: 0 auto;
-    background-color: rgb(251, 251, 251);
   }
+}
+
+.wrapper {
+  padding: 0 16px;
+  background-color: rgb(255, 255, 255);
+}
+
+.main-admin {
+  margin-left: 250px;
+  background-color: rgb(251, 251, 251);
 }

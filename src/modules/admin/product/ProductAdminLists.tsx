@@ -3,10 +3,10 @@ import Pagination from "antd/lib/pagination";
 import { useNavigate } from "react-router-dom";
 
 import { SERVICE_API, PAGE_SIZE } from "constants/configs";
+import { IProduct } from "types/product.model";
 import { fetchApi } from "helpers/function";
 import ButtonAddNew from "components/Button/ButtonAddNew";
 import ProductTable from "./ProductTable";
-import { IProduct } from "types/product.model";
 
 const ProductAdminLists = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -16,19 +16,8 @@ const ProductAdminLists = () => {
   const handleClickPagination = (index: number) => {
     setPageIndex(index);
   };
-  const handleClickDelete = async (id: number) => {
-    const responseDelete = await fetch(`${SERVICE_API}/product/${id}/delete`, {
-      method: "DELETE",
-    });
-    if (responseDelete.ok) {
-      getData(pageIndex);
-    }
-  };
 
-  const handleClickAdd = () => {
-    navigate("/admin/product/create");
-  };
-
+  
   const getData = useCallback(
     async (index: number) => {
       const fetchData: { listProduct: IProduct[]; totalProduct: number } =
@@ -48,6 +37,20 @@ const ProductAdminLists = () => {
     },
     [pageIndex]
   );
+  
+  const handleClickDelete = async (id: number | string) => {
+    const responseDelete = await fetch(`${SERVICE_API}/product/${id}/delete`, {
+      method: "DELETE",
+    });
+    if (responseDelete.ok) {
+      getData(pageIndex);
+    }
+  };
+
+  const handleClickAdd = () => {
+    navigate("/admin/product/create");
+  };
+
 
   useEffect(() => {
     getData(pageIndex);

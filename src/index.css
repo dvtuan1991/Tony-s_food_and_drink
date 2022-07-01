@@ -2,3 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .product-content {
+    padding-top: 7rem;
+    box-shadow: 0px 6px 0px rgb(0 0 0 / 5%) inset;
+  }
+
+  .common-button {
+    color: #000;
+  }
+
+  .common-button:hover {
+    background-color: #ea2251;
+    color: #fff;
+    border-color: #ea2251;
+  }
+}

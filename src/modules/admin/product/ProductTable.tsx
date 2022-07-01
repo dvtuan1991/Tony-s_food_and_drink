@@ -9,12 +9,13 @@ import type { ColumnsType } from "antd/lib/table";
 import ActionButton from "components/Button/ActionButton";
 import { IProduct } from "types/product.model";
 import { setLimitTring } from "helpers/function";
+import PopConfirmDelete from "components/Button/PopConfirmDelete";
 
 export type Breakpoint = "xxl" | "xl" | "lg" | "md" | "sm" | "xs";
 
 const ProductTable: FC<{
   data: IProduct[];
-  handleClickDelete: (id: number) => void;
+  handleClickDelete: (id: number | string) => void;
 }> = ({ data, handleClickDelete }) => {
   const navigate = useNavigate();
   const handleClickEdit = (id: number) => {
@@ -23,14 +24,14 @@ const ProductTable: FC<{
   const colums: ColumnsType<IProduct> = [
     {
       dataIndex: "ordinalNum",
-      align: "center" as "center",
+      align: "center" as "center"
     },
     {
       title: "Name",
       dataIndex: "name",
       align: "center" as "center",
       width: "10%",
-      key: "name",
+      key: "name"
     },
     {
       title: "Decription",
@@ -39,25 +40,25 @@ const ProductTable: FC<{
       width: "40%",
       responsive: ["lg"] as Breakpoint[],
       align: "center" as "center",
-      render: (text: string) => <span>{setLimitTring(text, 120)}</span>,
+      render: (text: string) => <span>{setLimitTring(text, 120)}</span>
     },
     {
       title: "Category",
       dataIndex: "categoryName",
       align: "center" as "center",
-      key: "categoryName",
+      key: "categoryName"
     },
     {
       title: "Status",
       dataIndex: "isStock",
       key: "isStock",
-      render: (isStock: boolean) => <span>{isStock ? "Yes" : "No"}</span>,
+      render: (isStock: boolean) => <span>{isStock ? "Yes" : "No"}</span>
     },
     {
       title: "Price",
       dataIndex: "newPrice",
       key: "Price",
-      render: (text: string) => <span>{`${text} $`}</span>,
+      render: (text: string) => <span>{`${text} $`}</span>
     },
     {
       title: "Action",
@@ -71,18 +72,17 @@ const ProductTable: FC<{
             action={handleClickEdit}
             className="text-cyan-700"
           />
-          <ActionButton
-            icon={<DeleteOutlined />}
+          <PopConfirmDelete
+            handleConfirmDelete={handleClickDelete}
+            title={"Are you sure to delete this product?"}
             id={record.id}
-            action={handleClickDelete}
-            className="text-red-700"
           />
         </Space>
-      ),
-    },
+      )
+    }
   ];
   return (
-    <div className="px-5">
+    <div className="py-5">
       <Table
         dataSource={data}
         pagination={false}

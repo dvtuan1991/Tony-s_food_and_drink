@@ -21,6 +21,7 @@
   "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks"],
   "rules": {
     "arrow-body-style": "off",
+    "no-shadow": "off",
     "prettier/prettier": [
       "warn",
       {

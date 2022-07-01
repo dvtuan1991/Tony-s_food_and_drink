@@ -1,0 +1,22 @@
+.card {
+  padding: 10px 15px;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.card.card-heading {
+  border-radius: 5px 5px 0 0;
+  border-top: 1px solid #ccc;
+  background: #ccc;
+}
+
+
+
+.card div h5 {
+  margin-bottom: 0;
+}
+
+.card.card-footer {
+  border-radius: 0 0 5px 5px;
+}
