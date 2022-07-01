@@ -79,6 +79,7 @@ const ShippingInfo = () => {
                 "Content-Type": "application/json"
               },
               body: JSON.stringify({
+                ...cart,
                 orderListId: orderInfor.id,
                 isNew: false,
                 isConfirm: true

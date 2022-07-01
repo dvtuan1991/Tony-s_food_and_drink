@@ -3,12 +3,12 @@ import Row from "antd/lib/row";
 import Button from "antd/lib/button";
 import Typography from "antd/lib/typography";
 import { SERVICE_API } from "constants/configs";
-import { changePriceOutput, fetchApi, getTotalPrice } from "helpers/function";
 import { useDispatch } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
 import { FC, useCallback, useEffect, useState } from "react";
 
 import { updateStatusOrder } from "store/order.slice";
+import { AppDispatch } from "store";
+import { changePriceOutput, fetchApi, getTotalPrice } from "helpers/function";
 import { ICart } from "types/cart.model";
 import { IOrder } from "types/order.model";
 import OrderDetail from "./OrderDetail";
@@ -16,13 +16,30 @@ import styles from "./order.module.css";
 
 const { Text } = Typography;
 const OrderItem: FC<{ order: IOrder }> = ({ order }) => {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [listCart, setListCart] = useState<ICart[]>();
   const [status, setStatus] = useState<string>();
-  const [className, setClassname] = useState<string>();
-
+  const [className, setClassName] = useState<string>();
   const handleClickReceiced = async () => {
-    dispatch(updateStatusOrder({ id: order.id, status: "complete" }));
+    const data = { id: order.id, isComplete: true, isCancel: false };
+    const result = await dispatch(updateStatusOrder(data))
+      .unwrap()
+      .then((payload) => payload);
+    const newListCart = listCart?.map((item) => ({
+      ...item,
+      isSuccess: result.isComplete
+    }));
+    setListCart(newListCart);
+  };
+
+  const handleClickConfirmModal = (cartId: string) => {
+    const newListCart = listCart?.map((cart) => {
+      if (cart.id === cartId) {
+        return { ...cart, isReview: true };
+      }
+      return { ...cart };
+    });
+    setListCart(newListCart);
   };
 
   const getData = useCallback(async () => {
@@ -35,14 +52,14 @@ const OrderItem: FC<{ order: IOrder }> = ({ order }) => {
   useEffect(() => {
     if (!order.isComplete) {
       setStatus("Shipping");
-      setClassname("text-[#f5b421]");
+      setClassName("text-[#f5b421]");
     }
     if (order.isComplete) {
       setStatus("Success");
-      setClassname("text-[#26aa99]");
+      setClassName("text-[#26aa99]");
     }
     getData();
-  }, [getData, order]);
+  }, [getData, order.isComplete]);
   return (
     <div className={styles["order-content"]}>
       {listCart && (
@@ -78,7 +95,12 @@ const OrderItem: FC<{ order: IOrder }> = ({ order }) => {
           </Col>
           <Col span={24}>
             {listCart.map((cart) => (
-              <OrderDetail key={cart.id} cart={cart} />
+              <OrderDetail
+                key={cart.id}
+                cart={cart}
+                userName={order.userName}
+                handleClickConfirmModal={handleClickConfirmModal}
+              />
             ))}
           </Col>
           <Col span={24}>

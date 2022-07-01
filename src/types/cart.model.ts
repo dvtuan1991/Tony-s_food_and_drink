@@ -10,4 +10,5 @@ export interface ICart {
   price: number;
   productName?: string;
   orderListId?: string;
+  isReview?: boolean;
 }

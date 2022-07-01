@@ -1,4 +1,5 @@
 export const PATH_APP_HOME = "/";
+export const PATH_APP_PRODUCT = "/product/:id";
 export const PATH_APP_CART = "/cart";
 export const PATH_APP_CHECK_OUT = "/checkout";
 export const PATH_APP_ORDER = "/order";

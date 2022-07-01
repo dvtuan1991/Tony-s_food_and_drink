@@ -4,7 +4,7 @@ import { Dispatch, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Typography from "antd/lib/typography";
-import { getOrderList } from "store/order.slice";
+import { getOrderList, updateStatusOrder } from "store/order.slice";
 import { RootState } from "store";
 import OrderItem from "./OrderItem";
 
@@ -27,14 +27,17 @@ const OrderContent = () => {
     <Row justify="center">
       {orders.length && (
         <>
-          <Col span={24} >
+          <Col span={24}>
             <Title level={3}>Your Order</Title>
           </Col>
-          <Col span={24} >
+          <Col span={24}>
             <Row>
               <Col span={24}>
                 {orders.map((order) => (
-                  <OrderItem order={order} key={order.id} />
+                  <OrderItem
+                    order={order}
+                    key={order.id}
+                  />
                 ))}
               </Col>
             </Row>

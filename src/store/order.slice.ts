@@ -24,25 +24,38 @@ export const getOrderList = createAsyncThunk(
 
 export const updateStatusOrder = createAsyncThunk(
   "order/updateStatusOrder",
-  async ({ id, status }: { id: string; status: string }) => {
-    let body = {};
-    if (status === "complete") {
-      body = { isComplete: true };
+  async (data: { id: string; isComplete: boolean; isCancel: boolean }) => {
+    const { id, ...body } = data;
+    const responseUpdateOrder = await fetch(
+      `${SERVICE_API}/orderlist/${id}/update`,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      }
+    );
+    if (responseUpdateOrder.ok) {
+      const responseUpdateCart = await fetch(
+        `${SERVICE_API}/order/${id}/byorderlist`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ isSuccess: true })
+        }
+      );
+      return data;
     }
-    if (status === "cancel") {
-      body = { isCancel: true };
-    }
-    const response = await fetch(`${SERVICE_API}/orderlist/${id}/update`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-    });
-    if (response.ok) {
-      return response.json();
-    }
+    return {
+      id: "",
+      isComplete: false,
+      isCancel: false
+    };
   }
 );
 
@@ -68,14 +81,25 @@ const orderSlice = createSlice({
       })
       .addCase(
         updateStatusOrder.fulfilled,
-        (state, action: PayloadAction<IOrder>) => {
+        (
+          state,
+          action: PayloadAction<{
+            id: string;
+            isComplete: boolean;
+            isCancel: boolean;
+          }>
+        ) => {
           const findIndex = state.orders.findIndex(
-            (order) => order.id === action.payload.id
+            (order) => order.id === action.payload?.id
           );
-          state.orders[findIndex] = action.payload;
+          state.orders[findIndex].isComplete = action.payload.isComplete;
+          state.orders[findIndex].isCancel = action.payload.isCancel;
           state.isOrderLoading = false;
         }
-      );
+      )
+      .addCase(updateStatusOrder.rejected, (state) => {
+        state.isOrderLoading = false;
+      });
   }
 });
 

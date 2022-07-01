@@ -7,4 +7,6 @@ export interface IOrder {
   createAt: number;
   totalPrice: number;
   isComplete: boolean;
+  isCancel?: boolean;
+  ordinalNum?: number;
 }

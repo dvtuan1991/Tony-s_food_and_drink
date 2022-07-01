@@ -5,7 +5,7 @@ import { IProduct } from "../../types/product.model";
 
 const ProductImage: React.FC<{ product: IProduct }> = ({ product }) => {
   return (
-    <Link to={`product/:${product.id}`}>
+    <Link to={`product/${product.id}`}>
       <img
         src={`${SERVICE_API}/${product.thumbnail}`}
         alt={product.name}

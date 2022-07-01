@@ -4,6 +4,7 @@ import Row from "antd/lib/row";
 import Typography from "antd/lib/typography";
 import Space from "antd/lib/space";
 
+import ModalWriteReview from "components/Modal/ModalWriteReview";
 import ProductImage from "components/Product/ProductImage";
 import { IProduct } from "types/product.model";
 import { ICart } from "types/cart.model";
@@ -12,8 +13,14 @@ import { SERVICE_API } from "constants/configs";
 import styles from "./order.module.css";
 
 const { Text } = Typography;
-const OrderDetail: FC<{ cart: ICart }> = ({ cart }) => {
+const OrderDetail: FC<{ cart: ICart; userName: string, handleClickConfirmModal: Function }> = ({
+  cart,
+  userName,
+  handleClickConfirmModal
+}) => {
   const [product, setProduct] = useState<IProduct>();
+
+
   const getData = useCallback(async () => {
     const getProduct = await fetchApi(
       `${SERVICE_API}/product/${cart.productId}`
@@ -53,6 +60,14 @@ const OrderDetail: FC<{ cart: ICart }> = ({ cart }) => {
                   <Text>{changePriceOutput(product.newPrice)}</Text>
                 )}
               </Col>
+              {cart.isSuccess && !cart.isReview && (
+                <ModalWriteReview
+                  product={product}
+                  userName={userName}
+                  cartId={cart.id}
+                  action={handleClickConfirmModal}
+                />
+              )}
             </Row>
           </Col>
         </Row>
