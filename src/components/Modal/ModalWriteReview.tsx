@@ -1,3 +1,4 @@
+import { ChangeEvent, FC, useState } from "react";
 import Button from "antd/lib/button";
 import Checkbox, { CheckboxChangeEvent } from "antd/lib/checkbox/Checkbox";
 import Col from "antd/lib/col";
@@ -6,10 +7,11 @@ import Modal from "antd/lib/modal";
 import Rate from "antd/lib/rate";
 import Row from "antd/lib/row";
 import Typography from "antd/lib/typography";
-import { ChangeEvent, FC, useState } from "react";
+import { useSelector } from "react-redux";
 
 import useWindowDimensions from "hooks/useWindowSize";
 import { SERVICE_API } from "constants/configs";
+import { RootState } from "store";
 import { openNotification } from "helpers/function";
 import { IProduct } from "types/product.model";
 import ProductImage from "components/Product/ProductImage";
@@ -23,6 +25,7 @@ const ModalWriteReview: FC<{
   cartId: string;
   action: Function;
 }> = ({ product, userName, cartId, action }) => {
+  const { user } = useSelector((state: RootState) => state.users);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rateValue, setRateValue] = useState<number>(5);
   const [comment, setComment] = useState<string>("");
@@ -37,9 +40,16 @@ const ModalWriteReview: FC<{
   };
 
   const handleClickOk = async () => {
+    console.log(userName);
+    console.log(user?.userName);
+    const guestId = localStorage.getItem("guestId");
+    const userInfo =
+     ( user.id || user.id === 0)
+        ? { userId: user.id, userName: user.userName, userAvatar: user.avatar }
+        : { userId: guestId, userName };
     const data = {
+      ...userInfo,
       productId: product.id,
-      userName,
       rating: rateValue,
       comment: comment.trim(),
       isAnonymous: isCheck

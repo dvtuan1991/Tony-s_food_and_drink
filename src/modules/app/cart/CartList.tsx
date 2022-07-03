@@ -2,46 +2,67 @@ import Typography from "antd/lib/typography";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
-import { Checkbox } from "antd";
+import Checkbox from "antd/lib/checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "antd/lib/button";
 
-import { RootState } from "store";
+import { AppDispatch, RootState } from "store";
 import {
   changePriceOutput,
   getTotalPrice,
   openNotification
 } from "helpers/function";
+import { PATH_APP_CHECK_OUT } from "routes/routes.paths";
 import { setCartCheckOut } from "store/cart.slice";
 import CartItem from "./CartItem";
 
 const { Title, Text } = Typography;
 
 const CartList = () => {
-  const { carts, isCartLoading, cartsCheckOut } = useSelector(
+  const { carts, cartsCheckOut } = useSelector(
     (state: RootState) => state.carts
   );
-  const [isCheck, setIsCheck] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const handleChangeCheckbox = (checkedValues: CheckboxValueType[]) => {
-    if (checkedValues.length > 0) {
-      setIsCheck(true);
-    }
-    if (checkedValues.length < 0) {
-      setIsCheck(false);
-    }
+    setCheckedList(checkedValues);
     dispatch(setCartCheckOut(checkedValues));
   };
 
   const handleClickCheckOut = () => {
-    if (!isCheck) {
+    if (checkedList.length === 0) {
       openNotification("warning", "You forgot choose food");
       return null;
     }
-    !isCartLoading && navigate("/checkout");
+    dispatch(setCartCheckOut(checkedList));
+    navigate(`${PATH_APP_CHECK_OUT}`);
   };
+
+  if (carts.length === 0) {
+    return (
+      <div className="mt-5">
+        <div className="mb-5">
+          <Title level={3}>
+            Choose Your <span className="text-[#ea2251]">Food</span> :
+          </Title>
+        </div>
+        <div className="p-5 border border-solid border-t-4 border-t-[#ea2251] rounded-t">
+          <Text>Your cart is currently empty.</Text>
+        </div>
+        <Button
+          className="mt-5 bg-[#ea2251] rounded-[5px]"
+          type="primary"
+          size="large"
+          onClick={() => navigate("/")}
+        >
+          Return My Shop
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="">

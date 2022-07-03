@@ -1,3 +1,18 @@
+export enum SortOrderType {
+  DEFAULT = "none",
+  NEWEST = "new",
+  LASTEST = "last",
+  ASCENT = "ascent",
+  DECENT = "decent"
+}
+
+export enum FilterOrderType {
+  DEFAULT = "none",
+  CANCEL = "cancel",
+  COMPLETE = "complete",
+  SHIPPING = "shipping"
+}
+
 export interface IOrder {
   id: string;
   userId: number;

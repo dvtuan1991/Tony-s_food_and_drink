@@ -2,23 +2,29 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { SERVICE_API } from "constants/configs";
 import { fetchApi } from "helpers/function";
-import { IOrder } from "types/order.model";
+import { FilterOrderType, IOrder, SortOrderType } from "types/order.model";
 
 interface InitOrderState {
   orders: IOrder[];
+  sortType: string;
+  filter: string;
+  totalLeng: number;
   isOrderLoading: boolean;
 }
 
 const initOrderState: InitOrderState = {
   orders: [],
+  sortType: SortOrderType.DEFAULT,
+  filter: FilterOrderType.DEFAULT,
+  totalLeng: 0,
   isOrderLoading: false
 };
 
 export const getOrderList = createAsyncThunk(
   "order/getOrderList",
-  async (userId: number) => {
-    const getListOrder = await fetchApi(`${SERVICE_API}/orderlist/${userId}`);
-    return getListOrder;
+  async (url: string) => {
+    const getListOrder = await fetchApi(url);
+    return { ...getListOrder };
   }
 );
 
@@ -46,7 +52,10 @@ export const updateStatusOrder = createAsyncThunk(
             Accept: "application/json",
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ isSuccess: true })
+          body: JSON.stringify({
+            isSuccess: data.isComplete,
+            isCancel: data.isCancel
+          })
         }
       );
       return data;
@@ -59,10 +68,34 @@ export const updateStatusOrder = createAsyncThunk(
   }
 );
 
+export const updateUserIdInOrder = createAsyncThunk(
+  "cart/updateUserIdInOrder",
+  async ({ userId, guestId }: { userId: number; guestId: number }) => {
+    const response = await fetch(`${SERVICE_API}/order/updateuserid`, {
+      method: "PUT",
+      body: JSON.stringify({ userId, guestId }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    });
+    if (response.ok) {
+      return response.json();
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "orders",
   initialState: initOrderState,
-  reducers: {},
+  reducers: {
+    changeSortType: (state, action) => {
+      state.sortType = action.payload;
+    },
+    changeOrderFilter: (state, action) => {
+      state.filter = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getOrderList.pending, (state) => {
@@ -70,8 +103,12 @@ const orderSlice = createSlice({
       })
       .addCase(
         getOrderList.fulfilled,
-        (state, action: PayloadAction<IOrder[]>) => {
-          state.orders = action.payload;
+        (
+          state,
+          action: PayloadAction<{ listOrder: IOrder[]; leng: number }>
+        ) => {
+          state.orders = action.payload.listOrder;
+          state.totalLeng = action.payload.leng;
           state.isOrderLoading = false;
         }
       )
@@ -99,8 +136,17 @@ const orderSlice = createSlice({
       )
       .addCase(updateStatusOrder.rejected, (state) => {
         state.isOrderLoading = false;
-      });
+      })
+
+      .addCase(
+        updateUserIdInOrder.fulfilled,
+        (state, action: PayloadAction<IOrder[]>) => {
+          state.orders = action.payload;
+          state.totalLeng = state.orders.length;
+        }
+      );
   }
 });
 
+export const { changeSortType, changeOrderFilter } = orderSlice.actions;
 export default orderSlice.reducer;

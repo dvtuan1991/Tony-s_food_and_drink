@@ -1,5 +1,9 @@
+import moment from "moment";
+
 import notification from "antd/lib/notification";
 import { ICart } from "types/cart.model";
+import { IComment } from "types/comment.model";
+import { IStatisticComment } from "types/statistic.comment.model";
 
 export const fetchApi = async (url: string) => {
   const response = await fetch(url);
@@ -39,4 +43,59 @@ export const getTotalPrice = (carts: ICart[]) => {
     return 0;
   }
   return carts.reduce((total, cart) => total + cart.price, 0);
+};
+
+export const changeDateOrderOutput = (value: number) => {
+  return `${moment(value).format(`MMMM DD, YYYY`)} at ${moment(value).format(
+    `LTS`
+  )}`;
+};
+
+export const groupBy = (objectArray: any, property: string) =>
+  objectArray.reduce((acc: any, obj: any) => {
+    const key = obj[property];
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj);
+    return acc;
+  }, {});
+
+export const groupByRatingPoint = (listComment: IComment[]) => {
+  return listComment.reduce((acc: any, curr) => {
+    const key = curr.rating;
+    if (!acc[key]) {
+      acc[key] = 0;
+    }
+    acc[key] += 1;
+    return acc;
+  }, {});
+};
+
+export const handleStaticResult = (data: {
+  leng: number;
+  statistic: { ratingPoint: number; total: number }[];
+}) => {
+  data.statistic.sort((a, b) => b.ratingPoint - a.ratingPoint);
+  const result = data.statistic.map((item) => {
+    if (item.total > 0) {
+      return {
+        ...item,
+        percent: Number(((item.total / data.leng) * 100).toFixed(0))
+      };
+    }
+    return {
+      ...item,
+      percent: 0
+    };
+  });
+  return result;
+};
+
+export const getAvgPoint = (total: number, listStatic: IStatisticComment[]) => {
+  const totalPoint = listStatic.reduce(
+    (total, curr) => total + curr.ratingPoint * curr.total,
+    0
+  );
+  return (totalPoint * 5) / (total * 5);
 };

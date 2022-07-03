@@ -42,6 +42,7 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
         userId,
         productId: product.id,
         price: product.newPrice,
+        quantity: 1,
         isNew: true
       })
     );
