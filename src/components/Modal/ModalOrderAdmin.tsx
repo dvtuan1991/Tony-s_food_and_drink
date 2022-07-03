@@ -2,8 +2,11 @@ import { FC, useState } from "react";
 import EditOutlined from "@ant-design/icons/EditOutlined";
 import Modal from "antd/lib/modal";
 import Select from "antd/lib/select";
+import { AppDispatch } from "store";
+import { useDispatch } from "react-redux";
 
 import ActionButton from "components/Button/ActionButton";
+import { updateStatusOrder } from "store/order.slice";
 
 const selectList = [
   {
@@ -18,23 +21,65 @@ const selectList = [
   },
   {
     id: 2,
-    value: "Complete",
+    value: "complete",
     title: "Complete"
   }
 ];
 
 const { Option } = Select;
-const ModalOrderAdmin: FC<{orderId: string ;status: string}> = ({orderId, status}) => {
+const ModalOrderAdmin: FC<{ orderId: string; status: string }> = ({
+  orderId,
+  status
+}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectStatus, setSelectStatus] = useState<string>(
+    status.toLocaleLowerCase()
+  );
+  const dispatch = useDispatch<AppDispatch>();
   const handleClickOpen = () => {
     setIsModalVisible(true);
+  };
+
+  const handleChangeSelect = (value: string) => {
+    setSelectStatus(value);
+  };
+
+  const handleChangeConfirm = async () => {
+    if (selectStatus === status) {
+      setIsModalVisible(true);
+    }
+    let data = { isComplete: false, isCancel: false };
+    switch (selectStatus) {
+      case "cancel":
+        data = { isComplete: false, isCancel: true };
+        break;
+      case "complete":
+        data = { isComplete: true, isCancel: false };
+        break;
+      default:
+        break;
+    }
+    console.log(data);
+    dispatch(updateStatusOrder({ id: orderId, ...data }))
+      .unwrap()
+      .then(() => {
+        setIsModalVisible(false);
+      });
+  };
+
+  const handleChangeCancel = () => {
+    setIsModalVisible(false);
   };
   return (
     <div>
       <ActionButton action={handleClickOpen} icon={<EditOutlined />} />
-      <Modal visible={isModalVisible}>
+      <Modal
+        visible={isModalVisible}
+        onCancel={handleChangeCancel}
+        onOk={handleChangeConfirm}
+      >
         <div>
-          <Select defaultValue={status}>
+          <Select defaultValue={selectStatus} onChange={handleChangeSelect}>
             {selectList.map((item) => (
               <Option key={item.id} label={item.title} value={item.value}>
                 {item.title}

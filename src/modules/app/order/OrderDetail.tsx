@@ -13,13 +13,12 @@ import { SERVICE_API } from "constants/configs";
 import styles from "./order.module.css";
 
 const { Text } = Typography;
-const OrderDetail: FC<{ cart: ICart; userName: string, handleClickConfirmModal: Function }> = ({
-  cart,
-  userName,
-  handleClickConfirmModal
-}) => {
+const OrderDetail: FC<{
+  cart: ICart;
+  userName: string;
+  handleClickConfirmModal: Function;
+}> = ({ cart, userName, handleClickConfirmModal }) => {
   const [product, setProduct] = useState<IProduct>();
-
 
   const getData = useCallback(async () => {
     const getProduct = await fetchApi(
@@ -37,29 +36,44 @@ const OrderDetail: FC<{ cart: ICart; userName: string, handleClickConfirmModal: 
         <Row align="middle">
           <Col span={12}>
             <Space size={"large"}>
-              <div className="w-32 h-auto p-1">
+              <div className="w-32 h-32 p-5">
                 <ProductImage product={product} />
               </div>
               <div className="flex flex-col">
-                <Text className="capitalize">{product.name}</Text>
-                <Text className="text-[#ea2251] font-bold">{`x ${cart.quantity}`}</Text>
+                <Text className="capitalize font-semibold text-lg">
+                  {product.name}
+                </Text>
+                <Row align="middle">
+                  <div>
+                    <Text className="">Quantity: </Text>
+                    <Text className="text-[#ea2251] font-bold">
+                      {cart.quantity}
+                    </Text>
+                  </div>
+                  <Text className="ml-3">x</Text>
+                  <div className="ml-3">
+                    {product.oldPrice && product.newPrice < product.oldPrice ? (
+                      <Space size={"small"}>
+                        <Text
+                          delete
+                          className="text-xs text-slate-300"
+                        >{`${changePriceOutput(product.oldPrice)}`}</Text>
+                        <Text className="text-lg text-[#ea2251]">{`${changePriceOutput(
+                          product.newPrice
+                        )}`}</Text>
+                      </Space>
+                    ) : (
+                      <Text className="text-lg text-[#ea2251]">
+                        {changePriceOutput(product.newPrice)}
+                      </Text>
+                    )}
+                  </div>
+                </Row>
               </div>
             </Space>
           </Col>
           <Col span={12}>
-            <Row align="middle">
-              <Col span={8}>
-                {product.oldPrice && product.newPrice < product.oldPrice ? (
-                  <Space size={"small"}>
-                    <Text delete>{`${changePriceOutput(
-                      product.oldPrice
-                    )}`}</Text>
-                    <Text>{`${changePriceOutput(product.newPrice)}`}</Text>
-                  </Space>
-                ) : (
-                  <Text>{changePriceOutput(product.newPrice)}</Text>
-                )}
-              </Col>
+            <Row align="middle" justify="end" className="pr-5">
               {cart.isSuccess && !cart.isReview && (
                 <ModalWriteReview
                   product={product}

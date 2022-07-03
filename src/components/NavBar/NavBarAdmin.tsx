@@ -1,7 +1,7 @@
 import Menu from "antd/lib/menu";
 import { Link } from "react-router-dom";
-
 import { ItemType } from "antd/lib/menu/hooks/useItems";
+
 import styles from "./navbar.module.css";
 
 const NavBarAdmin = () => {

@@ -4,11 +4,12 @@ import Col from "antd/lib/col";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Row from "antd/lib/row";
-import { Dispatch } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
+import { AppDispatch } from "store";
 import { SERVICE_API } from "constants/configs";
+import { updateUserIdInOrder } from "store/order.slice";
 import { openNotification } from "helpers/function";
 import { addUser } from "store/user.slice";
 import { updateUserIdInCart } from "store/cart.slice";
@@ -16,7 +17,7 @@ import { IUser } from "types/user.model";
 import styles from "../app.module.css";
 
 const Login = () => {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const guestId = localStorage.getItem("guestId");
   const handleClickSubmit = async (value: {
@@ -44,6 +45,9 @@ const Login = () => {
       if (guestId) {
         dispatch(
           updateUserIdInCart({ userId: user.id, guestId: Number(guestId) })
+        );
+        dispatch(
+          updateUserIdInOrder({ userId: user.id, guestId: Number(guestId) })
         );
         localStorage.removeItem("guestId");
       }

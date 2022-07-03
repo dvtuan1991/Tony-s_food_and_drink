@@ -1,5 +1,7 @@
+import OrderAdminLists from "modules/admin/order/OrderAdminLists";
+
 const AdminOrders = () => {
-  return <div>AdminOrders</div>;
+  return <OrderAdminLists />;
 };
 
 export default AdminOrders;

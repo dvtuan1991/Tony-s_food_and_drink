@@ -1,23 +1,11 @@
 import Menu from "antd/lib/menu";
+import { ItemType } from "antd/lib/menu/hooks/useItems";
+import { Link } from "react-router-dom";
 
 const NavbarCustomer = () => {
-  const items = [
-    {
-      label: "Home",
-      key: "home"
-    },
-    {
-      label: "Category",
-      key: "Category"
-    },
-    {
-      label: "Order",
-      key: "order"
-    },
-    {
-      label: "Contact Us",
-      key: "contactUs"
-    }
+  const items: ItemType[] = [
+    { label: <Link to={"/"}>Home</Link>, key: "home" },
+    { label: <Link to={"/order"}>Order</Link>, key: "order" }
   ];
   return <Menu items={items} mode="horizontal" className="border-0" />;
 };

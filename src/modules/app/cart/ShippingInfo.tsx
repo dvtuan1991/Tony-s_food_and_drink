@@ -6,13 +6,14 @@ import Row from "antd/lib/row";
 import Typography from "antd/lib/typography";
 import Button from "antd/lib/button";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Dispatch } from "@reduxjs/toolkit";
 
 import { RootState } from "store";
 import { isVietnamesePhoneNumber, openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import { changeCartToOrder, getCartByUserId } from "store/cart.slice";
-import { Dispatch } from "@reduxjs/toolkit";
-import { useNavigate } from "react-router-dom";
+import { PATH_APP_ORDER } from "routes/routes.paths";
 
 interface InitFormUser {
   name: string;
@@ -30,7 +31,7 @@ const ShippingInfo = () => {
     (state: RootState) => state.carts
   );
   const initFormValue: InitFormUser = useMemo(() => {
-    if (user.id) {
+    if (user.id || user.id === 0) {
       return {
         name: user.name,
         address: user.address,
@@ -94,7 +95,7 @@ const ShippingInfo = () => {
       dispatch(changeCartToOrder());
       dispatch(getCartByUserId(id));
       openNotification("success", "Order Sucess");
-      navigate("/");
+      navigate(`${PATH_APP_ORDER}`);
     }
   };
 

@@ -1,5 +1,5 @@
 import Container from "components/Layout/Container";
-import "./App.css";
+import "./App.less";
 
 function App() {
   return <Container />;

@@ -8,7 +8,12 @@ import { FC, useCallback, useEffect, useState } from "react";
 
 import { updateStatusOrder } from "store/order.slice";
 import { AppDispatch } from "store";
-import { changePriceOutput, fetchApi, getTotalPrice } from "helpers/function";
+import {
+  changePriceOutput,
+  fetchApi,
+  getTotalPrice,
+  changeDateOrderOutput
+} from "helpers/function";
 import { ICart } from "types/cart.model";
 import { IOrder } from "types/order.model";
 import OrderDetail from "./OrderDetail";
@@ -63,64 +68,50 @@ const OrderItem: FC<{ order: IOrder }> = ({ order }) => {
   return (
     <div className={styles["order-content"]}>
       {listCart && (
-        <Row>
-          <Col span={24}>
-            <div className={styles["order-header"]}>
-              <Row align="middle">
-                <Col span={18}>
-                  <Row gutter={16}>
-                    <Col span={24}>
-                      <Text className="font-bold">Shipping To: </Text>
-                    </Col>
-                    <Col>
-                      <Text> Name:</Text>
-                      <Text className="capitalize ml-1">{order.userName}</Text>
-                    </Col>
-                    <Col>
-                      <Text> Phone:</Text>
-                      <Text className="ml-1">{`${order.userPhone}`}</Text>
-                    </Col>
-                    <Col className="">
-                      <Text> Address:</Text>
-                      <Text className="capitalize ml-1">{`${order.userAddress}`}</Text>
-                    </Col>
-                  </Row>
+        <div className={styles["order-box"]}>
+          <Row>
+            <Col span={24}>
+              <div className={styles["order-header"]}>
+                <Row align="middle" justify="space-between">
+                  <Col span={6}>
+                    <Text>{changeDateOrderOutput(order.createAt)}</Text>
+                  </Col>
+                  <Col span={6} className={"text-right"}>
+                    <div>
+                      <Text className="font-bold">Total:</Text>
+                      <Text className="ml-2 text-[#ea2251] text-lg">
+                        {changePriceOutput(getTotalPrice(listCart))}
+                      </Text>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+            <Col span={24}>
+              {listCart.map((cart) => (
+                <OrderDetail
+                  key={cart.id}
+                  cart={cart}
+                  userName={order.userName}
+                  handleClickConfirmModal={handleClickConfirmModal}
+                />
+              ))}
+            </Col>
+            <Col span={24}>
+              <Row className="pr-5 pb-5" align="middle" justify="end">
+                <Col className="pr-5">
+                  {!order.isComplete && (
+                    <Button onClick={handleClickReceiced}>Received</Button>
+                  )}
                 </Col>
-                <Col span={4}>
-                  <Text className="font-bold">Status: </Text>
+                <Col>
+                  <Text className="text-bold">Status:</Text>
                   <Text className={className}>{status}</Text>
                 </Col>
               </Row>
-            </div>
-          </Col>
-          <Col span={24}>
-            {listCart.map((cart) => (
-              <OrderDetail
-                key={cart.id}
-                cart={cart}
-                userName={order.userName}
-                handleClickConfirmModal={handleClickConfirmModal}
-              />
-            ))}
-          </Col>
-          <Col span={24}>
-            <Row className="pt-5" gutter={16}>
-              <Col span={6} offset={12}>
-                <div>
-                  <Text className="font-bold">Order Total:</Text>
-                  <Text className="ml-2 text-[#ea2251] text-lg">
-                    {changePriceOutput(getTotalPrice(listCart))}
-                  </Text>
-                </div>
-              </Col>
-              <Col>
-                {!order.isComplete && (
-                  <Button onClick={handleClickReceiced}>Received</Button>
-                )}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        </div>
       )}
     </div>
   );

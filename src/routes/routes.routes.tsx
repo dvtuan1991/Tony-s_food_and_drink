@@ -20,7 +20,6 @@ import {
   PATH_ADMIN_CATEGORY_DETAIL,
   PATH_ADMIN_HOME,
   PATH_ADMIN_ORDER,
-  PATH_ADMIN_ORDER_DETAIL,
   PATH_ADMIN_PRODUCT,
   PATH_ADMIN_PRODUCT_CREATE,
   PATH_ADMIN_PRODUCT_DETAIL,
@@ -93,9 +92,5 @@ export const adminRouter: IRoute[] = [
   {
     path: PATH_ADMIN_ORDER,
     element: <AdminOrders />
-  },
-  {
-    path: PATH_ADMIN_ORDER_DETAIL,
-    element: <AdminOrderDetai />
   }
 ];

@@ -44,8 +44,8 @@ const CategoryTable: FC<{
     <div className="py-5">
       <Table
         dataSource={data}
-        pagination={false}
         columns={colums}
+        pagination={false}
         className="min-h-[300px]"
         rowKey={(record) => record.id}
       />

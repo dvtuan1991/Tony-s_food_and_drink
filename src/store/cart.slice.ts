@@ -26,18 +26,20 @@ export const createCart = createAsyncThunk(
   async ({
     userId,
     productId,
+    quantity,
     price,
     isNew
   }: {
     userId: number;
     productId: number;
+    quantity: number;
     price: number;
     isNew: boolean;
   }) => {
     const responseAddOrder = await fetch(`${SERVICE_API}/order`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, productId, price, isNew })
+      body: JSON.stringify({ userId, productId, price, quantity, isNew })
     });
     if (responseAddOrder.ok) {
       const result = await responseAddOrder.json();
@@ -96,11 +98,16 @@ const cartSlice = createSlice({
   initialState: initCartState,
   reducers: {
     changeQuantity: (state, action) => {
-      const index = state.carts.findIndex(
+      const indexCart = state.carts.findIndex(
         (cart) => cart.id === action.payload.id
       );
-      state.carts[index].quantity = action.payload.quantity;
-      state.carts[index].price = action.payload.price;
+      const indexCartCheckout = state.cartsCheckOut.findIndex(
+        (cart) => cart.id === action.payload.id
+      );
+      state.carts[indexCart].quantity = action.payload.quantity;
+      state.carts[indexCart].price = action.payload.price;
+      state.cartsCheckOut[indexCartCheckout].quantity = action.payload.quantity;
+      state.cartsCheckOut[indexCartCheckout].price = action.payload.price;
     },
     setCartCheckOut: (state, action) => {
       state.cartsCheckOut = action.payload.map((item: string) => {
@@ -111,6 +118,16 @@ const cartSlice = createSlice({
         0
       );
     },
+    setTotalPrice: (state, { payload }) => {
+      const list = payload.map((item: string) =>
+        state.carts.find((cart) => cart.id === item)
+      );
+      state.totalPrice = list.reduce(
+        (total: number, cart: ICart) => (total += cart.price),
+        0
+      );
+    },
+
     changeCartToOrder: (state) => {
       state.cartsCheckOut = [];
     },
