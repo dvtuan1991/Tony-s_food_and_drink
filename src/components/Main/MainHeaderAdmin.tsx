@@ -5,10 +5,18 @@ import HomeOutlined from "@ant-design/icons/HomeOutlined";
 
 const MainHeaderAdmin = () => {
   const location = useLocation();
+  console.log(location);
   const pathName = location?.pathname.split("/").filter((i) => i);
   const renderBreadcumItem = pathName.map((path, index) => {
     if (index === pathName.length - 1) {
-      if (parseInt(path, 2) >= 0) {
+      if (path === "admin") {
+        return (
+          <Breadcrumb.Item className="align-middle inline-flex " key={index}>
+            <HomeOutlined />
+          </Breadcrumb.Item>
+        );
+      }
+      if (!Number.isNaN(Number(path))) {
         return (
           <Breadcrumb.Item className="text-base " key={index}>
             detail

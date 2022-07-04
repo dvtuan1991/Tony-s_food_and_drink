@@ -71,7 +71,7 @@ export const updateStatusOrder = createAsyncThunk(
 export const updateUserIdInOrder = createAsyncThunk(
   "cart/updateUserIdInOrder",
   async ({ userId, guestId }: { userId: number; guestId: number }) => {
-    const response = await fetch(`${SERVICE_API}/order/updateuserid`, {
+    const response = await fetch(`${SERVICE_API}/orderlist/updateuserid`, {
       method: "PUT",
       body: JSON.stringify({ userId, guestId }),
       headers: {
@@ -94,6 +94,9 @@ const orderSlice = createSlice({
     },
     changeOrderFilter: (state, action) => {
       state.filter = action.payload;
+    },
+    clearOrder: (state) => {
+      state.orders = [];
     }
   },
   extraReducers: (builder) => {

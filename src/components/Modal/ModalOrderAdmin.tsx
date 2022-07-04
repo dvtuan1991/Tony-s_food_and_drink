@@ -59,7 +59,6 @@ const ModalOrderAdmin: FC<{ orderId: string; status: string }> = ({
       default:
         break;
     }
-    console.log(data);
     dispatch(updateStatusOrder({ id: orderId, ...data }))
       .unwrap()
       .then(() => {
@@ -77,9 +76,14 @@ const ModalOrderAdmin: FC<{ orderId: string; status: string }> = ({
         visible={isModalVisible}
         onCancel={handleChangeCancel}
         onOk={handleChangeConfirm}
+        okText={<span className="text-[#000000d9]">OK</span>}
       >
-        <div>
-          <Select defaultValue={selectStatus} onChange={handleChangeSelect}>
+        <div className="my-5 p-5">
+          <Select
+            defaultValue={selectStatus}
+            onChange={handleChangeSelect}
+            style={{ width: "100%" }}
+          >
             {selectList.map((item) => (
               <Option key={item.id} label={item.title} value={item.value}>
                 {item.title}

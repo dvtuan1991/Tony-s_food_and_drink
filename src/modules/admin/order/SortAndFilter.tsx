@@ -80,7 +80,7 @@ const SortAndFilter = () => {
           ))}
         </Select>
       </Col>
-      <Col span={6}>
+      <Col span={8}>
         <Radio.Group
           value={filter}
           options={listFilterOrder}

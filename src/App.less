@@ -1,4 +1,12 @@
-@import '~antd/dist/antd.less';
+@import "~antd/lib/style/themes/default.less";
+@import "~antd/dist/antd.less";
+
+@primary-color: #ea2251;
+@border-radius-base: 5px;
+.ant-btn-primary:hover {
+  color: #000000d9;
+  background-color: transparent;
+}
 
 .ant-avatar-circle.ant-avatar {
   display: flex;
@@ -10,8 +18,8 @@
   display: inline-flex;
 }
 
- .ant-pagination-next button.ant-pagination-item-link,
- .ant-pagination-prev button.ant-pagination-item-link {
+.ant-pagination-next button.ant-pagination-item-link,
+.ant-pagination-prev button.ant-pagination-item-link {
   display: flex;
   justify-content: center;
   align-items: center;

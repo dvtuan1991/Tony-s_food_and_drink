@@ -44,7 +44,7 @@ const ModalWriteReview: FC<{
     console.log(user?.userName);
     const guestId = localStorage.getItem("guestId");
     const userInfo =
-     ( user.id || user.id === 0)
+      user.id || user.id === 0
         ? { userId: user.id, userName: user.userName, userAvatar: user.avatar }
         : { userId: guestId, userName };
     const data = {
@@ -94,6 +94,7 @@ const ModalWriteReview: FC<{
       <Modal
         visible={isModalVisible}
         onOk={handleClickOk}
+        okText={<span className="text-[#000000d9]">OK</span>}
         onCancel={handleCliCkCancel}
         width={width}
       >

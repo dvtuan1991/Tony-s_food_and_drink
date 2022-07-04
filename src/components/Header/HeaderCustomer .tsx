@@ -1,5 +1,5 @@
-import { Button, Col, Row } from "antd";
-import { Link } from "react-router-dom";
+import { Col, Row } from "antd";
+import { NavLink } from "react-router-dom";
 
 import NavbarCustomer from "../NavBar/NavbarCustomer";
 import ButtonCart from "../Button/ButtonCart";
@@ -14,13 +14,13 @@ const HeaderCustomer = () => {
         <Col span={4}>
           <Row align="middle">
             <Col xs={24} md={12}>
-              <Link to="/">
+              <NavLink to="/">
                 <img
                   src={mylogo}
                   alt="logo"
                   className="w-full  h-12 object-cover"
                 />
-              </Link>
+              </NavLink>
             </Col>
           </Row>
         </Col>
