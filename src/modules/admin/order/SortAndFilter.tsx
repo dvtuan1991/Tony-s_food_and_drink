@@ -36,18 +36,22 @@ const listSortOrder = [
 
 const listFilterOrder = [
   {
+    id: 0,
     label: "All",
     value: FilterOrderType.DEFAULT
   },
   {
+    id: 1,
     label: "Shipping",
     value: FilterOrderType.SHIPPING
   },
   {
+    id: 2,
     label: "Complete",
     value: FilterOrderType.COMPLETE
   },
   {
+    id: 3,
     label: "Cancel",
     value: FilterOrderType.CANCEL
   }
@@ -70,7 +74,7 @@ const SortAndFilter = () => {
   };
   console.log(sortType, filter);
   return (
-    <Row align="middle" className="mt-5" gutter={16}>
+    <Row align="middle" justify="space-between" className="mt-5" gutter={16}>
       <Col span={6}>
         <Select value={sortType} onChange={handleChangeSort} className="w-full">
           {listSortOrder.map((item) => (
@@ -80,14 +84,20 @@ const SortAndFilter = () => {
           ))}
         </Select>
       </Col>
-      <Col span={8}>
-        <Radio.Group
-          value={filter}
-          options={listFilterOrder}
-          onChange={handleChangeFilter}
-        />
+      <Col span={12}>
+        <Radio.Group value={filter} onChange={handleChangeFilter}>
+          {listFilterOrder.map((item) => (
+            <Radio.Button
+              key={item.id}
+              style={{ marginRight: 8 }}
+              value={item.value}
+            >
+              {item.label}
+            </Radio.Button>
+          ))}
+        </Radio.Group>
       </Col>
-      <Col>
+      <Col className="mr-3">
         <Button onClick={handleClickReset}>Reset</Button>
       </Col>
     </Row>
