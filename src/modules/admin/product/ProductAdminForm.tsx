@@ -1,7 +1,7 @@
 import Row from "antd/lib/row";
 import Form from "antd/lib/form";
 import Col from "antd/lib/col";
-import { ChangeEvent, FC, useMemo, useRef, useState } from "react";
+import { ChangeEvent, FC, useEffect, useMemo, useRef, useState } from "react";
 import Input from "antd/lib/input/Input";
 import Select from "antd/lib/select";
 import TextArea from "antd/lib/input/TextArea";
@@ -13,16 +13,16 @@ import { useNavigate } from "react-router-dom";
 import { Space } from "antd";
 
 import { IProduct } from "types/product.model";
-import { openNotification } from "helpers/function";
+import { fetchApi, openNotification } from "helpers/function";
+import { ICategory } from "types/category.model";
 import { SERVICE_API } from "constants/configs";
 import { defaultValidateMessages } from "helpers/common";
-import SelectCategory from "components/SelectCategory/SelectCategory";
 import styles from "./product.module.css";
 
 interface FormProduct {
   name: string;
   decription: string;
-  categoryId?: number;
+  categoryId: number;
   newPrice: number;
   oldPrice?: number;
   isStock: string;
@@ -30,10 +30,12 @@ interface FormProduct {
   file?: File;
 }
 
+const { Option } = Select;
 const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
   product,
   isCreate
 }) => {
+  const [listCategory, setListCategory] = useState<ICategory[]>();
   const inputUploadRef = useRef<any>();
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -51,7 +53,6 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         files[0].type === "image/jpg" ||
         files[0].type === "image/png";
       if (isImageType) {
-        console.log(files[0]);
         setFile(files[0]);
       }
     } else {
@@ -134,132 +135,152 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
       }
     }
   };
-
+  useEffect(() => {
+    (async () => {
+      const responseListCategory: ICategory[] = await fetchApi(
+        `${SERVICE_API}/category`
+      );
+      setListCategory(responseListCategory);
+    })();
+  }, []);
   return (
     <div>
-      <Form
-        labelCol={{ span: "auto" }}
-        wrapperCol={{ span: 24 }}
-        layout="vertical"
-        validateMessages={defaultValidateMessages}
-        initialValues={initFormValue}
-        form={form}
-        onFinish={handleClickSubmitForm}
-      >
-        <div className="p-5">
-          <Row justify="center">
-            <Col span={20}>
-              <Row justify="center" gutter={16}>
-                <Col span={8}>
-                  <div
-                    className={styles["image-box"]}
-                    onClick={handleClickImage}
-                  >
-                    {isCreate ? (
-                      file ? (
-                        <img src={URL.createObjectURL(file)} alt="product" />
+      {initFormValue && listCategory && (
+        <Form
+          labelCol={{ span: "auto" }}
+          wrapperCol={{ span: 24 }}
+          layout="vertical"
+          validateMessages={defaultValidateMessages}
+          initialValues={initFormValue}
+          form={form}
+          onFinish={handleClickSubmitForm}
+        >
+          <div className="p-5">
+            <Row justify="center">
+              <Col span={20}>
+                <Row justify="center" gutter={16}>
+                  <Col span={8}>
+                    <div
+                      className={styles["image-box"]}
+                      onClick={handleClickImage}
+                    >
+                      {isCreate ? (
+                        file ? (
+                          <img src={URL.createObjectURL(file)} alt="product" />
+                        ) : (
+                          <div />
+                        )
                       ) : (
-                        <></>
-                      )
-                    ) : (
-                      <img
-                        src={
-                          file
-                            ? URL.createObjectURL(file)
-                            : `${SERVICE_API}/${product?.thumbnail}`
-                        }
-                        alt="product"
-                        className="w-full block h-[170px]"
-                      />
-                    )}
-                  </div>
-                  <input
-                    type="file"
-                    hidden
-                    ref={inputUploadRef}
-                    onChange={handleFileChange}
-                  />
-                </Col>
-                <Col span={12}>
-                  <div className={`${styles["input-box"]} mb-4`}>
-                    <Form.Item
-                      name="name"
-                      label="Food Name"
-                      rules={[{ required: true, max: 50 }]}
-                    >
-                      <Input placeholder="Food Name" />
-                    </Form.Item>
-                    <SelectCategory
-                      label={"Category Name"}
-                      selectName={"categoryId"}
-                      rules={[{ required: true }]}
+                        <img
+                          src={
+                            file
+                              ? URL.createObjectURL(file)
+                              : `${SERVICE_API}/${product?.thumbnail}`
+                          }
+                          alt="product"
+                          className="w-full block h-[170px]"
+                        />
+                      )}
+                    </div>
+                    <input
+                      type="file"
+                      hidden
+                      ref={inputUploadRef}
+                      onChange={handleFileChange}
                     />
-                    <Form.Item name="priority" label="Priority">
-                      <Input />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col span={6}>
-                  <div className={styles["input-box"]}>
-                    <Form.Item
-                      name="newPrice"
-                      label="New Price"
-                      rules={[
-                        { required: true, min: 1, max: 100, type: "number" }
-                      ]}
-                    >
-                      <InputNumber addonAfter="$" min={1} max={100} />
-                    </Form.Item>
-                    <Form.Item
-                      name="oldPrice"
-                      label="Old Price"
-                      rules={[{ min: 1, max: 100, type: "number" }]}
-                    >
-                      <InputNumber addonAfter="$" min={1} max={100} />
-                    </Form.Item>
-                    <Form.Item name="isStock" label="Is Stock" className="mb-3">
-                      <Radio.Group options={["yes", "no"]} />
-                    </Form.Item>
-                  </div>
-                </Col>
-                <Col span={14}>
-                  <div className={styles["input-box"]}>
-                    <Form.Item
-                      name="decription"
-                      label="Decription"
-                      rules={[{ required: true }]}
-                    >
-                      <TextArea rows={6} />
-                    </Form.Item>
-                  </div>
-                  <Form.Item
-                    wrapperCol={{ offset: 8, span: 16 }}
-                    className="mt-5"
-                  >
-                    <Space>
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="text-black"
+                  </Col>
+                  <Col span={12}>
+                    <div className={`${styles["input-box"]} mb-4`}>
+                      <Form.Item
+                        name="name"
+                        label="Food Name"
+                        rules={[{ required: true, max: 50 }]}
                       >
-                        Save
-                      </Button>
-                      <Button
-                        className="text-orange-900"
-                        danger
-                        onClick={handleClickCancel}
+                        <Input placeholder="Food Name" />
+                      </Form.Item>
+                      <Form.Item
+                        label={"Category Name"}
+                        name="categoryId"
+                        rules={[{ required: true }]}
                       >
-                        Cancel
-                      </Button>
-                    </Space>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </div>
-      </Form>
-      {/* )} */}
+                        <Select allowClear={true} style={{ width: "100%" }}>
+                          {listCategory.map((category) => (
+                            <Option
+                              key={category.id}
+                              value={category.id}
+                              label={category.name.toLocaleUpperCase()}
+                            >
+                              {category.name}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                      <Form.Item name="priority" label="Priority">
+                        <Input />
+                      </Form.Item>
+                    </div>
+                  </Col>
+                  <Col span={6}>
+                    <div className={styles["input-box"]}>
+                      <Form.Item
+                        name="newPrice"
+                        label="New Price"
+                        rules={[
+                          { required: true, min: 1, max: 100, type: "number" }
+                        ]}
+                      >
+                        <InputNumber addonAfter="$" min={1} max={100} />
+                      </Form.Item>
+                      <Form.Item
+                        name="oldPrice"
+                        label="Old Price"
+                        rules={[{ min: 1, max: 100, type: "number" }]}
+                      >
+                        <InputNumber addonAfter="$" min={1} max={100} />
+                      </Form.Item>
+                      <Form.Item
+                        name="isStock"
+                        label="Is Stock"
+                        className="mb-3"
+                      >
+                        <Radio.Group options={["yes", "no"]} />
+                      </Form.Item>
+                    </div>
+                  </Col>
+                  <Col span={14}>
+                    <div className={styles["input-box"]}>
+                      <Form.Item
+                        name="decription"
+                        label="Decription"
+                        rules={[{ required: true }]}
+                      >
+                        <TextArea rows={6} />
+                      </Form.Item>
+                    </div>
+                    <Form.Item
+                      wrapperCol={{ offset: 8, span: 16 }}
+                      className="mt-5"
+                    >
+                      <Space>
+                        <Button type="primary" htmlType="submit">
+                          Save
+                        </Button>
+                        <Button
+                          className="text-orange-900"
+                          danger
+                          onClick={handleClickCancel}
+                        >
+                          Cancel
+                        </Button>
+                      </Space>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </div>
+        </Form>
+      )}
     </div>
   );
 };

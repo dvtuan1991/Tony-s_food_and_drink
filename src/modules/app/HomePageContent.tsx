@@ -1,6 +1,5 @@
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
-import CategoryCheckBox from "components/CheckBox/CategoryCheckBox";
 import ProductContainer from "components/Product/ProductContainer";
 
 import SearchBox from "components/SearchBox/SearchBox";
@@ -16,7 +15,6 @@ const HomePageContent = () => {
         <Row gutter={8}>
           <Col span={6}>
             <div className="pr-1">
-              <CategoryCheckBox />
               <ProductSlide />
             </div>
           </Col>

@@ -72,14 +72,14 @@ const ProductContent: FC<{ product: IProduct }> = ({ product }) => {
                   <Text delete className="text-[#aaa] text-base">
                     {changePriceOutput(product.oldPrice)}
                   </Text>
-                  <Text className="text-[#ea2251] text-lg">
+                  <Text className="text-[#009bbe] text-lg">
                     {changePriceOutput(product.newPrice)}
                   </Text>
                 </Space>
               </div>
             ) : (
               <div>
-                <Text className="text-[#ea2251] text-base">
+                <Text className="text-[#009bbe] text-base">
                   {changePriceOutput(product.newPrice)}
                 </Text>
               </div>

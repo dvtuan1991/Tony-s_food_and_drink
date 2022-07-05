@@ -14,7 +14,11 @@ interface SortAndFilter {
 
 interface InitProductState {
   sortType: string;
-  filterList: FilterList;
+  filterCategory: number;
+  filterProductName: string;
+  minPrice: number;
+  maxPrice: number;
+  productpageSize: number;
   isProductLoading: boolean;
   productList: IProduct[];
   totalProduct: number;
@@ -22,7 +26,11 @@ interface InitProductState {
 
 const initProductState: InitProductState = {
   sortType: SortProductType.DEFAULT,
-  filterList: {} as FilterList,
+  filterCategory: -1,
+  filterProductName: "",
+  minPrice: 1,
+  maxPrice: 100,
+  productpageSize: 1,
   isProductLoading: false,
   productList: [],
   totalProduct: 0
@@ -30,23 +38,10 @@ const initProductState: InitProductState = {
 
 export const getListProductApp = createAsyncThunk(
   "product/getListProductApp",
-  async ({
-    sortAndFilter,
-    pageIndex
-  }: {
-    sortAndFilter: SortAndFilter;
-    pageIndex: number;
-  }) => {
-    let price: string = "";
-    if (sortAndFilter.filterList.price) {
-      price = `&min=${sortAndFilter.filterList.price.min}&max=${sortAndFilter.filterList.price.max}`;
-    }
-    const resListProduct = await fetch(
-      `${SERVICE_API}/product/list?index=${pageIndex}&limit=${APP_PAGE_SIZE}&sort=${sortAndFilter.sortType}${price}`
-    );
+  async (url: string) => {
+    const resListProduct = await fetch(url);
     if (resListProduct.ok) {
       const result = await resListProduct.json();
-      console.log(result);
       return result;
     }
   }
@@ -63,7 +58,17 @@ const productSlice = createSlice({
       state,
       action: PayloadAction<{ min: number; max: number }>
     ) => {
-      state.filterList.price = action.payload;
+      state.minPrice = action.payload.min;
+      state.maxPrice = action.payload.max;
+    },
+    changeFilerByName: (state, { payload }) => {
+      state.filterProductName = payload;
+    },
+    changeFilterCategory: (state, { payload }) => {
+      state.filterCategory = payload;
+    },
+    changeProductPageSize: (state, { payload }) => {
+      state.productpageSize = payload;
     }
   },
   extraReducers: (builder) => {
@@ -85,6 +90,12 @@ const productSlice = createSlice({
   }
 });
 
-export const { changeSortType, changeFilterPrice } = productSlice.actions;
+export const {
+  changeSortType,
+  changeFilterPrice,
+  changeFilerByName,
+  changeFilterCategory,
+  changeProductPageSize
+} = productSlice.actions;
 
 export default productSlice.reducer;

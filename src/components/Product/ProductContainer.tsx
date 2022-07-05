@@ -5,27 +5,42 @@ import { Dispatch } from "@reduxjs/toolkit";
 import Pagination from "antd/lib/pagination";
 
 import { RootState } from "store";
-import { getListProductApp } from "store/product.slice";
-import { APP_PAGE_SIZE } from "constants/configs";
+import { getListProductApp, changeProductPageSize } from "store/product.slice";
+import { APP_PAGE_SIZE, SERVICE_API } from "constants/configs";
 import SelectSort from "components/SelectCategory/SelectSort";
 import ProductItem from "./ProductItem";
 
 const ProductContainer = () => {
   const [pageIndex, setPageIndex] = useState<number>(1);
-  const { productList, sortType, filterList, totalProduct } = useSelector(
-    (state: RootState) => state.products
-  );
+  const {
+    productList,
+    sortType,
+    minPrice,
+    maxPrice,
+    totalProduct,
+    filterCategory,
+    filterProductName,
+    productpageSize
+  } = useSelector((state: RootState) => state.products);
+
   const dispatch: Dispatch<any> = useDispatch();
   const handleClickPagi = (index: number) => {
-    setPageIndex(index);
+    dispatch(changeProductPageSize(index));
   };
   useEffect(() => {
-    const sortAndFilter = {
-      sortType,
-      filterList
-    };
-    dispatch(getListProductApp({ sortAndFilter, pageIndex }));
-  }, [sortType, dispatch, filterList.price, pageIndex]);
+    const url = `${SERVICE_API}/product/list?index=${productpageSize}&limit=${APP_PAGE_SIZE}&sort=${sortType}&min=${minPrice}&max=${maxPrice}&name=${filterProductName}&categoryId=${filterCategory}`;
+
+    dispatch(getListProductApp(url));
+  }, [
+    sortType,
+    dispatch,
+    minPrice,
+    maxPrice,
+    pageIndex,
+    productpageSize,
+    filterCategory,
+    filterProductName
+  ]);
   return (
     <div className="flex flex-col">
       <div className="flex  w-1/5 py-5 self-end">
@@ -39,7 +54,7 @@ const ProductContainer = () => {
       </Row>
       <div className="mb-5">
         <Pagination
-          current={pageIndex}
+          current={productpageSize}
           showSizeChanger={false}
           pageSize={APP_PAGE_SIZE}
           total={totalProduct}

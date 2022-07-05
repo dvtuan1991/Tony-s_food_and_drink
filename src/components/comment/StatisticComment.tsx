@@ -49,7 +49,7 @@ const StatisticComment: FC<StatisticCommentProp> = ({ leng, statistics }) => {
         <Row align="middle">
           <Col span={2} className="text-right">
             {leng > 0 ? (
-              <Text className="text-3xl text-[#ea2251]">
+              <Text className="text-3xl text-[#009bbe]">
                 {getAvgPoint(leng, statistics).toFixed(1)}
               </Text>
             ) : (

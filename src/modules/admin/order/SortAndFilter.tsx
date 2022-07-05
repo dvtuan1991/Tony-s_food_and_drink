@@ -19,8 +19,8 @@ const listSortOrder = [
   },
   {
     id: 2,
-    value: SortOrderType.LASTEST,
-    title: "Lastest"
+    value: SortOrderType.OLDEST,
+    title: "Oldest"
   },
   {
     id: 3,
@@ -47,12 +47,12 @@ const listFilterOrder = [
   },
   {
     id: 2,
-    label: "Complete",
+    label: "Completed",
     value: FilterOrderType.COMPLETE
   },
   {
     id: 3,
-    label: "Cancel",
+    label: "Canceled",
     value: FilterOrderType.CANCEL
   }
 ];
@@ -72,7 +72,6 @@ const SortAndFilter = () => {
     dispatch(changeSortType(SortOrderType.DEFAULT));
     dispatch(changeOrderFilter(FilterOrderType.DEFAULT));
   };
-  console.log(sortType, filter);
   return (
     <Row align="middle" justify="space-between" className="mt-5" gutter={16}>
       <Col span={6}>
@@ -98,7 +97,9 @@ const SortAndFilter = () => {
         </Radio.Group>
       </Col>
       <Col className="mr-3">
-        <Button onClick={handleClickReset}>Reset</Button>
+        <Button type="default" onClick={handleClickReset}>
+          Reset
+        </Button>
       </Col>
     </Row>
   );

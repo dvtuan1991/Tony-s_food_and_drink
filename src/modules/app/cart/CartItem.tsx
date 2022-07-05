@@ -12,10 +12,10 @@ import { RootState } from "store";
 import { ICart } from "types/cart.model";
 import ProductImage from "components/Product/ProductImage";
 import { IProduct } from "types/product.model";
-import { fetchApi } from "helpers/function";
+import { fetchApi, openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import PopConfirmDelete from "components/Button/PopConfirmDelete";
-import { changeQuantity } from "store/cart.slice";
+import { changeQuantity, removeCart } from "store/cart.slice";
 
 const { Text } = Typography;
 const CartItem: FC<{ cart: ICart }> = ({ cart }) => {
@@ -25,7 +25,13 @@ const CartItem: FC<{ cart: ICart }> = ({ cart }) => {
 
   const [productQuantity, setCartQuantity] = useState<number>(cart.quantity);
   const handleClickDelete = async () => {
-    const res = await fetch(`${SERVICE_API}`);
+    const res = await fetch(`${SERVICE_API}/order/${cart.id}/delete`, {
+      method: "DELETE"
+    });
+    if (res.ok) {
+      dispatch(removeCart(cart.id));
+      openNotification("info", "remove success");
+    }
   };
 
   const handleChange = (value: number) => {

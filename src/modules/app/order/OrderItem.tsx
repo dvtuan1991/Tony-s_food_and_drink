@@ -79,7 +79,7 @@ const OrderItem: FC<{ order: IOrder }> = ({ order }) => {
                   <Col span={6} className={"text-right"}>
                     <div>
                       <Text className="font-bold">Total:</Text>
-                      <Text className="ml-2 text-[#ea2251] text-lg">
+                      <Text className="ml-2 text-[#009bbe] text-lg">
                         {changePriceOutput(getTotalPrice(listCart))}
                       </Text>
                     </div>

@@ -46,7 +46,7 @@ const OrderDetail: FC<{
                 <Row align="middle">
                   <div>
                     <Text className="">Quantity: </Text>
-                    <Text className="text-[#ea2251] font-bold">
+                    <Text className="text-[#009bbe] font-bold">
                       {cart.quantity}
                     </Text>
                   </div>
@@ -58,12 +58,12 @@ const OrderDetail: FC<{
                           delete
                           className="text-xs text-slate-300"
                         >{`${changePriceOutput(product.oldPrice)}`}</Text>
-                        <Text className="text-lg text-[#ea2251]">{`${changePriceOutput(
+                        <Text className="text-lg text-[#009bbe]">{`${changePriceOutput(
                           product.newPrice
                         )}`}</Text>
                       </Space>
                     ) : (
-                      <Text className="text-lg text-[#ea2251]">
+                      <Text className="text-lg text-[#009bbe]">
                         {changePriceOutput(product.newPrice)}
                       </Text>
                     )}

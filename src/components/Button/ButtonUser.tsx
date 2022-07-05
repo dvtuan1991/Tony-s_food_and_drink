@@ -34,7 +34,7 @@ const ButtonUser = () => {
   };
   if (!user.userName) {
     return (
-      <Link to={"/login"} className="block p-1 border border-[#1890ff] rounded">
+      <Link to={"/login"} className="block p-1 border border-primary rounded">
         Login
       </Link>
     );

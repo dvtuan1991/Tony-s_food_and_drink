@@ -30,7 +30,7 @@ const CategoryCheckBox = () => {
           {listCategory.map((category) => (
             <div key={category.id}>
               <CheckableTag
-                className="bg-[#ea2251] text-sm mb-2 py-1 px-2 text-white rounded hover:bg-transparent hover:border-[#ea2251]"
+                className="bg-[#009bbe] text-sm mb-2 py-1 px-2 text-white rounded hover:bg-transparent hover:border-[#009bbe]"
                 checked={false}
               >
                 {category.name}

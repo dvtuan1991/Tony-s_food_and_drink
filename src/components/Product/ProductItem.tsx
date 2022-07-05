@@ -60,7 +60,7 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
         <div className={styles["product-item_footer"]}>
           <Button
             block
-            className="bg-[#ea2251] rounded hover:bg-[#ea2251] hover:text-white text-white focus:bg-[#ea2251] focus:text-white"
+            className="bg-[#009bbe] rounded hover:bg-[#009bbe] hover:text-white text-white focus:bg-[#009bbe] focus:text-white"
             onClick={handleClickAdd}
           >
             Add To Cart

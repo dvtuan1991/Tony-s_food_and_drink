@@ -8,9 +8,9 @@ const OrderStatusTag: FC<{ order: IOrder }> = ({ order }) => {
     return <Tag color={"error"}>Cancel</Tag>;
   }
   if (order.isComplete) {
-    return <Tag color={"#108ee9"}>Complete</Tag>;
+    return <Tag color={"green"}>Complete</Tag>;
   }
-  return <Tag color={"green"}>Shipping</Tag>;
+  return <Tag color={"orange"}>Shipping</Tag>;
 };
 
 export default OrderStatusTag;

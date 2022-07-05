@@ -26,7 +26,7 @@ const ProductAdminDetail = () => {
     getData();
   }, [getData]);
 
-  return <>{product && <ProductAdminForm product={product} />}</>;
+  return <div>{product && <ProductAdminForm product={product} />}</div>;
 };
 
 export default ProductAdminDetail;

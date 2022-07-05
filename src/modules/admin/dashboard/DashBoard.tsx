@@ -3,11 +3,26 @@ import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import Typography from "antd/lib/typography";
 
-import NewUpdate from "./NewUpdate";
+import { useEffect } from "react";
+import { fetchApi } from "helpers/function";
+import { SERVICE_API } from "constants/configs";
 import styles from "./index.module.css";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const DashBoard = () => {
+  useEffect(() => {
+    (async () => {
+      const getAnalyticsOrder = await fetchApi(
+        `${SERVICE_API}/order/adminanalytics`
+      );
+      const getAnalyticsUser = await fetchApi(
+        `${SERVICE_API}/user/adminstatic`
+      );
+      const getAnalyticOrderList = await fetchApi(
+        `${SERVICE_API}/orderlist/adminstatic`
+      );
+    })();
+  }, []);
   return (
     <div className="mt-12">
       <Row>

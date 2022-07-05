@@ -46,10 +46,10 @@ const ProductSlide = () => {
           step={1}
           onChange={handeChaneSlide}
           defaultValue={[min, max]}
-          trackStyle={[{ backgroundColor: "#ea2251" }]}
+          trackStyle={[{ backgroundColor: "#009bbe" }]}
           handleStyle={[
-            { backgroundColor: "#ea2251", borderColor: "#ea2251" },
-            { backgroundColor: "#ea2251", borderColor: "#ea2251" }
+            { backgroundColor: "#009bbe", borderColor: "#009bbe" },
+            { backgroundColor: "#009bbe", borderColor: "#009bbe" }
           ]}
           tipFormatter={renderFormat}
         />
@@ -73,8 +73,10 @@ const ProductSlide = () => {
             />
           </Col>
         </Row>
-        <Col>
-          <Button onClick={handleClickSubmit}>Submit</Button>
+        <Col span={24}>
+          <div className="mt-5">
+            <Button type="primary" onClick={handleClickSubmit}>Filter</Button>
+          </div>
         </Col>
       </Col>
     </Row>
