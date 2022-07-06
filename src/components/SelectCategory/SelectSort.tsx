@@ -1,8 +1,11 @@
 import Select from "antd/lib/select";
+import Typography from "antd/lib/typography";
 import { useDispatch } from "react-redux";
+
 import { changeSortType } from "store/product.slice";
 import { SortProductType } from "types/product.model";
 
+const { Title } = Typography;
 const listSeclect = [
   {
     id: 0,
@@ -27,17 +30,22 @@ const SelectSort = () => {
     dispatch(changeSortType(value));
   };
   return (
-    <Select
-      onChange={hanleClickChooseSelect}
-      defaultValue={SortProductType.DEFAULT}
-      className="w-full"
-    >
-      {listSeclect.map((item) => (
-        <Option key={item.id} value={item.value} label={item.title}>
-          {item.title}
-        </Option>
-      ))}
-    </Select>
+    <div>
+      <div>
+        <Title level={5}>Sort by:</Title>
+      </div>
+      <Select
+        onChange={hanleClickChooseSelect}
+        value={SortProductType.DEFAULT}
+        className="w-full"
+      >
+        {listSeclect.map((item) => (
+          <Option key={item.id} value={item.value} label={item.title}>
+            {item.title}
+          </Option>
+        ))}
+      </Select>
+    </div>
   );
 };
 

@@ -69,6 +69,13 @@ const productSlice = createSlice({
     },
     changeProductPageSize: (state, { payload }) => {
       state.productpageSize = payload;
+    },
+    resetFilter: (state) => {
+      state.minPrice = initProductState.minPrice;
+      state.maxPrice = initProductState.maxPrice;
+      state.filterCategory = initProductState.filterCategory;
+      state.filterProductName = initProductState.filterProductName;
+      state.productpageSize = initProductState.productpageSize;
     }
   },
   extraReducers: (builder) => {
@@ -95,7 +102,8 @@ export const {
   changeFilterPrice,
   changeFilerByName,
   changeFilterCategory,
-  changeProductPageSize
+  changeProductPageSize,
+  resetFilter
 } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -11,6 +11,9 @@ module.exports = {
       colors: {
           primary: "#009bbe",
       },
+      screens: {
+        lg: "992px"
+      }
   },
   plugins: [],
 }};

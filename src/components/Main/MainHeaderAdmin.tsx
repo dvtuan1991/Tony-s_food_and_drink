@@ -1,5 +1,5 @@
 import Breadcrumb from "antd/lib/breadcrumb";
-import { Link, useLocation } from "react-router-dom";
+import {  NavLink, useLocation } from "react-router-dom";
 
 import HomeOutlined from "@ant-design/icons/HomeOutlined";
 
@@ -32,12 +32,10 @@ const MainHeaderAdmin = () => {
       }
     } else if (path === "admin") {
       return (
-        <Breadcrumb.Item
-          className="align-middle inline-flex "
-          key={index}
-          href="/admin"
-        >
-          <HomeOutlined />
+        <Breadcrumb.Item  key={index}>
+          <NavLink className="align-middle inline-flex" to="/admin">
+            <HomeOutlined />
+          </NavLink>
         </Breadcrumb.Item>
       );
     }
@@ -45,18 +43,14 @@ const MainHeaderAdmin = () => {
       <Breadcrumb.Item
         className="text-base "
         key={index}
-        href={`/admin/${path}`}
       >
-        {path}
+        <NavLink to={`/admin/${path}`}>{path}</NavLink>
       </Breadcrumb.Item>
     );
   });
   return (
-    <div className="h-10 p-5 bg-gray-400 flex items-center justify-between">
+    <div className="md:mt-11 lg:mt-0 h-10 p-5 bg-gray-400 flex items-center justify-between">
       <Breadcrumb>{renderBreadcumItem}</Breadcrumb>
-      <div className="mr-3">
-        <Link to="/">Go to app</Link>
-      </div>
     </div>
   );
 };

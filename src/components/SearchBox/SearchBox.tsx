@@ -18,12 +18,10 @@ import styles from "./searchBox.module.css";
 
 const { Option } = Select;
 const SearchBox = () => {
-  const { filterCategory, filterProductName } = useSelector(
-    (state: RootState) => state.products
-  );
+  const { filterCategory } = useSelector((state: RootState) => state.products);
   const [listCategory, setListCategory] = useState<ICategory[]>();
   const [inputValue, setInputValue] = useState<string>("");
-  const [selectValue, setSelectValue] = useState<number>();
+  const [selectValue, setSelectValue] = useState<number>(-1);
   const dispatch = useDispatch<AppDispatch>();
   const handleChangeSelect = (value: number) => {
     setSelectValue(value);
@@ -37,6 +35,7 @@ const SearchBox = () => {
     if (inputValue.trim() !== "") {
       dispatch(changeFilerByName(inputValue));
       dispatch(changeProductPageSize(1));
+      setInputValue("");
     }
     if (selectValue && selectValue >= -1) {
       dispatch(changeFilterCategory(selectValue));
@@ -55,6 +54,10 @@ const SearchBox = () => {
       ]);
     })();
   }, []);
+
+  useEffect(() => {
+    setSelectValue(filterCategory);
+  }, [filterCategory]);
   return (
     <div className={styles["search-box"]}>
       <div className="w-2/4">
@@ -90,7 +93,7 @@ const SearchBox = () => {
       <div>
         <Button
           onClick={handleClickSearch}
-          className="w-[60px] text-white bg-[#009bbe] rounded"
+          className="w-[60px] text-white bg-[#009bbe] rounded active:bg-primary focus:bg-primary focus:text-white"
           icon={<ArrowRightOutlined />}
         />
       </div>

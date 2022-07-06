@@ -2,6 +2,7 @@ import { FC } from "react";
 import Typography from "antd/lib/typography";
 import Col from "antd/lib/col";
 import Button from "antd/lib/button";
+import Tag from "antd/lib/tag";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
@@ -50,8 +51,15 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
   return (
     <Col span={8}>
       <div className={styles["product-item"]}>
-        <div className="w-full h-[220px] mb-5">
+        <div className="w-full h-[220px] mb-5 relative">
           <ProductImage product={product} />
+          {product.oldPrice && product.oldPrice > product.newPrice && (
+            <div className={styles["product-tag-sale"]}>
+              <Tag className="text-base text-white" color="#009bbe">
+                Sale
+              </Tag>
+            </div>
+          )}
         </div>
         <div>
           <Title level={5}>{product.name}</Title>

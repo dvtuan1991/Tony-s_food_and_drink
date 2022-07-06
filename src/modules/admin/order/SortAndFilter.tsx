@@ -97,7 +97,7 @@ const SortAndFilter = () => {
         </Radio.Group>
       </Col>
       <Col className="mr-3">
-        <Button type="default" onClick={handleClickReset}>
+        <Button type="text" className="text-primary" onClick={handleClickReset}>
           Reset
         </Button>
       </Col>
