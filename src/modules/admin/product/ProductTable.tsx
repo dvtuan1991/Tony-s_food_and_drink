@@ -8,7 +8,6 @@ import type { ColumnsType } from "antd/lib/table";
 
 import ActionButton from "components/Button/ActionButton";
 import { IProduct } from "types/product.model";
-import { setLimitTring } from "helpers/function";
 import PopConfirmDelete from "components/Button/PopConfirmDelete";
 
 export type Breakpoint = "xxl" | "xl" | "lg" | "md" | "sm" | "xs";
@@ -24,46 +23,44 @@ const ProductTable: FC<{
   const colums: ColumnsType<IProduct> = [
     {
       dataIndex: "ordinalNum",
-      align: "center" as "center"
+      align: "center" as "center",
+      width: "10%"
     },
     {
       title: "Name",
       dataIndex: "name",
       align: "center" as "center",
-      width: "10%",
-      key: "name"
-    },
-    {
-      title: "Decription",
-      dataIndex: "decription",
-      key: "decription",
-      width: "40%",
-      responsive: ["lg"] as Breakpoint[],
-      align: "center" as "center",
-      render: (text: string) => <span>{setLimitTring(text, 120)}</span>
+      key: "name",
+      className: "xs:w-20 sm:w-20 "
     },
     {
       title: "Category",
       dataIndex: "categoryName",
       align: "center" as "center",
-      key: "categoryName"
+      key: "categoryName",
+      className: "xs:w-[100px] sm:w-[100px]"
     },
     {
-      title: "Status",
+      title: "In Stock",
       dataIndex: "isStock",
       key: "isStock",
+      className: "xs:w-[100px] sm:w-[100px] ",
       render: (isStock: boolean) => <span>{isStock ? "Yes" : "No"}</span>
     },
     {
       title: "Price",
       dataIndex: "newPrice",
+      width: "10%",
       key: "Price",
+      className: "xs:w-[100px] sm:w-[100px]",
       render: (text: string) => <span>{`${text} $`}</span>
     },
     {
       title: "Action",
       width: "10%",
       align: "center" as "center",
+      fixed: "right",
+      className: "xs:w-[100px] sm:w-[100px] lg:w-[10%]",
       render: (record: IProduct) => (
         <Space>
           <ActionButton
@@ -89,6 +86,7 @@ const ProductTable: FC<{
         columns={colums}
         rowKey={(record) => record.id}
         className="min-h-[300px]"
+        scroll={{ x: 900 }}
       />
     </div>
   );

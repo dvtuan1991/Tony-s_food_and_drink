@@ -6,10 +6,10 @@
   width: 100%;
   height: 42px;
   background: #343a40;
+  z-index: 5;
 }
 
 .navbar-admin > nav {
-  padding: 1.5rem 1rem;
   width: 100%;
 }
 
@@ -33,6 +33,7 @@
 
   .navbar-admin > nav {
     height: 100%;
+    padding: 1.5rem 1rem;
   }
   .navbar-admin ul {
     flex-direction: column;

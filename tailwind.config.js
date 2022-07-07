@@ -3,17 +3,19 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-          sans: ["Montserrat", "system-ui"],
+        sans: ["Montserrat", "system-ui"]
       },
       container: {
-          center: true,
+        center: true
       },
       colors: {
-          primary: "#009bbe",
+        primary: "#009bbe"
       },
       screens: {
+        xs: { max: "639px" },
         lg: "992px"
       }
-  },
-  plugins: [],
-}};
+    },
+    plugins: []
+  }
+};

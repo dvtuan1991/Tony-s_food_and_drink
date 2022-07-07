@@ -1,6 +1,4 @@
 import Button from "antd/lib/button";
-import Row from "antd/lib/row";
-import Col from "antd/lib/col";
 import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -9,7 +7,8 @@ import { addUser } from "store/user.slice";
 import { clearCart } from "store/cart.slice";
 import { IUser } from "types/user.model";
 import { openNotification } from "helpers/function";
-import styles from "./navbar.module.css";
+import styles from "components/NavBar/navbar.module.css";
+import Popconfirm from "antd/lib/popconfirm";
 
 const NavBarAdmin = () => {
   const dispatch = useDispatch();
@@ -40,14 +39,18 @@ const NavBarAdmin = () => {
           <li>
             <Link to="/">Go to app</Link>
           </li>
-          <li className="sm:ml-auto lg:ml-0  lg:mt-auto lg:mb-11">
-            <Button
-              type="link"
-              shape="circle"
-              onClick={handleClickLogout}
-              icon={<LogoutOutlined />}
-              className="text-red-700 hover:text-red-700"
-            />
+          <li className="sm:ml-auto xs:ml-auto lg:ml-0  lg:mt-auto lg:mb-11">
+            <Popconfirm
+              title="do you want log out"
+              onConfirm={handleClickLogout}
+            >
+              <Button
+                type="link"
+                shape="circle"
+                icon={<LogoutOutlined />}
+                className="text-[#ffffffa6] hover:text-red-700"
+              />
+            </Popconfirm>
           </li>
         </ul>
       </nav>

@@ -1,5 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Row from "antd/lib/row";
+import Col from "antd/lib/col";
 
 import { RootState } from "store";
 import NavBarAdmin from "components/NavBar/NavBarAdmin";
@@ -24,10 +26,16 @@ const LayoutAdmin = () => {
           <NavBarAdmin />
           <div className={styles["main-admin"]}>
             <main>
-              <MainHeaderAdmin />
-              <div className="px-5">
-                <Outlet />
-              </div>
+              <Row>
+                <Col span={24}>
+                  <MainHeaderAdmin />
+                </Col>
+                <Col span={24}>
+                  <div className="px-5">
+                    <Outlet />
+                  </div>
+                </Col>
+              </Row>
             </main>
           </div>
         </>

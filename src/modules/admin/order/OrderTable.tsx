@@ -57,6 +57,7 @@ const OrderTable: FC<{ orders: IOrder[] }> = ({ orders }) => {
         pagination={false}
         className="min-h-[300px]"
         rowKey={(record) => record.id}
+        scroll={{ x: 400 }}
       />
     </div>
   );

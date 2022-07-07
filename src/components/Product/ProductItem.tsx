@@ -5,11 +5,13 @@ import Button from "antd/lib/button";
 import Tag from "antd/lib/tag";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
+import Space from "antd/lib/space";
 
 import { RootState } from "store";
 import { createCart } from "store/cart.slice";
 import { SERVICE_API } from "constants/configs";
 import { IProduct } from "types/product.model";
+import { changePriceOutput } from "helpers/function";
 import ProductImage from "./ProductImage";
 import styles from "./product.module.css";
 
@@ -63,7 +65,24 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
         </div>
         <div>
           <Title level={5}>{product.name}</Title>
-          <Text>{`$${product.newPrice.toFixed(2)}`}</Text>
+          {product.oldPrice && product.oldPrice > product.newPrice ? (
+            <div>
+              <Space>
+                <Text delete className="text-[#aaa] text-base">
+                  {changePriceOutput(product.oldPrice)}
+                </Text>
+                <Text className="text-[#009bbe] text-lg">
+                  {changePriceOutput(product.newPrice)}
+                </Text>
+              </Space>
+            </div>
+          ) : (
+            <div>
+              <Text className="text-[#009bbe] text-base">
+                {changePriceOutput(product.newPrice)}
+              </Text>
+            </div>
+          )}
         </div>
         <div className={styles["product-item_footer"]}>
           <Button

@@ -74,8 +74,12 @@ const SortAndFilter = () => {
   };
   return (
     <Row align="middle" justify="space-between" className="mt-5" gutter={16}>
-      <Col span={6}>
-        <Select value={sortType} onChange={handleChangeSort} className="w-full">
+      <Col xs={24} sm={24} lg={6}>
+        <Select
+          value={sortType}
+          onChange={handleChangeSort}
+          style={{ width: "100%" }}
+        >
           {listSortOrder.map((item) => (
             <Option key={item.id} label={item.title} value={item.value}>
               {item.title}
@@ -83,7 +87,7 @@ const SortAndFilter = () => {
           ))}
         </Select>
       </Col>
-      <Col span={12}>
+      <Col xs={24} sm={24} lg={16}>
         <Radio.Group value={filter} onChange={handleChangeFilter}>
           {listFilterOrder.map((item) => (
             <Radio.Button

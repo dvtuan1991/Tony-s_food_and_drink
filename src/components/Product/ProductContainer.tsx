@@ -5,8 +5,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import Pagination from "antd/lib/pagination";
+import Tag from "antd/lib/tag";
 import Typography from "antd/lib/typography";
 import Button from "antd/lib/button";
+import Spin from "antd/lib/spin";
 
 import { RootState } from "store";
 import {
@@ -28,7 +30,8 @@ const ProductContainer = () => {
     totalProduct,
     filterCategory,
     filterProductName,
-    productpageSize
+    productpageSize,
+    isProductLoading
   } = useSelector((state: RootState) => state.products);
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -57,52 +60,51 @@ const ProductContainer = () => {
   ]);
   return (
     <div className="flex flex-col">
-      <div className="px-5">
+      <div className="px-5 mb-5">
         {filterProductName !== "" && (
-          <Row align="middle">
-            <Col span={24}>
+          <Row align="middle" gutter={16}>
+            <Col span={"auto"}>
               <Title level={4}>Search By Product Name:</Title>
             </Col>
             <Col span="auto">
-              <Text className="text-lg text-primary">
+              <Tag
+                color="blue"
+                closable
+                className="text-base"
+                onClose={handleClickRemoveSearchName}
+                closeIcon={<CloseOutlined className="inline-flex ml-3" />}
+              >
                 {filterProductName}
-              </Text>
-            </Col>
-            <Col span="auto">
-              <Button
-                type="text"
-                icon={<CloseOutlined />}
-                className="ml-8 hover:bg-white"
-                onClick={handleClickRemoveSearchName}
-                danger
-              />
+              </Tag>
             </Col>
           </Row>
         )}
       </div>
-      <div >
-        <Row gutter={16}>
-          {productList.length > 0 && (
-            <>
-              {productList.map((product) => (
-                <ProductItem product={product} key={product.id} />
-              ))}
-              <Col span={24} className="mt-5">
-                <div className="mb-5">
-                  <Pagination
-                    current={productpageSize}
-                    showSizeChanger={false}
-                    pageSize={APP_PAGE_SIZE}
-                    total={totalProduct}
-                    onChange={handleClickPagi}
-                  />
-                </div>
-              </Col>
-            </>
-          )}
-        </Row>
+      <div>
+        <Spin spinning={isProductLoading}>
+          <Row gutter={16}>
+            {productList.length > 0 && (
+              <>
+                {productList.map((product) => (
+                  <ProductItem product={product} key={product.id} />
+                ))}
+                <Col span={24} className="mt-5">
+                  <div className="mb-5">
+                    <Pagination
+                      current={productpageSize}
+                      showSizeChanger={false}
+                      pageSize={APP_PAGE_SIZE}
+                      total={totalProduct}
+                      onChange={handleClickPagi}
+                    />
+                  </div>
+                </Col>
+              </>
+            )}
+          </Row>
+        </Spin>
         {productList.length === 0 && (
-         <Row gutter={16}>
+          <Row gutter={16}>
             <Col span={24}>
               <div className="p-5 border border-solid border-t-4 border-t-[#009bbe] rounded-t">
                 <Text className="capitalize">No ReSult Match</Text>
