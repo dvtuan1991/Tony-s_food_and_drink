@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
+import Row from "antd/lib/row";
+import Col from "antd/lib/col";
 import Pagination from "antd/lib/pagination";
 import { useNavigate } from "react-router-dom";
 
 import { SERVICE_API, PAGE_SIZE } from "constants/configs";
 import { IProduct } from "types/product.model";
 import { fetchApi } from "helpers/function";
+import SelectSort from "components/SelectCategory/SelectSort";
 import ButtonAddNew from "components/Button/ButtonAddNew";
 import ProductTable from "./ProductTable";
 
@@ -17,7 +20,6 @@ const ProductAdminLists = () => {
     setPageIndex(index);
   };
 
-  
   const getData = useCallback(
     async (index: number) => {
       const fetchData: { listProduct: IProduct[]; totalProduct: number } =
@@ -37,10 +39,10 @@ const ProductAdminLists = () => {
     },
     [pageIndex]
   );
-  
+
   const handleClickDelete = async (id: number | string) => {
     const responseDelete = await fetch(`${SERVICE_API}/product/${id}/delete`, {
-      method: "DELETE",
+      method: "DELETE"
     });
     if (responseDelete.ok) {
       getData(pageIndex);
@@ -51,14 +53,21 @@ const ProductAdminLists = () => {
     navigate("/admin/product/create");
   };
 
-
   useEffect(() => {
     getData(pageIndex);
   }, [getData, pageIndex]);
 
   return (
     <>
-      <ButtonAddNew onClick={handleClickAdd} />
+      <Row justify="space-between" align="middle">
+        <Col>
+          <ButtonAddNew onClick={handleClickAdd} />
+        </Col>
+        <Col>
+          <SelectSort />
+        </Col>
+      </Row>
+
       {listProduct && (
         <ProductTable
           data={listProduct}

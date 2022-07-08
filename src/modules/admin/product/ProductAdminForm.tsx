@@ -10,7 +10,10 @@ import InputNumber from "antd/lib/input-number";
 import _ from "lodash";
 import Button from "antd/lib/button";
 import { useNavigate } from "react-router-dom";
-import { Space } from "antd";
+import Space from "antd/lib/space";
+import Switch from "antd/lib/switch";
+import Typography from "antd/lib/typography";
+import UploadOutlined from "@ant-design/icons/UploadOutlined";
 
 import { IProduct } from "types/product.model";
 import { fetchApi, openNotification } from "helpers/function";
@@ -30,6 +33,7 @@ interface FormProduct {
   file?: File;
 }
 
+const { Text } = Typography;
 const { Option } = Select;
 const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
   product,
@@ -68,7 +72,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         categoryId: null,
         newPrice: 1,
         oldPrice: 1,
-        isStock: "yes",
+        isStock: true,
         priority: 0
       };
     }
@@ -79,7 +83,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         categoryId: product.categoryId,
         newPrice: product.newPrice,
         oldPrice: product.oldPrice,
-        isStock: product.isStock ? "yes" : "no",
+        isStock: product.isStock,
         priority: product.priority
       };
     }
@@ -87,6 +91,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
 
   const handleClickCancel = () => {
     form.setFieldsValue(initFormValue);
+    setFile(undefined);
   };
 
   const handleClickSubmitForm = async (value: FormProduct) => {
@@ -144,7 +149,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
     })();
   }, []);
   return (
-    <div>
+    <div className="mt-5">
       {initFormValue && listCategory && (
         <Form
           labelCol={{ span: "auto" }}
@@ -155,7 +160,168 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
           form={form}
           onFinish={handleClickSubmitForm}
         >
-          <div className="p-5">
+          <Row gutter={16}>
+            <Col sm={24} xs={24} lg={12}>
+              <div className={`${styles.panel} p-5`}>
+                <Row>
+                  <Col span={24}>
+                    <Form.Item
+                      name="name"
+                      label="Food Name"
+                      rules={[{ required: true, max: 50 }]}
+                    >
+                      <Input placeholder="Food Name" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item
+                      label={"Category Name"}
+                      name="categoryId"
+                      rules={[{ required: true }]}
+                    >
+                      <Select allowClear={true} style={{ width: "100%" }}>
+                        {listCategory.map((category) => (
+                          <Option
+                            key={category.id}
+                            value={category.id}
+                            label={category.name.toLocaleUpperCase()}
+                          >
+                            {category.name}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Row gutter={16}>
+                      <Col span={12}>
+                        <Form.Item
+                          name="newPrice"
+                          label="New Price"
+                          rules={[
+                            { required: true, min: 1, max: 100, type: "number" }
+                          ]}
+                        >
+                          <InputNumber
+                            addonAfter="$"
+                            min={1}
+                            max={100}
+                            style={{ width: "100%" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item
+                          name="oldPrice"
+                          label="Old Price"
+                          rules={[{ min: 1, max: 100, type: "number" }]}
+                        >
+                          <InputNumber
+                            addonAfter="$"
+                            min={1}
+                            max={100}
+                            style={{ width: "100%" }}
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Col>
+
+                  <Col span={24}>
+                    <Form.Item
+                      name="decription"
+                      label="Decription"
+                      rules={[{ required: true }]}
+                    >
+                      <TextArea rows={6} />
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+            <Col sm={24} xs={24} lg={12}>
+              <div className={`${styles.panel}`}>
+                <Row>
+                  <Col span={24}>
+                    <div
+                      className={styles["image-box"]}
+                      onClick={handleClickImage}
+                    >
+                      {isCreate ? (
+                        file ? (
+                          <img src={URL.createObjectURL(file)} alt="product" />
+                        ) : (
+                          <div className="p-5 w-full min-h-[350px] relative">
+                            <div className={styles["upload-box"]}>
+                              <div className={styles["upload-box-label"]}>
+                                <Text>Upload Image ...</Text>
+                              </div>
+                              <div className={styles["upload-box-icon"]}>
+                                <UploadOutlined />
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      ) : (
+                        <img
+                          src={
+                            file
+                              ? URL.createObjectURL(file)
+                              : `${SERVICE_API}/${product?.thumbnail}`
+                          }
+                          alt="product"
+                          className="w-full "
+                        />
+                      )}
+                    </div>
+
+                    <input
+                      type="file"
+                      hidden
+                      ref={inputUploadRef}
+                      onChange={handleFileChange}
+                    />
+                  </Col>
+
+                  <Col span={24}>
+                    <Row
+                      justify="space-between"
+                      className="p-5 border-b border-b-[#ccc]"
+                    >
+                      <Col>
+                        <Text>Stock</Text>
+                      </Col>
+                      <Col>
+                        <Form.Item name="isStock" style={{ marginBottom: 0 }}>
+                          <Switch defaultChecked={initFormValue.isStock} />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col span={24}>
+                    <Row justify="space-between" className="p-5">
+                      <Col span={4}>
+                        <Button type="primary" htmlType="submit" block>
+                          Save
+                        </Button>
+                      </Col>
+                      <Col span={4}>
+                        <Button
+                          className="text-orange-900"
+                          danger
+                          block
+                          onClick={handleClickCancel}
+                        >
+                          Cancel
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          </Row>
+          <div className="p-5 hidden">
             <Row justify="center">
               <Col span={20}>
                 <Row justify="center" gutter={16}>
