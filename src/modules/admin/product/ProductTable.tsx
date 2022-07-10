@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import Table from "antd/lib/table";
 import Space from "antd/lib/space";
+import { useSelector } from "react-redux";
 import type { ColumnsType } from "antd/lib/table";
 
+import { RootState } from "store";
 import ActionButton from "components/Button/ActionButton";
 import { IProduct } from "types/product.model";
 import PopConfirmDelete from "components/Button/PopConfirmDelete";
+import Spin from "antd/lib/spin";
 
 export type Breakpoint = "xxl" | "xl" | "lg" | "md" | "sm" | "xs";
 
@@ -16,6 +19,9 @@ const ProductTable: FC<{
   data: IProduct[];
   handleClickDelete: (id: number | string) => void;
 }> = ({ data, handleClickDelete }) => {
+  const { isProductLoading } = useSelector(
+    (state: RootState) => state.products
+  );
   const navigate = useNavigate();
   const handleClickEdit = (id: number) => {
     navigate(`/admin/product/${id}`);
@@ -80,14 +86,16 @@ const ProductTable: FC<{
   ];
   return (
     <div className="py-5">
-      <Table
-        dataSource={data}
-        pagination={false}
-        columns={colums}
-        rowKey={(record) => record.id}
-        className="min-h-[300px]"
-        scroll={{ x: 900 }}
-      />
+      <Spin spinning={isProductLoading}>
+        <Table
+          dataSource={data}
+          pagination={false}
+          columns={colums}
+          rowKey={(record) => record.id}
+          className="min-h-[300px]"
+          scroll={{ x: 900 }}
+        />
+      </Spin>
     </div>
   );
 };

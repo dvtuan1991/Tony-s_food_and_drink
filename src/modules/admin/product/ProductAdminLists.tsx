@@ -2,42 +2,55 @@ import { useCallback, useEffect, useState } from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import Pagination from "antd/lib/pagination";
-import { useNavigate } from "react-router-dom";
+import Space from "antd/lib/space";
+import Typography from "antd/lib/typography";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { SERVICE_API, PAGE_SIZE } from "constants/configs";
-import { IProduct } from "types/product.model";
-import { fetchApi } from "helpers/function";
 import SelectSort from "components/SelectCategory/SelectSort";
 import ButtonAddNew from "components/Button/ButtonAddNew";
+import { AppDispatch, RootState } from "store";
+import { getListProductApp } from "store/product.slice";
 import ProductTable from "./ProductTable";
+import FilterProduct from "./FilterProduct";
 
+const { Text } = Typography;
 const ProductAdminLists = () => {
+  const [searchQuerry, setSearchQuerry] = useSearchParams();
+  const queryObj: any = {};
+  const dispatch = useDispatch<AppDispatch>();
+  const { productList, totalProduct } = useSelector(
+    (state: RootState) => state.products
+  );
+
   const [pageIndex, setPageIndex] = useState<number>(1);
-  const [listProduct, setListProduct] = useState<IProduct[]>();
-  const [total, setTotal] = useState<number>();
   const navigate = useNavigate();
   const handleClickPagination = (index: number) => {
     setPageIndex(index);
+    searchQuerry.forEach((value, key) => {
+      queryObj[key] = value;
+    });
+    queryObj.index = index + "";
+    setSearchQuerry(queryObj);
   };
 
   const getData = useCallback(
     async (index: number) => {
-      const fetchData: { listProduct: IProduct[]; totalProduct: number } =
-        await fetchApi(
-          `${SERVICE_API}/product/table?pageIndex=${index}&pageSize=${PAGE_SIZE}`
-        );
-      const updateListProduct = await Promise.all(
-        fetchData.listProduct.map(async (product) => {
-          const getCategory = await fetchApi(
-            `${SERVICE_API}/category/${product.categoryId}`
-          );
-          return { ...product, categoryName: getCategory.name };
-        })
-      );
-      setListProduct(updateListProduct);
-      setTotal(fetchData.totalProduct);
+      searchQuerry.forEach((value, key) => {
+        queryObj[key] = value;
+      });
+      const url = `${SERVICE_API}/product/list?${
+        queryObj.index ? "" : `index=${index}`
+      }
+      
+      &limit=${PAGE_SIZE}&${new URLSearchParams(queryObj)}`;
+      if (queryObj.index) {
+        setPageIndex(Number(queryObj.index));
+      }
+      dispatch(getListProductApp(url));
     },
-    [pageIndex]
+    [dispatch, pageIndex, searchQuerry]
   );
 
   const handleClickDelete = async (id: number | string) => {
@@ -55,27 +68,33 @@ const ProductAdminLists = () => {
 
   useEffect(() => {
     getData(pageIndex);
-  }, [getData, pageIndex]);
+  }, [getData, pageIndex, searchQuerry]);
 
   return (
     <>
       <Row justify="space-between" align="middle">
-        <Col>
+        <Col span={24}>
+          <FilterProduct />
+        </Col>
+        <Col xs={24} md={12} lg={6}>
           <ButtonAddNew onClick={handleClickAdd} />
         </Col>
-        <Col>
-          <SelectSort />
+        <Col xs={24} md={12} lg={6}>
+          <Row align="middle" gutter={16}>
+            <Col>
+              <Text>Sort By: </Text>
+            </Col>
+            <Col className="flex-grow">
+              <SelectSort pageSize={PAGE_SIZE} />
+            </Col>
+          </Row>
         </Col>
       </Row>
 
-      {listProduct && (
-        <ProductTable
-          data={listProduct}
-          handleClickDelete={handleClickDelete}
-        />
-      )}
+      <ProductTable data={productList} handleClickDelete={handleClickDelete} />
+
       <Pagination
-        total={total}
+        total={totalProduct}
         pageSize={PAGE_SIZE}
         current={pageIndex}
         showSizeChanger={false}

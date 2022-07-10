@@ -1,16 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { APP_PAGE_SIZE, SERVICE_API } from "constants/configs";
+import { SERVICE_API } from "constants/configs";
+import { fetchApi } from "helpers/function";
 
 import { SortProductType, IProduct } from "types/product.model";
-
-interface FilterList {
-  price: { min: number; max: number };
-}
-
-interface SortAndFilter {
-  sortType: string;
-  filterList: FilterList;
-}
 
 interface InitProductState {
   sortType: string;
@@ -39,9 +31,30 @@ const initProductState: InitProductState = {
 export const getListProductApp = createAsyncThunk(
   "product/getListProductApp",
   async (url: string) => {
-    const resListProduct = await fetch(url);
-    if (resListProduct.ok) {
-      const result = await resListProduct.json();
+    const promise = new Promise<any>((resolve) => {
+      setTimeout(() => {
+        const resListProduct = fetch(url);
+        resolve(resListProduct);
+      }, 500);
+    });
+    const res = await promise;
+    if (res.ok) {
+      const result = await res.json();
+
+      if (result.listProduct.length > 0) {
+        const updateListProduct = await Promise.all(
+          result.listProduct.map(async (product: IProduct) => {
+            const getCategory = await fetchApi(
+              `${SERVICE_API}/category/${product.categoryId}`
+            );
+            return { ...product, categoryName: getCategory.name };
+          })
+        );
+        return {
+          listProduct: updateListProduct,
+          total: result.total
+        };
+      }
       return result;
     }
   }

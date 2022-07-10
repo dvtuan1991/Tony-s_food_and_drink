@@ -5,19 +5,16 @@ import Typography from "antd/lib/typography";
 import Slider from "antd/lib/slider";
 import InputNumber from "antd/lib/input-number";
 import { Button } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { changeFilterPrice } from "store/product.slice";
-import { RootState } from "store";
+import { useSearchParams } from "react-router-dom";
 
 const { Title } = Typography;
 const ProductSlide = () => {
-  const { minPrice, maxPrice } = useSelector(
-    (state: RootState) => state.products
-  );
-  const dispatch = useDispatch();
+  const [searchQuerry, setSearchQuerry] = useSearchParams();
+
   const [min, setMin] = useState<number>(1);
   const [max, setMax] = useState<number>(100);
-
+  console.log(searchQuerry.get("min"));
+  console.log(searchQuerry.get("max"));
   const handeChaneSlide = (value: number[]) => {
     setMin(value[0]);
     setMax(value[1]);
@@ -32,16 +29,21 @@ const ProductSlide = () => {
   };
 
   const handleClickSubmit = () => {
-    dispatch(changeFilterPrice({ min, max }));
+    const queryObj: any = {};
+    searchQuerry.forEach((value, key) => {
+      queryObj[key] = value;
+    });
+    queryObj.min = min + "";
+    queryObj.max = max + "";
+    setSearchQuerry(queryObj);
   };
 
   const renderFormat = (value: number | undefined): ReactNode =>
     `$${value?.toFixed(2)}`;
-
   useEffect(() => {
-    setMin(minPrice);
-    setMax(maxPrice);
-  }, [minPrice, maxPrice]);
+    setMin(searchQuerry.get("min") ? Number(searchQuerry.get("min")) : 1);
+    setMax(searchQuerry.get("min") ? Number(searchQuerry.get("max")) : 100);
+  }, [searchQuerry]);
   return (
     <Row>
       <Title level={5}>Filter By Price:</Title>
@@ -53,7 +55,10 @@ const ProductSlide = () => {
           max={100}
           step={1}
           onChange={handeChaneSlide}
-          defaultValue={[minPrice, maxPrice]}
+          defaultValue={[
+            searchQuerry.get("min") ? Number(searchQuerry.get("min")) : min,
+            searchQuerry.get("max") ? Number(searchQuerry.get("max")) : max
+          ]}
           trackStyle={[{ backgroundColor: "#009bbe" }]}
           handleStyle={[
             { backgroundColor: "#009bbe", borderColor: "#009bbe" },

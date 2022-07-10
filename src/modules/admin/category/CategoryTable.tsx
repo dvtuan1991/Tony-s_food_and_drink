@@ -9,7 +9,8 @@ import PopConfirmDelete from "components/Button/PopConfirmDelete";
 const CategoryTable: FC<{
   data: ICategory[];
   handleClickDelete: (id: number | string) => void;
-}> = ({ data, handleClickDelete }) => {
+  handleEdit: () => void;
+}> = ({ data, handleClickDelete, handleEdit }) => {
   const colums: ColumnsType<ICategory> = [
     {
       dataIndex: "ordinalNum",
@@ -29,7 +30,7 @@ const CategoryTable: FC<{
       key: "action",
       render: (record: ICategory) => (
         <Space>
-          <ModalEditable record={record} />
+          <ModalEditable record={record} handleEdit={handleEdit} />
           <PopConfirmDelete
             title={"Are you sure to delete this category"}
             id={record.id}

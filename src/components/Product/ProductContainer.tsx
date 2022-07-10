@@ -1,8 +1,9 @@
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import CloseOutlined from "@ant-design/icons/CloseOutlined";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import { Dispatch } from "@reduxjs/toolkit";
 import Pagination from "antd/lib/pagination";
 import Tag from "antd/lib/tag";
@@ -22,13 +23,11 @@ import ProductItem from "./ProductItem";
 
 const { Title, Text } = Typography;
 const ProductContainer = () => {
+  const [searchQuerry, setSearchQuerry] = useSearchParams();
+  const [pageIndex, setPageIndex] = useState<number>(1);
   const {
     productList,
-    sortType,
-    minPrice,
-    maxPrice,
     totalProduct,
-    filterCategory,
     filterProductName,
     productpageSize,
     isProductLoading
@@ -40,28 +39,42 @@ const ProductContainer = () => {
   };
 
   const handleClickRemoveSearchName = () => {
-    dispatch(changeFilerByName(""));
+    const queryObj: any = {};
+    searchQuerry.forEach((value, key) => {
+      queryObj[key] = value;
+    });
+    delete queryObj.name;
+    setSearchQuerry(queryObj);
   };
+  const getData = useCallback(
+    async (index: number) => {
+      const queryObj: any = {};
+      searchQuerry.forEach((value, key) => {
+        queryObj[key] = value;
+      });
+      const url = `${SERVICE_API}/product/list?${
+        queryObj.index ? "" : `index=${index}`
+      }
+      
+      &limit=${APP_PAGE_SIZE}&${new URLSearchParams(queryObj)}`;
+      if (queryObj.index) {
+        setPageIndex(Number(queryObj.index));
+      }
+      dispatch(getListProductApp(url));
+    },
+    [dispatch, pageIndex, searchQuerry]
+  );
 
   const handleClickReturn = () => {
-    dispatch(resetFilter());
+    setSearchQuerry({});
   };
   useEffect(() => {
-    const url = `${SERVICE_API}/product/list?index=${productpageSize}&limit=${APP_PAGE_SIZE}&sort=${sortType}&min=${minPrice}&max=${maxPrice}&name=${filterProductName}&categoryId=${filterCategory}`;
-    dispatch(getListProductApp(url));
-  }, [
-    sortType,
-    dispatch,
-    minPrice,
-    maxPrice,
-    filterCategory,
-    productpageSize,
-    filterProductName
-  ]);
+    getData(pageIndex);
+  }, [getData, pageIndex, searchQuerry]);
   return (
     <div className="flex flex-col">
       <div className="px-5 mb-5">
-        {filterProductName !== "" && (
+        {searchQuerry.get("name") && searchQuerry.get("name") !== "" && (
           <Row align="middle" gutter={16}>
             <Col span={"auto"}>
               <Title level={4}>Search By Product Name:</Title>
@@ -74,7 +87,7 @@ const ProductContainer = () => {
                 onClose={handleClickRemoveSearchName}
                 closeIcon={<CloseOutlined className="inline-flex ml-3" />}
               >
-                {filterProductName}
+                {searchQuerry.get("name")}
               </Tag>
             </Col>
           </Row>

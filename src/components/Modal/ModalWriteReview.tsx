@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import useWindowDimensions from "hooks/useWindowSize";
 import { SERVICE_API } from "constants/configs";
 import { RootState } from "store";
-import { openNotification } from "helpers/function";
+import { openNotification, setLimitTring } from "helpers/function";
 import { IProduct } from "types/product.model";
 import ProductImage from "components/Product/ProductImage";
 import styles from "./modal.module.css";
@@ -110,7 +110,7 @@ const ModalWriteReview: FC<{
                 <Title level={5} className="text-center">
                   {product.name}
                 </Title>
-                <Text>{product.decription}</Text>
+                <Text>{setLimitTring(product.decription, 300)}</Text>
               </div>
             </Col>
           </Row>

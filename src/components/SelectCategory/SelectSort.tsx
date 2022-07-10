@@ -1,12 +1,14 @@
 import Select from "antd/lib/select";
 import Typography from "antd/lib/typography";
+import { SERVICE_API } from "constants/configs";
+import { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "store";
+import { useSearchParams } from "react-router-dom";
+import { AppDispatch, RootState } from "store";
 
-import { changeSortType } from "store/product.slice";
+import { changeSortType, getListProductApp } from "store/product.slice";
 import { SortProductType } from "types/product.model";
 
-const { Title } = Typography;
 const listSeclect = [
   {
     id: 0,
@@ -25,29 +27,36 @@ const listSeclect = [
   }
 ];
 const { Option } = Select;
-const SelectSort = () => {
-  const { sortType } = useSelector((state: RootState) => state.products);
-  const dispatch = useDispatch();
-  const hanleClickChooseSelect = (value: string) => {
-    dispatch(changeSortType(value));
-  };
+const SelectSort: FC<{ pageSize: number }> = ({ pageSize }) => {
+  const [searchQuerry, setSearchQuerry] = useSearchParams();
+
+  const hanleClickChooseSelect = useCallback(
+    (value: string) => {
+      const obj: any = {};
+      searchQuerry.forEach((value, key) => {
+        obj[key] = value;
+      });
+      obj.sort = value;
+      setSearchQuerry({ ...obj });
+    },
+    [searchQuerry]
+  );
   return (
-    <div>
-      <div>
-        <Title level={5}>Sort by:</Title>
-      </div>
-      <Select
-        onChange={hanleClickChooseSelect}
-        value={sortType}
-        className="w-full"
-      >
-        {listSeclect.map((item) => (
-          <Option key={item.id} value={item.value} label={item.title}>
-            {item.title}
-          </Option>
-        ))}
-      </Select>
-    </div>
+    <Select
+      onChange={hanleClickChooseSelect}
+      value={
+        searchQuerry.get("sort")
+          ? searchQuerry.get("sort")
+          : SortProductType.DEFAULT
+      }
+      className="w-full"
+    >
+      {listSeclect.map((item) => (
+        <Option key={item.id} value={item.value} label={item.title}>
+          {item.title}
+        </Option>
+      ))}
+    </Select>
   );
 };
 

@@ -1,6 +1,7 @@
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
 import Select from "antd/lib/select";
+import { useSearchParams } from "react-router-dom";
 import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
 
 import { ICategory } from "types/category.model";
@@ -11,18 +12,19 @@ import {
   changeFilterCategory,
   changeProductPageSize
 } from "store/product.slice";
-import { fetchApi } from "helpers/function";
+import { getListCategories } from "store/category.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "store";
 import styles from "./searchBox.module.css";
 
 const { Option } = Select;
 const SearchBox = () => {
-  const { filterCategory } = useSelector((state: RootState) => state.products);
-  const [listCategory, setListCategory] = useState<ICategory[]>();
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const [searchQuerry, setSearchQuerry] = useSearchParams();
   const [inputValue, setInputValue] = useState<string>("");
   const [selectValue, setSelectValue] = useState<number>(-1);
   const dispatch = useDispatch<AppDispatch>();
+
   const handleChangeSelect = (value: number) => {
     setSelectValue(value);
   };
@@ -32,32 +34,29 @@ const SearchBox = () => {
   };
 
   const handleClickSearch = () => {
-    if (inputValue.trim() !== "") {
-      dispatch(changeFilerByName(inputValue));
-      dispatch(changeProductPageSize(1));
-      setInputValue("");
-    }
-    if (selectValue && selectValue >= -1) {
-      dispatch(changeFilterCategory(selectValue));
-      dispatch(changeProductPageSize(1));
-    }
+    const queryObj: any = {};
+    searchQuerry.forEach((value, key) => {
+      queryObj[key] = value;
+    });
+    inputValue.trim() !== ""
+      ? (queryObj.name = inputValue)
+      : delete queryObj.name;
+    queryObj.categoryId = selectValue + "";
+    queryObj.index = "1";
+    setSearchQuerry(queryObj);
+    setInputValue("");
   };
   useEffect(() => {
-    (async () => {
-      const responseListCategory: ICategory[] = await fetchApi(
-        `${SERVICE_API}/category`
-      );
-
-      setListCategory([
-        { id: -1, name: "All", ordinalNum: -1 },
-        ...responseListCategory
-      ]);
-    })();
-  }, []);
+    dispatch(getListCategories());
+  }, [dispatch, categories.length]);
 
   useEffect(() => {
-    setSelectValue(filterCategory);
-  }, [filterCategory]);
+    setSelectValue(
+      searchQuerry.get("categoryId")
+        ? Number(searchQuerry.get("categoryId"))
+        : -1
+    );
+  }, []);
   return (
     <div className={styles["search-box"]}>
       <div className="w-2/4">
@@ -70,25 +69,32 @@ const SearchBox = () => {
         />
       </div>
       <div className="w-1/3">
-        {listCategory && (
-          <Select
-            allowClear={true}
-            style={{ width: "100%" }}
-            value={selectValue}
-            onChange={handleChangeSelect}
-            defaultValue={filterCategory}
-          >
-            {listCategory.map((category) => (
-              <Option
-                key={category.id}
-                value={category.id}
-                label={category.name.toLocaleUpperCase()}
-              >
-                {category.name}
-              </Option>
-            ))}
-          </Select>
-        )}
+        <Select
+          style={{ width: "100%" }}
+          value={selectValue}
+          onChange={handleChangeSelect}
+          defaultValue={
+            searchQuerry.get("categoryId")
+              ? Number(searchQuerry.get("categoryId"))
+              : -1
+          }
+        >
+          <Option key={-1} value={-1} label={"All"}>
+            All
+          </Option>
+          <Option key={-2} value={-2} label={"Sale"}>
+            Sale
+          </Option>
+          {categories.map((category) => (
+            <Option
+              key={category.id}
+              value={category.id}
+              label={category.name.toLocaleUpperCase()}
+            >
+              {category.name}
+            </Option>
+          ))}
+        </Select>
       </div>
       <div>
         <Button
