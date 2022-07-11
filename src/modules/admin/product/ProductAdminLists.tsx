@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import Pagination from "antd/lib/pagination";
-import Space from "antd/lib/space";
 import Typography from "antd/lib/typography";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +17,6 @@ import FilterProduct from "./FilterProduct";
 const { Text } = Typography;
 const ProductAdminLists = () => {
   const [searchQuerry, setSearchQuerry] = useSearchParams();
-  const queryObj: any = {};
   const dispatch = useDispatch<AppDispatch>();
   const { productList, totalProduct } = useSelector(
     (state: RootState) => state.products
@@ -28,6 +26,7 @@ const ProductAdminLists = () => {
   const navigate = useNavigate();
   const handleClickPagination = (index: number) => {
     setPageIndex(index);
+    const queryObj: any = {};
     searchQuerry.forEach((value, key) => {
       queryObj[key] = value;
     });
@@ -37,6 +36,7 @@ const ProductAdminLists = () => {
 
   const getData = useCallback(
     async (index: number) => {
+      const queryObj: any = {};
       searchQuerry.forEach((value, key) => {
         queryObj[key] = value;
       });

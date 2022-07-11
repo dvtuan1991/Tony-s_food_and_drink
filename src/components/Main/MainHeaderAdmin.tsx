@@ -5,7 +5,6 @@ import HomeOutlined from "@ant-design/icons/HomeOutlined";
 
 const MainHeaderAdmin = () => {
   const location = useLocation();
-  console.log(location);
   const pathName = location?.pathname.split("/").filter((i) => i);
   const renderBreadcumItem = pathName.map((path, index) => {
     if (index === pathName.length - 1) {
@@ -18,14 +17,14 @@ const MainHeaderAdmin = () => {
       }
       if (!Number.isNaN(Number(path))) {
         return (
-          <Breadcrumb.Item className="text-base " key={index}>
+          <Breadcrumb.Item className="text-base" key={index}>
             detail
           </Breadcrumb.Item>
         );
       }
       if (Number.isNaN(parseInt(path, 2))) {
         return (
-          <Breadcrumb.Item className="text-base" key={index}>
+          <Breadcrumb.Item className="text-base capitalize" key={index}>
             {path}
           </Breadcrumb.Item>
         );
@@ -40,7 +39,7 @@ const MainHeaderAdmin = () => {
       );
     }
     return (
-      <Breadcrumb.Item className="text-base " key={index}>
+      <Breadcrumb.Item className="text-base capitalize" key={index}>
         <NavLink to={`/admin/${path}`}>{path}</NavLink>
       </Breadcrumb.Item>
     );

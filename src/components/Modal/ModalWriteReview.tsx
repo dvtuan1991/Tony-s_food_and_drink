@@ -40,8 +40,6 @@ const ModalWriteReview: FC<{
   };
 
   const handleClickOk = async () => {
-    console.log(userName);
-    console.log(user?.userName);
     const guestId = localStorage.getItem("guestId");
     const userInfo =
       user.id || user.id === 0
@@ -63,20 +61,18 @@ const ModalWriteReview: FC<{
       body: JSON.stringify(data)
     });
     if (responseUpdate.ok) {
-      const responseUpdateCart = await fetch(
-        `${SERVICE_API}/order/${cartId}/update`,
-        {
-          method: "PUT",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ isReview: true })
-        }
-      );
-      openNotification("success", "Thank you for your review");
-      action(cartId);
-      setIsModalVisible(false);
+      fetch(`${SERVICE_API}/order/${cartId}/update`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ isReview: true })
+      }).then(() => {
+        openNotification("success", "Thank you for your review");
+        action(cartId);
+        setIsModalVisible(false);
+      });
     }
   };
   const handleChangeCommnet = (e: ChangeEvent<HTMLTextAreaElement>) => {

@@ -1,12 +1,7 @@
 import Select from "antd/lib/select";
-import Typography from "antd/lib/typography";
-import { SERVICE_API } from "constants/configs";
 import { FC, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { AppDispatch, RootState } from "store";
 
-import { changeSortType, getListProductApp } from "store/product.slice";
 import { SortProductType } from "types/product.model";
 
 const listSeclect = [
@@ -39,7 +34,7 @@ const SelectSort: FC<{ pageSize: number }> = ({ pageSize }) => {
       obj.sort = value;
       setSearchQuerry({ ...obj });
     },
-    [searchQuerry]
+    [searchQuerry, setSearchQuerry]
   );
   return (
     <Select

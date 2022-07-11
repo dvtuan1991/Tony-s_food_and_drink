@@ -1,7 +1,7 @@
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import CloseOutlined from "@ant-design/icons/CloseOutlined";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -12,30 +12,32 @@ import Button from "antd/lib/button";
 import Spin from "antd/lib/spin";
 
 import { RootState } from "store";
-import {
-  getListProductApp,
-  changeProductPageSize,
-  changeFilerByName,
-  resetFilter
-} from "store/product.slice";
+import { getListProductApp } from "store/product.slice";
 import { APP_PAGE_SIZE, SERVICE_API } from "constants/configs";
 import ProductItem from "./ProductItem";
 
 const { Title, Text } = Typography;
 const ProductContainer = () => {
+  const ref = useRef<any>(null);
   const [searchQuerry, setSearchQuerry] = useSearchParams();
   const [pageIndex, setPageIndex] = useState<number>(1);
-  const {
-    productList,
-    totalProduct,
-    filterProductName,
-    productpageSize,
-    isProductLoading
-  } = useSelector((state: RootState) => state.products);
+  const { productList, totalProduct, isProductLoading } = useSelector(
+    (state: RootState) => state.products
+  );
   const dispatch: Dispatch<any> = useDispatch();
+  const executeScroll = () => {
+    ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   const handleClickPagi = (index: number) => {
-    dispatch(changeProductPageSize(index));
+    executeScroll();
+    setPageIndex(index);
+    const queryObj: any = {};
+    searchQuerry.forEach((value, key) => {
+      queryObj[key] = value;
+    });
+    queryObj.index = index + "";
+    setSearchQuerry(queryObj);
   };
 
   const handleClickRemoveSearchName = () => {
@@ -46,6 +48,7 @@ const ProductContainer = () => {
     delete queryObj.name;
     setSearchQuerry(queryObj);
   };
+
   const getData = useCallback(
     async (index: number) => {
       const queryObj: any = {};
@@ -71,8 +74,9 @@ const ProductContainer = () => {
   useEffect(() => {
     getData(pageIndex);
   }, [getData, pageIndex, searchQuerry]);
+  
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col" ref={ref}>
       <div className="px-5 mb-5">
         {searchQuerry.get("name") && searchQuerry.get("name") !== "" && (
           <Row align="middle" gutter={16}>
@@ -102,9 +106,9 @@ const ProductContainer = () => {
                   <ProductItem product={product} key={product.id} />
                 ))}
                 <Col span={24} className="mt-5">
-                  <div className="mb-5">
+                  <div className="mb-5" onClick={executeScroll}>
                     <Pagination
-                      current={productpageSize}
+                      current={pageIndex}
                       showSizeChanger={false}
                       pageSize={APP_PAGE_SIZE}
                       total={totalProduct}

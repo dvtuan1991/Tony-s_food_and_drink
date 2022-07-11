@@ -13,8 +13,6 @@ const ProductSlide = () => {
 
   const [min, setMin] = useState<number>(1);
   const [max, setMax] = useState<number>(100);
-  console.log(searchQuerry.get("min"));
-  console.log(searchQuerry.get("max"));
   const handeChaneSlide = (value: number[]) => {
     setMin(value[0]);
     setMax(value[1]);

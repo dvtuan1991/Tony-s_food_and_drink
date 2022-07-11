@@ -2,7 +2,6 @@ import Form from "antd/lib/form";
 import Input from "antd/lib/input/Input";
 import Modal from "antd/lib/modal/Modal";
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
 import EditOutlined from "@ant-design/icons/EditOutlined";
 
 import ActionButton from "components/Button/ActionButton";
@@ -10,13 +9,7 @@ import { ICategory } from "types/category.model";
 import { openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import ButtonAddNew from "components/Button/ButtonAddNew";
-
-import { AppDispatch } from "store";
-import {
-  addCategory,
-  getListCategories,
-  updateCategory
-} from "store/category.slice";
+import { defaultValidateMessages } from "helpers/common";
 
 const ModalEditable = ({
   handleEdit,
@@ -28,7 +21,6 @@ const ModalEditable = ({
   record?: ICategory;
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
   const buttonRef = useRef<any>();
   const handleClickOpen = () => {
     setIsModalVisible(true);
@@ -103,6 +95,7 @@ const ModalEditable = ({
         <Form
           initialValues={{ name: isCreate ? "" : record?.name }}
           onFinish={handleFormValue}
+          validateMessages={defaultValidateMessages}
           className="p-5"
         >
           <Form.Item

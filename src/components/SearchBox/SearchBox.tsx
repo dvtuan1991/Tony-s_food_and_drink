@@ -2,16 +2,9 @@ import Input from "antd/lib/input";
 import Button from "antd/lib/button";
 import Select from "antd/lib/select";
 import { useSearchParams } from "react-router-dom";
-import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
-
-import { ICategory } from "types/category.model";
+import SearchOutlined from "@ant-design/icons/SearchOutlined";
 import { ChangeEvent, useEffect, useState } from "react";
-import { SERVICE_API } from "constants/configs";
-import {
-  changeFilerByName,
-  changeFilterCategory,
-  changeProductPageSize
-} from "store/product.slice";
+
 import { getListCategories } from "store/category.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "store";
@@ -56,7 +49,7 @@ const SearchBox = () => {
         ? Number(searchQuerry.get("categoryId"))
         : -1
     );
-  }, []);
+  }, [searchQuerry]);
   return (
     <div className={styles["search-box"]}>
       <div className="w-2/4">
@@ -100,7 +93,7 @@ const SearchBox = () => {
         <Button
           onClick={handleClickSearch}
           className="w-[60px] text-white bg-[#009bbe] rounded active:bg-primary focus:bg-primary focus:text-white"
-          icon={<ArrowRightOutlined />}
+          icon={<SearchOutlined />}
         />
       </div>
     </div>

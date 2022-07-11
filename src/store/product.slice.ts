@@ -35,7 +35,7 @@ export const getListProductApp = createAsyncThunk(
       setTimeout(() => {
         const resListProduct = fetch(url);
         resolve(resListProduct);
-      }, 500);
+      }, 300);
     });
     const res = await promise;
     if (res.ok) {

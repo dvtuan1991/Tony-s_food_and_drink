@@ -20,7 +20,7 @@ const LayoutAdmin = () => {
   }
 
   return (
-    <div>
+    <div className="bg-[#fbfbfb] min-h-screen">
       {user.isAdmin && (
         <>
           <NavBarAdmin />

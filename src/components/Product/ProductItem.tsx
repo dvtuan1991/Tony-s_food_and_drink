@@ -64,7 +64,9 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
           )}
         </div>
         <div>
-          <Title level={5}>{product.name}</Title>
+          <Title level={5} className={"capitalize"}>
+            {product.name}
+          </Title>
           {product.oldPrice && product.oldPrice > product.newPrice ? (
             <div>
               <Space>

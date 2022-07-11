@@ -1,5 +1,4 @@
 import EditOutlined from "@ant-design/icons/EditOutlined";
-import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import Table from "antd/lib/table";

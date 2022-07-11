@@ -1,0 +1,54 @@
+.footer {
+  background: #000000d8;
+}
+
+.icon-box {
+  display: none;
+}
+
+.banner {
+  position: relative;
+  cursor: pointer;
+}
+
+.icon-box > div {
+  padding: 1rem;
+  border-radius: 50%;
+  background-color: #f2efe6;
+}
+
+.banner:hover .icon-box {
+  background-color: #282932;
+  transition: color 0.5s ease;
+}
+
+.banner:hover .icon-box > div {
+  background-color: #fff;
+  transition: color 0.5s ease;
+}
+
+.content {
+  padding: 40px 50px 40px 100px;
+}
+
+.list-solical {
+  display: flex;
+}
+
+@media (min-width: 992px) {
+}
+
+@media (min-width: 992px) {
+  .icon-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 100px;
+    background-color: #fff;
+  }
+}

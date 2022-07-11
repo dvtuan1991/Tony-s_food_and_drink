@@ -1,5 +1,11 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { fab } from "@fortawesome/free-brands-svg-icons";
+import {
+  fab,
+  faFacebookF,
+  faTwitter,
+  faInstagram,
+  faLinkedinIn
+} from "@fortawesome/free-brands-svg-icons";
 import {
   faMoneyBill1,
   faCartShopping,
@@ -10,7 +16,17 @@ import {
 import Container from "components/Layout/Container";
 import "./App.less";
 
-library.add(fab, faMoneyBill1, faCartShopping, faUser, faUtensils);
+library.add(
+  fab,
+  faMoneyBill1,
+  faCartShopping,
+  faUser,
+  faUtensils,
+  faFacebookF,
+  faTwitter,
+  faInstagram,
+  faLinkedinIn
+);
 function App() {
   return <Container />;
 }

@@ -158,7 +158,6 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
           validateMessages={defaultValidateMessages}
           initialValues={initFormValue}
           form={form}
-          
           onFinish={handleClickSubmitForm}
         >
           <Row gutter={16}>

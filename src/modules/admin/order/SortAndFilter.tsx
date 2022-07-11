@@ -52,7 +52,7 @@ const listFilterOrder = [
   },
   {
     id: 3,
-    label: "Canceled",
+    label: "Cancelled",
     value: FilterOrderType.CANCEL
   }
 ];

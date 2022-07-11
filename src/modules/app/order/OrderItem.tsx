@@ -80,12 +80,12 @@ const OrderItem: FC<{ order: IOrder }> = ({ order }) => {
       setStatus("Success");
       setClassName("text-[#26aa99]");
     }
-    if(order.isCancel) {
+    if (order.isCancel) {
       setStatus("Cancel");
       setClassName("text-[#ff4d4f]");
     }
     getData();
-  }, [getData, order.isComplete]);
+  }, [getData, order.isComplete, order.isCancel]);
   return (
     <div className={styles["order-content"]}>
       {listCart && (
@@ -149,7 +149,7 @@ const OrderItem: FC<{ order: IOrder }> = ({ order }) => {
                   )}
                 </Col>
                 <Col>
-                  <Text className="text-bold">Status:</Text>
+                  <Text className="text-bold mr-3">Status:</Text>
                   <Text className={className}>{status}</Text>
                 </Col>
               </Row>
