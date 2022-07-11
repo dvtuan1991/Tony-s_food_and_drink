@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { Dispatch } from "@reduxjs/toolkit";
-import Pagination from "antd/lib/pagination";
+import Pagination, { PaginationProps } from "antd/lib/pagination";
 import Tag from "antd/lib/tag";
 import Typography from "antd/lib/typography";
 import Button from "antd/lib/button";
@@ -16,6 +16,23 @@ import { getListProductApp } from "store/product.slice";
 import { APP_PAGE_SIZE, SERVICE_API } from "constants/configs";
 import ProductItem from "./ProductItem";
 
+const itemRender: PaginationProps["itemRender"] = (
+  _,
+  type,
+  originalElement
+) => {
+  if (type === "prev") {
+    return (
+      <a href="#product" className="scroll-smooth">
+        Previous
+      </a>
+    );
+  }
+  if (type === "next") {
+    return <a href="#product">Next</a>;
+  }
+  return originalElement;
+};
 const { Title, Text } = Typography;
 const ProductContainer = () => {
   const ref = useRef<any>(null);
@@ -74,9 +91,9 @@ const ProductContainer = () => {
   useEffect(() => {
     getData(pageIndex);
   }, [getData, pageIndex, searchQuerry]);
-  
+
   return (
-    <div className="flex flex-col" ref={ref}>
+    <div id="product" className="flex flex-col" ref={ref}>
       <div className="px-5 mb-5">
         {searchQuerry.get("name") && searchQuerry.get("name") !== "" && (
           <Row align="middle" gutter={16}>
@@ -113,6 +130,7 @@ const ProductContainer = () => {
                       pageSize={APP_PAGE_SIZE}
                       total={totalProduct}
                       onChange={handleClickPagi}
+                      itemRender={itemRender}
                     />
                   </div>
                 </Col>

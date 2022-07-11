@@ -29,7 +29,6 @@ interface FormProduct {
   newPrice: number;
   oldPrice?: number;
   isStock: string;
-  priority: number;
   file?: File;
 }
 
@@ -72,8 +71,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         categoryId: null,
         newPrice: 1,
         oldPrice: 1,
-        isStock: true,
-        priority: 0
+        isStock: true
       };
     }
     if (product) {
@@ -83,8 +81,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         categoryId: product.categoryId,
         newPrice: product.newPrice,
         oldPrice: product.oldPrice,
-        isStock: product.isStock,
-        priority: product.priority
+        isStock: product.isStock
       };
     }
   }, [product, isCreate]);
@@ -95,6 +92,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
   };
 
   const handleClickSubmitForm = async (value: FormProduct) => {
+    console.log(value);
     const formData = new FormData();
     if (isCreate && !file) {
       openNotification("error", "Image required");
@@ -105,8 +103,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
       value.oldPrice && formData.append("oldPrice", value.oldPrice + "");
       formData.append("categoryId", value.categoryId + "");
       formData.append("decription", value.decription);
-      formData.append("priority", value.priority + "");
-      formData.append("isStock", value.isStock === "yes" ? "true" : "false");
+      formData.append("isStock", value.isStock);
       formData.append("file", file);
       const res = await fetch(`${SERVICE_API}/product`, {
         method: "POST",
@@ -124,8 +121,7 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
         value.oldPrice && formData.append("oldPrice", value.oldPrice + "");
         formData.append("categoryId", value.categoryId + "");
         formData.append("decription", value.decription);
-        formData.append("priority", value.priority + "");
-        formData.append("isStock", value.isStock === "yes" ? "true" : "false");
+        formData.append("isStock", value.isStock);
         file && formData.append("file", file);
         const res = await fetch(`${SERVICE_API}/product/${product.id}`, {
           method: "PUT",
@@ -292,8 +288,12 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
                         <Text>Stock</Text>
                       </Col>
                       <Col>
-                        <Form.Item name="isStock" style={{ marginBottom: 0 }}>
-                          <Switch defaultChecked={initFormValue.isStock} />
+                        <Form.Item
+                          name="isStock"
+                          style={{ marginBottom: 0 }}
+                          valuePropName="checked"
+                        >
+                          <Switch className="bg-primary" />
                         </Form.Item>
                       </Col>
                     </Row>
@@ -321,130 +321,6 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
               </div>
             </Col>
           </Row>
-          <div className="p-5 hidden">
-            <Row justify="center">
-              <Col span={20}>
-                <Row justify="center" gutter={16}>
-                  <Col span={8}>
-                    <div
-                      className={styles["image-box"]}
-                      onClick={handleClickImage}
-                    >
-                      {isCreate ? (
-                        file ? (
-                          <img src={URL.createObjectURL(file)} alt="product" />
-                        ) : (
-                          <div />
-                        )
-                      ) : (
-                        <img
-                          src={
-                            file
-                              ? URL.createObjectURL(file)
-                              : `${SERVICE_API}/${product?.thumbnail}`
-                          }
-                          alt="product"
-                          className="w-full block h-[170px]"
-                        />
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      hidden
-                      ref={inputUploadRef}
-                      onChange={handleFileChange}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <div className={`${styles["input-box"]} mb-4`}>
-                      <Form.Item
-                        name="name"
-                        label="Food Name"
-                        rules={[{ required: true, max: 50 }]}
-                      >
-                        <Input placeholder="Food Name" />
-                      </Form.Item>
-                      <Form.Item
-                        label={"Category Name"}
-                        name="categoryId"
-                        rules={[{ required: true }]}
-                      >
-                        <Select allowClear={true} style={{ width: "100%" }}>
-                          {listCategory.map((category) => (
-                            <Option
-                              key={category.id}
-                              value={category.id}
-                              label={category.name.toLocaleUpperCase()}
-                            >
-                              {category.name}
-                            </Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                      <Form.Item name="priority" label="Priority">
-                        <Input />
-                      </Form.Item>
-                    </div>
-                  </Col>
-                  <Col span={6}>
-                    <div className={styles["input-box"]}>
-                      <Form.Item
-                        name="newPrice"
-                        label="New Price"
-                        rules={[
-                          { required: true, min: 1, max: 100, type: "number" }
-                        ]}
-                      >
-                        <InputNumber addonAfter="$" min={1} max={100} />
-                      </Form.Item>
-                      <Form.Item
-                        name="oldPrice"
-                        label="Old Price"
-                        rules={[{ min: 1, max: 100, type: "number" }]}
-                      >
-                        <InputNumber addonAfter="$" min={1} max={100} />
-                      </Form.Item>
-                      <Form.Item
-                        name="isStock"
-                        label="Is Stock"
-                        className="mb-3"
-                      >
-                        <Radio.Group options={["yes", "no"]} />
-                      </Form.Item>
-                    </div>
-                  </Col>
-                  <Col span={14}>
-                    <div className={styles["input-box"]}>
-                      <Form.Item
-                        name="decription"
-                        label="Decription"
-                        rules={[{ required: true }]}
-                      >
-                        <TextArea rows={6} />
-                      </Form.Item>
-                    </div>
-                    <Form.Item
-                      wrapperCol={{ offset: 8, span: 16 }}
-                      className="mt-5"
-                    >
-                      <Space>
-                        <Button type="primary" htmlType="submit">
-                          Save
-                        </Button>
-                        <Button
-                          className="text-orange-900"
-                          danger
-                          onClick={handleClickCancel}
-                        >
-                          Cancel
-                        </Button>
-                      </Space>
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </div>
         </Form>
       )}
     </div>

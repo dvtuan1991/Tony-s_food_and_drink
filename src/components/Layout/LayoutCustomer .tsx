@@ -25,22 +25,20 @@ const LayoutCustomer = () => {
     }
   }, [dispatch, user.id, guestId]);
   return (
-    // <div className="container mx-auto my-0">
-    <div className={styles.wrapper}>
-      <BackTop visibilityHeight={200} className="right-10" />
-      <Row>
-        <Col span={24} className="bg-white">
-          <HeaderCustomer />
-        </Col>
-        <Col span={24}>
-          <Outlet />
-        </Col>
-        <Col span={24}>
-          <FooterApp />
-        </Col>
-      </Row>
-    </div>
-    // </div>
+    <>
+      <div className={styles.wrapper}>
+        <BackTop visibilityHeight={200} className="right-10" />
+        <Row>
+          <Col span={24} className="bg-white">
+            <HeaderCustomer />
+          </Col>
+          <Col span={24} className="mb-11">
+            <Outlet />
+          </Col>
+        </Row>
+      </div>
+      <FooterApp />
+    </>
   );
 };
 
