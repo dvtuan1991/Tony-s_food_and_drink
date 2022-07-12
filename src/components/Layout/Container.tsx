@@ -7,6 +7,7 @@ import { RootState } from "store";
 import HomePage from "pages/app/HomePage";
 import { SERVICE_API } from "constants/configs";
 import { addUser, setLoading, setNoLoading } from "store/user.slice";
+import NotFoundPage from "pages/NotFoundPage";
 import LayoutAdmin from "./LayoutAdmin";
 import LayoutCustomer from "./LayoutCustomer ";
 
@@ -54,8 +55,12 @@ const Container = () => {
       <Route element={<LayoutCustomer />}>
         <Route path="/app" element={<HomePage />} />
         {renderRouteApp}
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
-      <Route element={<LayoutAdmin />}>{renderRouteAdmin}</Route>
+      <Route element={<LayoutAdmin />}>
+        {renderRouteAdmin}
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
     </Routes>
   );
 };
