@@ -1,11 +1,12 @@
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
-import CategoryCheckBox from "components/CheckBox/CategoryCheckBox";
-import ProductContainer from "components/Product/ProductContainer";
 
+import { APP_PAGE_SIZE } from "constants/configs";
+import ProductContainer from "components/Product/ProductContainer";
 import SearchBox from "components/SearchBox/SearchBox";
 import ProductSlide from "components/Slide/ProductSlide";
-import MainHeading from "../../components/Main/MainHeading";
+import SelectSort from "components/SelectCategory/SelectSort";
+import MainHeading from "components/Main/MainHeading";
 
 const HomePageContent = () => {
   return (
@@ -15,8 +16,10 @@ const HomePageContent = () => {
       <div className="mt-12">
         <Row gutter={8}>
           <Col span={6}>
-            <div className="pr-1">
-              <CategoryCheckBox />
+            <div>
+              <SelectSort pageSize={APP_PAGE_SIZE} />
+            </div>
+            <div className="mt-5 pr-1">
               <ProductSlide />
             </div>
           </Col>

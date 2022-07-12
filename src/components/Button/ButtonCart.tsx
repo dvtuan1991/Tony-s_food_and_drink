@@ -1,6 +1,6 @@
 import { Badge } from "antd";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { RootState } from "store";
 import { ShoppingCartOutlined } from "@ant-design/icons";
@@ -10,12 +10,11 @@ const ButtonCart = () => {
   const { total } = useSelector((state: RootState) => state.carts);
   return (
     <div className={styles.wrapIcon}>
-      <Link to="/cart">
+      <NavLink to="/cart">
         <Badge count={total} showZero>
           <ShoppingCartOutlined style={{ fontSize: "1.5rem" }} />
         </Badge>
-      </Link>
-      {/* <div className={styles.cartList}>test</div> */}
+      </NavLink>
     </div>
   );
 };

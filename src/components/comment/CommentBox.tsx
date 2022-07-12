@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Typography from "antd/lib/typography";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
@@ -46,12 +46,12 @@ const CommentBox: FC<{ productId: number }> = ({ productId }) => {
       setListStatistics(handleStaticResult(getListStatic));
       setTotal(getListStatic.leng);
     })();
-  }, []);
+  }, [productId]);
   return (
     <div className="p-5">
       {listStatistics && listComment && (
         <div className="p-5 border">
-          <Row >
+          <Row>
             <Col span={24}>
               <StatisticComment leng={total} statistics={listStatistics} />
             </Col>

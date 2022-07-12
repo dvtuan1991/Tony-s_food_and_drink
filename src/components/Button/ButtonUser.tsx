@@ -34,7 +34,7 @@ const ButtonUser = () => {
   };
   if (!user.userName) {
     return (
-      <Link to={"/login"} className="block p-1 border border-[#1890ff] rounded">
+      <Link to={"/login"} className="block p-1 border border-primary rounded">
         Login
       </Link>
     );
@@ -44,9 +44,11 @@ const ButtonUser = () => {
       <Popover
         content={
           <div className="flex flex-col ">
-            <Link to={"/profile"} className="block w-full  p-1">
-              Your Profile
-            </Link>
+            {user.isAdmin && (
+              <Link to={"/admin"} className="block w-full  p-1">
+                Go to Admin
+              </Link>
+            )}
             <Popconfirm
               title={"Do you want log out"}
               visible={visible}

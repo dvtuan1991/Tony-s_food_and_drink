@@ -12,7 +12,6 @@ const OrderAdminLists = () => {
   const { orders, sortType, filter, totalLeng } = useSelector(
     (state: RootState) => state.orders
   );
-  console.log(orders);
   const [pageIndex, setPageIndex] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
   const handleClickPaga = (index: number) => {

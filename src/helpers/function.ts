@@ -97,5 +97,5 @@ export const getAvgPoint = (total: number, listStatic: IStatisticComment[]) => {
     (total, curr) => total + curr.ratingPoint * curr.total,
     0
   );
-  return (totalPoint * 5) / (total * 5);
+  return totalPoint / total;
 };

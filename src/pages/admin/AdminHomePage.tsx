@@ -1,5 +1,7 @@
+import DashBoard from "modules/admin/dashboard/DashBoard";
+
 const AdminHomePage = () => {
-  return <div>{"AdminHomePage"}</div>;
+  return <DashBoard />;
 };
 
 export default AdminHomePage;

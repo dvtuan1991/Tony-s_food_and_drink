@@ -53,7 +53,7 @@ const OrderReview = () => {
               <Col span={16}>
                 <Space>
                   <Text className="capitalize">{cart.productName}</Text>
-                  <strong className="text-[#ea2251] ">{`x ${cart.quantity}`}</strong>
+                  <strong className="text-[#009bbe] ">{`x ${cart.quantity}`}</strong>
                 </Space>
               </Col>
               <Col span={8}>
@@ -78,7 +78,7 @@ const OrderReview = () => {
             <Title level={5}>SubTotal</Title>
           </Col>
           <Col span={8}>
-            <Text className="text-[#ea2251]">
+            <Text className="text-[#009bbe]">
               {changePriceOutput(totalPrice)}
             </Text>
           </Col>
@@ -90,7 +90,7 @@ const OrderReview = () => {
             <Title level={5}>Total</Title>
           </Col>
           <Col span={8}>
-            <strong className="text-[#ea2251]">
+            <strong className="text-[#009bbe]">
               {changePriceOutput(totalPrice)}
             </strong>
           </Col>

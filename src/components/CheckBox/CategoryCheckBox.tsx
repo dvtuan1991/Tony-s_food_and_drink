@@ -2,8 +2,6 @@ import Checkbox from "antd/lib/checkbox";
 import Typography from "antd/lib/typography";
 import Tag from "antd/lib/tag";
 import { useEffect, useState } from "react";
-import Row from "antd/lib/row";
-import Col from "antd/lib/col";
 
 import { SERVICE_API } from "constants/configs";
 import { fetchApi } from "helpers/function";
@@ -30,7 +28,7 @@ const CategoryCheckBox = () => {
           {listCategory.map((category) => (
             <div key={category.id}>
               <CheckableTag
-                className="bg-[#ea2251] text-sm mb-2 py-1 px-2 text-white rounded hover:bg-transparent hover:border-[#ea2251]"
+                className="bg-[#009bbe] text-sm mb-2 py-1 px-2 text-white rounded hover:bg-transparent hover:border-[#009bbe]"
                 checked={false}
               >
                 {category.name}

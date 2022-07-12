@@ -46,14 +46,14 @@ const CartList = () => {
       <div className="mt-5">
         <div className="mb-5">
           <Title level={3}>
-            Choose Your <span className="text-[#ea2251]">Food</span> :
+            Choose Your <span className="text-[#009bbe]">Food</span> :
           </Title>
         </div>
-        <div className="p-5 border border-solid border-t-4 border-t-[#ea2251] rounded-t">
+        <div className="p-5 border border-solid border-t-4 border-t-[#009bbe] rounded-t">
           <Text>Your cart is currently empty.</Text>
         </div>
         <Button
-          className="mt-5 bg-[#ea2251] rounded-[5px]"
+          className="mt-5 bg-[#009bbe] rounded-[5px]"
           type="primary"
           size="large"
           onClick={() => navigate("/")}
@@ -65,10 +65,10 @@ const CartList = () => {
   }
 
   return (
-    <div className="">
+    <div className="min-h-[500px]">
       <div className="mb-5">
         <Title level={3}>
-          Choose Your <span className="text-[#ea2251]">Food</span> :
+          Choose Your <span className="text-[#009bbe]">Food</span> :
         </Title>
       </div>
       <Row className="mb-5">
@@ -123,7 +123,7 @@ const CartList = () => {
                 getTotalPrice(cartsCheckOut)
               )}`}</Text>
               <Text
-                className="p-3 cursor-pointer bg-[#ea2251] text-white hover:border-[#ea2251] hover:text-black rounded"
+                className="p-3 cursor-pointer bg-[#009bbe] text-white hover:border-[#009bbe] hover:text-black rounded"
                 onClick={handleClickCheckOut}
               >
                 Check Out

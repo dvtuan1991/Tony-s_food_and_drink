@@ -9,11 +9,14 @@ import { ICategory } from "types/category.model";
 import { openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import ButtonAddNew from "components/Button/ButtonAddNew";
+import { defaultValidateMessages } from "helpers/common";
 
 const ModalEditable = ({
+  handleEdit,
   isCreate,
   record
 }: {
+  handleEdit: () => void;
   isCreate?: boolean;
   record?: ICategory;
 }) => {
@@ -33,6 +36,7 @@ const ModalEditable = ({
         }
       });
       if (res.ok) {
+        handleEdit();
         openNotification("success", "Create Success");
         setIsModalVisible(false);
       }
@@ -57,6 +61,7 @@ const ModalEditable = ({
           }
         );
         if (resUpdate.ok) {
+          handleEdit();
           openNotification("success", "Update Success");
           setIsModalVisible(false);
         }
@@ -86,11 +91,11 @@ const ModalEditable = ({
         onOk={hanleClickConfirm}
         onCancel={handleClickCancel}
         okText={<span className="text-[#000000d9]">OK</span>}
-        
       >
         <Form
           initialValues={{ name: isCreate ? "" : record?.name }}
           onFinish={handleFormValue}
+          validateMessages={defaultValidateMessages}
           className="p-5"
         >
           <Form.Item

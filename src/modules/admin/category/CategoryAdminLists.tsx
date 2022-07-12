@@ -29,13 +29,14 @@ const CategoryAdminLists = () => {
     [pageIndex]
   );
 
+  const handleChangeEdit = () => {
+    getData(pageIndex);
+  };
+
   const handleClickDelete = async (id: number | string) => {
     const responseProduct: IProduct[] = await fetchApi(
       `${SERVICE_API}/product/category/${id}`
     );
-    if (responseProduct.length > 0) {
-      console.log(responseProduct.length);
-    }
     if (responseProduct.length === 0) {
       const responseDelete = await fetch(
         `${SERVICE_API}/category/${id}/delete`,
@@ -55,10 +56,11 @@ const CategoryAdminLists = () => {
 
   return (
     <>
-      <ModalEditable isCreate={true} />
+      <ModalEditable isCreate={true} handleEdit={handleChangeEdit} />
       {listCategory && (
         <CategoryTable
           data={listCategory}
+          handleEdit={handleChangeEdit}
           handleClickDelete={handleClickDelete}
         />
       )}

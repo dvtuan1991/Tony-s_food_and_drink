@@ -1,6 +1,7 @@
 import Select from "antd/lib/select";
-import { useDispatch } from "react-redux";
-import { changeSortType } from "store/product.slice";
+import { FC, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
+
 import { SortProductType } from "types/product.model";
 
 const listSeclect = [
@@ -21,15 +22,28 @@ const listSeclect = [
   }
 ];
 const { Option } = Select;
-const SelectSort = () => {
-  const dispatch = useDispatch();
-  const hanleClickChooseSelect = (value: string) => {
-    dispatch(changeSortType(value));
-  };
+const SelectSort: FC<{ pageSize: number }> = ({ pageSize }) => {
+  const [searchQuerry, setSearchQuerry] = useSearchParams();
+
+  const hanleClickChooseSelect = useCallback(
+    (value: string) => {
+      const obj: any = {};
+      searchQuerry.forEach((value, key) => {
+        obj[key] = value;
+      });
+      obj.sort = value;
+      setSearchQuerry({ ...obj });
+    },
+    [searchQuerry, setSearchQuerry]
+  );
   return (
     <Select
       onChange={hanleClickChooseSelect}
-      defaultValue={SortProductType.DEFAULT}
+      value={
+        searchQuerry.get("sort")
+          ? searchQuerry.get("sort")
+          : SortProductType.DEFAULT
+      }
       className="w-full"
     >
       {listSeclect.map((item) => (

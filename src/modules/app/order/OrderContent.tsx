@@ -25,8 +25,8 @@ const OrderContent = () => {
   const guestId = localStorage.getItem("guestId");
 
   useEffect(() => {
-    if (user.id || Number(guestId)) {
-      const userId = user.id >= 0 ? user.id : Number(guestId);
+    if (user.userName || Number(guestId)) {
+      const userId = user.userName ? user.id : Number(guestId);
       const url = `${SERVICE_API}/orderlist/${userId}?index=${pageIndex}&limit=${ORDER_PAGE_SIZE}&sort=${sortType}&status=${filter}`;
       dispatch(getOrderList(url));
     }

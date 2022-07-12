@@ -1,7 +1,7 @@
 export enum SortOrderType {
   DEFAULT = "none",
   NEWEST = "new",
-  LASTEST = "last",
+  OLDEST = "old",
   ASCENT = "ascent",
   DECENT = "decent"
 }

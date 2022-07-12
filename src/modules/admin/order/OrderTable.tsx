@@ -1,6 +1,7 @@
 import Table, { ColumnsType } from "antd/lib/table";
 import Typography from "antd/lib/typography";
 import ModalOrderAdmin from "components/Modal/ModalOrderAdmin";
+import OrderStatusTag from "components/Tag/OrderStatusTag";
 import { changePriceOutput } from "helpers/function";
 import { FC } from "react";
 
@@ -8,8 +9,6 @@ import { IOrder } from "types/order.model";
 
 const { Text } = Typography;
 const OrderTable: FC<{ orders: IOrder[] }> = ({ orders }) => {
-  console.log(orders);
-
   const colums: ColumnsType<IOrder> = [
     {
       dataIndex: "ordinalNum",
@@ -18,7 +17,12 @@ const OrderTable: FC<{ orders: IOrder[] }> = ({ orders }) => {
       width: "5%"
     },
     {
-      title: "Shipping to",
+      title: "Customer Name",
+      dataIndex: "userName",
+      key: "userName"
+    },
+    {
+      title: "Location",
       dataIndex: "userAddress",
       key: "userAddress"
     },
@@ -30,15 +34,7 @@ const OrderTable: FC<{ orders: IOrder[] }> = ({ orders }) => {
     },
     {
       title: "Status",
-      render: (record: IOrder) => {
-        if (record.isCancel) {
-          return <Text>Cancel</Text>;
-        }
-        if (record.isComplete) {
-          return <Text>Complete</Text>;
-        }
-        return <Text>Shipping</Text>;
-      }
+      render: (record: IOrder) => <OrderStatusTag order={record} />
     },
     {
       title: "Action",
@@ -61,6 +57,7 @@ const OrderTable: FC<{ orders: IOrder[] }> = ({ orders }) => {
         pagination={false}
         className="min-h-[300px]"
         rowKey={(record) => record.id}
+        scroll={{ x: 400 }}
       />
     </div>
   );

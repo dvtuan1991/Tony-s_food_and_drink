@@ -43,7 +43,6 @@ export const createCart = createAsyncThunk(
     });
     if (responseAddOrder.ok) {
       const result = await responseAddOrder.json();
-      console.log(result);
       return result;
     }
   }
@@ -132,6 +131,11 @@ const cartSlice = createSlice({
       state.cartsCheckOut = [];
     },
 
+    removeCart: (state, { payload }) => {
+      const index = state.carts.findIndex((cart) => cart.id === payload);
+      state.carts.splice(index, 1);
+    },
+
     clearCart: (state) => {
       state.total = 0;
       state.carts = [];
@@ -188,6 +192,11 @@ const cartSlice = createSlice({
   }
 });
 
-export const { changeQuantity, setCartCheckOut, changeCartToOrder, clearCart } =
-  cartSlice.actions;
+export const {
+  changeQuantity,
+  setCartCheckOut,
+  changeCartToOrder,
+  removeCart,
+  clearCart
+} = cartSlice.actions;
 export default cartSlice.reducer;

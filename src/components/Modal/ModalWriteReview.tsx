@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import useWindowDimensions from "hooks/useWindowSize";
 import { SERVICE_API } from "constants/configs";
 import { RootState } from "store";
-import { openNotification } from "helpers/function";
+import { openNotification, setLimitTring } from "helpers/function";
 import { IProduct } from "types/product.model";
 import ProductImage from "components/Product/ProductImage";
 import styles from "./modal.module.css";
@@ -40,11 +40,9 @@ const ModalWriteReview: FC<{
   };
 
   const handleClickOk = async () => {
-    console.log(userName);
-    console.log(user?.userName);
     const guestId = localStorage.getItem("guestId");
     const userInfo =
-     ( user.id || user.id === 0)
+      user.id || user.id === 0
         ? { userId: user.id, userName: user.userName, userAvatar: user.avatar }
         : { userId: guestId, userName };
     const data = {
@@ -63,20 +61,18 @@ const ModalWriteReview: FC<{
       body: JSON.stringify(data)
     });
     if (responseUpdate.ok) {
-      const responseUpdateCart = await fetch(
-        `${SERVICE_API}/order/${cartId}/update`,
-        {
-          method: "PUT",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ isReview: true })
-        }
-      );
-      openNotification("success", "Thank you for your review");
-      action(cartId);
-      setIsModalVisible(false);
+      fetch(`${SERVICE_API}/order/${cartId}/update`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ isReview: true })
+      }).then(() => {
+        openNotification("success", "Thank you for your review");
+        action(cartId);
+        setIsModalVisible(false);
+      });
     }
   };
   const handleChangeCommnet = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -94,6 +90,7 @@ const ModalWriteReview: FC<{
       <Modal
         visible={isModalVisible}
         onOk={handleClickOk}
+        okText={<span className="text-[#000000d9]">OK</span>}
         onCancel={handleCliCkCancel}
         width={width}
       >
@@ -109,7 +106,7 @@ const ModalWriteReview: FC<{
                 <Title level={5} className="text-center">
                   {product.name}
                 </Title>
-                <Text>{product.decription}</Text>
+                <Text>{setLimitTring(product.decription, 300)}</Text>
               </div>
             </Col>
           </Row>

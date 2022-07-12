@@ -1,24 +1,59 @@
-import Menu from "antd/lib/menu";
-import { Link } from "react-router-dom";
-import { ItemType } from "antd/lib/menu/hooks/useItems";
+import Button from "antd/lib/button";
+import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import styles from "./navbar.module.css";
+import { addUser } from "store/user.slice";
+import { clearCart } from "store/cart.slice";
+import { IUser } from "types/user.model";
+import { openNotification } from "helpers/function";
+import styles from "components/NavBar/navbar.module.css";
+import Popconfirm from "antd/lib/popconfirm";
 
 const NavBarAdmin = () => {
-  const items: ItemType[] = [
-    { label: <Link to={"/admin"}>Home</Link>, key: "home" },
-    { label: <Link to={"/admin/category"}>Category</Link>, key: "category" },
-    { label: <Link to={"/admin/product"}>Product</Link>, key: "product" },
-    { label: <Link to={"/admin/order"}>Order</Link>, key: "order" }
-  ];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleClickLogout = () => {
+    dispatch(addUser({} as IUser));
+    dispatch(clearCart());
+    openNotification("info", "You're Log Out");
+    navigate("/");
+  };
+
   return (
     <div className={styles["navbar-admin"]}>
-      <Menu
-        items={items}
-        mode="vertical"
-        theme="dark"
-        className="p-5 w-full h-full"
-      />
+      <nav>
+        <ul>
+          <li>
+            <NavLink to={"/admin"}>Home</NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/category"}>Category</NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/product"}>Product</NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/order"}>Order</NavLink>
+          </li>
+          <li>
+            <Link to="/">Go to app</Link>
+          </li>
+          <li className="sm:ml-auto xs:ml-auto lg:ml-0  lg:mt-auto lg:mb-11">
+            <Popconfirm
+              title="do you want log out"
+              onConfirm={handleClickLogout}
+            >
+              <Button
+                type="link"
+                shape="circle"
+                icon={<LogoutOutlined />}
+                className="text-[#ffffffa6] hover:text-red-700"
+              />
+            </Popconfirm>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 };

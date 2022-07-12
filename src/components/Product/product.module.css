@@ -13,3 +13,14 @@
 .product-item:hover .product-item_footer {
   opacity: 1;
 }
+
+.product-tag-sale {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #009bbe;
+}
+
+.product-item:hover .product-tag-sale > span {
+  margin-top: 8px;
+}

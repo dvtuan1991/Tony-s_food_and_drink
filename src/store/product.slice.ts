@@ -1,20 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { APP_PAGE_SIZE, SERVICE_API } from "constants/configs";
+import { SERVICE_API } from "constants/configs";
+import { fetchApi } from "helpers/function";
 
 import { SortProductType, IProduct } from "types/product.model";
 
-interface FilterList {
-  price: { min: number; max: number };
-}
-
-interface SortAndFilter {
-  sortType: string;
-  filterList: FilterList;
-}
-
 interface InitProductState {
   sortType: string;
-  filterList: FilterList;
+  filterCategory: number;
+  filterProductName: string;
+  minPrice: number;
+  maxPrice: number;
+  productpageSize: number;
   isProductLoading: boolean;
   productList: IProduct[];
   totalProduct: number;
@@ -22,7 +18,11 @@ interface InitProductState {
 
 const initProductState: InitProductState = {
   sortType: SortProductType.DEFAULT,
-  filterList: {} as FilterList,
+  filterCategory: -1,
+  filterProductName: "",
+  minPrice: 1,
+  maxPrice: 100,
+  productpageSize: 1,
   isProductLoading: false,
   productList: [],
   totalProduct: 0
@@ -30,23 +30,31 @@ const initProductState: InitProductState = {
 
 export const getListProductApp = createAsyncThunk(
   "product/getListProductApp",
-  async ({
-    sortAndFilter,
-    pageIndex
-  }: {
-    sortAndFilter: SortAndFilter;
-    pageIndex: number;
-  }) => {
-    let price: string = "";
-    if (sortAndFilter.filterList.price) {
-      price = `&min=${sortAndFilter.filterList.price.min}&max=${sortAndFilter.filterList.price.max}`;
-    }
-    const resListProduct = await fetch(
-      `${SERVICE_API}/product/list?index=${pageIndex}&limit=${APP_PAGE_SIZE}&sort=${sortAndFilter.sortType}${price}`
-    );
-    if (resListProduct.ok) {
-      const result = await resListProduct.json();
-      console.log(result);
+  async (url: string) => {
+    const promise = new Promise<any>((resolve) => {
+      setTimeout(() => {
+        const resListProduct = fetch(url);
+        resolve(resListProduct);
+      }, 300);
+    });
+    const res = await promise;
+    if (res.ok) {
+      const result = await res.json();
+
+      if (result.listProduct.length > 0) {
+        const updateListProduct = await Promise.all(
+          result.listProduct.map(async (product: IProduct) => {
+            const getCategory = await fetchApi(
+              `${SERVICE_API}/category/${product.categoryId}`
+            );
+            return { ...product, categoryName: getCategory.name };
+          })
+        );
+        return {
+          listProduct: updateListProduct,
+          total: result.total
+        };
+      }
       return result;
     }
   }
@@ -55,17 +63,7 @@ export const getListProductApp = createAsyncThunk(
 const productSlice = createSlice({
   name: "products",
   initialState: initProductState,
-  reducers: {
-    changeSortType: (state, action) => {
-      state.sortType = action.payload;
-    },
-    changeFilterPrice: (
-      state,
-      action: PayloadAction<{ min: number; max: number }>
-    ) => {
-      state.filterList.price = action.payload;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getListProductApp.pending, (state) => {
@@ -84,7 +82,5 @@ const productSlice = createSlice({
       );
   }
 });
-
-export const { changeSortType, changeFilterPrice } = productSlice.actions;
 
 export default productSlice.reducer;

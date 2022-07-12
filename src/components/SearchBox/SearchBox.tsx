@@ -1,37 +1,102 @@
-import { Button, Form } from "antd";
 import Input from "antd/lib/input";
-import ArrowRightOutlined from "@ant-design/icons/ArrowRightOutlined";
+import Button from "antd/lib/button";
+import Select from "antd/lib/select";
+import { useSearchParams } from "react-router-dom";
+import SearchOutlined from "@ant-design/icons/SearchOutlined";
+import { ChangeEvent, useEffect, useState } from "react";
 
-import SelectCategory from "components/SelectCategory/SelectCategory";
+import { getListCategories } from "store/category.slice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "store";
 import styles from "./searchBox.module.css";
 
+const { Option } = Select;
 const SearchBox = () => {
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const [searchQuerry, setSearchQuerry] = useSearchParams();
+  const [inputValue, setInputValue] = useState<string>("");
+  const [selectValue, setSelectValue] = useState<number>(-1);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleChangeSelect = (value: number) => {
+    setSelectValue(value);
+  };
+
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleClickSearch = () => {
+    const queryObj: any = {};
+    searchQuerry.forEach((value, key) => {
+      queryObj[key] = value;
+    });
+    inputValue.trim() !== ""
+      ? (queryObj.name = inputValue)
+      : delete queryObj.name;
+    queryObj.categoryId = selectValue + "";
+    queryObj.index = "1";
+    setSearchQuerry(queryObj);
+    setInputValue("");
+  };
+  useEffect(() => {
+    dispatch(getListCategories());
+  }, [dispatch, categories.length]);
+
+  useEffect(() => {
+    setSelectValue(
+      searchQuerry.get("categoryId")
+        ? Number(searchQuerry.get("categoryId"))
+        : -1
+    );
+  }, [searchQuerry]);
   return (
-    <Form labelCol={{ span: 24 }} layout="inline">
-      <div className={styles["search-box"]}>
-        <div className="w-2/3">
-          <Form.Item name="Product Name">
-            <Input
-              className="rounded text-black"
-              placeholder="Enter food name here"
-              allowClear
-            />
-          </Form.Item>
-        </div>
-        <div className="w-1/3 flex">
-          <div className="w-4/5">
-            <SelectCategory label={""} selectName={"categoryId"} />
-          </div>
-          <Form.Item>
-            <Button
-              htmlType="submit"
-              className="w-[60px] text-white bg-[#ea2251] rounded"
-              icon={<ArrowRightOutlined />}
-            />
-          </Form.Item>
-        </div>
+    <div className={styles["search-box"]}>
+      <div className="w-2/4">
+        <Input
+          className="rounded text-black"
+          placeholder="Enter food name here"
+          value={inputValue}
+          onChange={handleChangeInput}
+          allowClear
+        />
       </div>
-    </Form>
+      <div className="w-1/3">
+        <Select
+          style={{ width: "100%" }}
+          value={selectValue}
+          onChange={handleChangeSelect}
+          defaultValue={
+            searchQuerry.get("categoryId")
+              ? Number(searchQuerry.get("categoryId"))
+              : -1
+          }
+        >
+          <Option key={-1} value={-1} label={"All"}>
+            All
+          </Option>
+          <Option key={-2} value={-2} label={"Sale"}>
+            Sale
+          </Option>
+          {categories.map((category) => (
+            <Option
+              key={category.id}
+              value={category.id}
+              label={category.name.toLocaleUpperCase()}
+            >
+              {category.name}
+            </Option>
+          ))}
+        </Select>
+      </div>
+      <div>
+        <Button
+          onClick={handleClickSearch}
+          className="w-[60px] text-white bg-[#009bbe] rounded active:bg-primary focus:bg-primary focus:text-white"
+          icon={<SearchOutlined />}
+        />
+      </div>
+    </div>
   );
 };
 

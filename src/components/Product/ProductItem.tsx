@@ -2,13 +2,16 @@ import { FC } from "react";
 import Typography from "antd/lib/typography";
 import Col from "antd/lib/col";
 import Button from "antd/lib/button";
+import Tag from "antd/lib/tag";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
+import Space from "antd/lib/space";
 
 import { RootState } from "store";
 import { createCart } from "store/cart.slice";
 import { SERVICE_API } from "constants/configs";
 import { IProduct } from "types/product.model";
+import { changePriceOutput } from "helpers/function";
 import ProductImage from "./ProductImage";
 import styles from "./product.module.css";
 
@@ -50,17 +53,43 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
   return (
     <Col span={8}>
       <div className={styles["product-item"]}>
-        <div className="w-full h-[220px] mb-5">
+        <div className="w-full h-[220px] mb-5 relative">
           <ProductImage product={product} />
+          {product.oldPrice && product.oldPrice > product.newPrice && (
+            <div className={styles["product-tag-sale"]}>
+              <Tag className="text-base text-white" color="#009bbe">
+                Sale
+              </Tag>
+            </div>
+          )}
         </div>
         <div>
-          <Title level={5}>{product.name}</Title>
-          <Text>{`$${product.newPrice.toFixed(2)}`}</Text>
+          <Title level={5} className={"capitalize"}>
+            {product.name}
+          </Title>
+          {product.oldPrice && product.oldPrice > product.newPrice ? (
+            <div>
+              <Space>
+                <Text delete className="text-[#aaa] text-base">
+                  {changePriceOutput(product.oldPrice)}
+                </Text>
+                <Text className="text-[#009bbe] text-lg">
+                  {changePriceOutput(product.newPrice)}
+                </Text>
+              </Space>
+            </div>
+          ) : (
+            <div>
+              <Text className="text-[#009bbe] text-base">
+                {changePriceOutput(product.newPrice)}
+              </Text>
+            </div>
+          )}
         </div>
         <div className={styles["product-item_footer"]}>
           <Button
             block
-            className="bg-[#ea2251] rounded hover:bg-[#ea2251] hover:text-white text-white focus:bg-[#ea2251] focus:text-white"
+            className="bg-[#009bbe] rounded hover:bg-[#009bbe] hover:text-white text-white focus:bg-[#009bbe] focus:text-white"
             onClick={handleClickAdd}
           >
             Add To Cart

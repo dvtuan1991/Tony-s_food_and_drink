@@ -19,8 +19,8 @@ const listSortOrder = [
   },
   {
     id: 2,
-    value: SortOrderType.LASTEST,
-    title: "Lastest"
+    value: SortOrderType.OLDEST,
+    title: "Oldest"
   },
   {
     id: 3,
@@ -36,19 +36,23 @@ const listSortOrder = [
 
 const listFilterOrder = [
   {
+    id: 0,
     label: "All",
     value: FilterOrderType.DEFAULT
   },
   {
+    id: 1,
     label: "Shipping",
     value: FilterOrderType.SHIPPING
   },
   {
-    label: "Complete",
+    id: 2,
+    label: "Completed",
     value: FilterOrderType.COMPLETE
   },
   {
-    label: "Cancel",
+    id: 3,
+    label: "Cancelled",
     value: FilterOrderType.CANCEL
   }
 ];
@@ -68,11 +72,14 @@ const SortAndFilter = () => {
     dispatch(changeSortType(SortOrderType.DEFAULT));
     dispatch(changeOrderFilter(FilterOrderType.DEFAULT));
   };
-  console.log(sortType, filter);
   return (
-    <Row align="middle" className="mt-5" gutter={16}>
-      <Col span={6}>
-        <Select value={sortType} onChange={handleChangeSort} className="w-full">
+    <Row align="middle" justify="space-between" className="mt-5" gutter={16}>
+      <Col xs={24} sm={24} lg={6}>
+        <Select
+          value={sortType}
+          onChange={handleChangeSort}
+          style={{ width: "100%" }}
+        >
           {listSortOrder.map((item) => (
             <Option key={item.id} label={item.title} value={item.value}>
               {item.title}
@@ -80,15 +87,23 @@ const SortAndFilter = () => {
           ))}
         </Select>
       </Col>
-      <Col span={6}>
-        <Radio.Group
-          value={filter}
-          options={listFilterOrder}
-          onChange={handleChangeFilter}
-        />
+      <Col xs={24} sm={24} lg={16}>
+        <Radio.Group value={filter} onChange={handleChangeFilter}>
+          {listFilterOrder.map((item) => (
+            <Radio.Button
+              key={item.id}
+              style={{ marginRight: 8 }}
+              value={item.value}
+            >
+              {item.label}
+            </Radio.Button>
+          ))}
+        </Radio.Group>
       </Col>
-      <Col>
-        <Button onClick={handleClickReset}>Reset</Button>
+      <Col className="mr-3">
+        <Button type="text" className="text-primary" onClick={handleClickReset}>
+          Reset
+        </Button>
       </Col>
     </Row>
   );
