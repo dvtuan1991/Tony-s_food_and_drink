@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import Pagination from "antd/lib/pagination";
 import Button from "antd/lib/button";
 import { useDispatch, useSelector } from "react-redux";
+import Spin from "antd/lib/spin";
 import { useNavigate } from "react-router-dom";
 
 import Typography from "antd/lib/typography";
@@ -15,14 +16,24 @@ import OrderItem from "./OrderItem";
 
 const { Title } = Typography;
 const OrderContent = () => {
+  const myRef = useRef<any>(null);
   const { user } = useSelector((state: RootState) => state.users);
-  const { orders, sortType, filter, totalLeng } = useSelector(
+  const { orders, sortType, filter, totalLeng, isOrderLoading } = useSelector(
     (state: RootState) => state.orders
   );
   const [pageIndex, setPageIndex] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const guestId = localStorage.getItem("guestId");
+
+  const scollToView = () => {
+    myRef.current && myRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleChange = (index: number) => {
+    setPageIndex(index);
+    scollToView();
+  };
 
   useEffect(() => {
     if (user.userName || Number(guestId)) {
@@ -49,9 +60,9 @@ const OrderContent = () => {
     );
   }
   return (
-    <Row justify="center">
-      {orders.length && (
-        <>
+    <div ref={myRef}>
+      <Spin spinning={isOrderLoading}>
+        <Row justify="center">
           <Col span={24}>
             <Title level={3}>Your Order</Title>
           </Col>
@@ -70,12 +81,12 @@ const OrderContent = () => {
               pageSize={ORDER_PAGE_SIZE}
               total={totalLeng}
               showSizeChanger={false}
-              onChange={setPageIndex}
+              onChange={handleChange}
             />
           </Col>
-        </>
-      )}
-    </Row>
+        </Row>
+      </Spin>
+    </div>
   );
 };
 
