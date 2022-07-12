@@ -10,6 +10,8 @@ import Tag from "antd/lib/tag";
 import Typography from "antd/lib/typography";
 import Button from "antd/lib/button";
 import Spin from "antd/lib/spin";
+import LeftOutlined from "@ant-design/icons/LeftOutlined";
+import RightOutlined from "@ant-design/icons/RightOutlined";
 
 import { RootState } from "store";
 import { getListProductApp } from "store/product.slice";
@@ -23,13 +25,17 @@ const itemRender: PaginationProps["itemRender"] = (
 ) => {
   if (type === "prev") {
     return (
-      <a href="#product" className="scroll-smooth">
-        Previous
+      <a href="#product" className="scroll-smooth ant-pagination-item-link ">
+        <LeftOutlined />
       </a>
     );
   }
   if (type === "next") {
-    return <a href="#product">Next</a>;
+    return (
+      <a href="#product" className="scroll-smooth ant-pagination-item-link ">
+        <RightOutlined />
+      </a>
+    );
   }
   return originalElement;
 };

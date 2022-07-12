@@ -22,7 +22,7 @@ const listSeclect = [
   }
 ];
 const { Option } = Select;
-const SelectSort: FC<{ pageSize: number }> = ({ pageSize }) => {
+const SelectSort: FC = () => {
   const [searchQuerry, setSearchQuerry] = useSearchParams();
 
   const hanleClickChooseSelect = useCallback(

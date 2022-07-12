@@ -4,21 +4,22 @@ import Col from "antd/lib/col";
 import Button from "antd/lib/button";
 import Tag from "antd/lib/tag";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
+import { Link } from "react-router-dom";
 import Space from "antd/lib/space";
-
-import { RootState } from "store";
+import EyeOutlined from "@ant-design/icons/EyeOutlined";
+import ShoppingCartOutlined from "@ant-design/icons/ShoppingCartOutlined";
+import { AppDispatch, RootState } from "store";
 import { createCart } from "store/cart.slice";
 import { SERVICE_API } from "constants/configs";
 import { IProduct } from "types/product.model";
-import { changePriceOutput } from "helpers/function";
+import { changePriceOutput, openNotification } from "helpers/function";
 import ProductImage from "./ProductImage";
 import styles from "./product.module.css";
 
 const { Title, Text } = Typography;
 const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
   const { user } = useSelector((state: RootState) => state.users);
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const handleClickAdd = async () => {
     let userId: number = -1;
     const guestId = localStorage.getItem("guestId");
@@ -48,7 +49,11 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
         quantity: 1,
         isNew: true
       })
-    );
+    )
+      .unwrap()
+      .then(() => {
+        openNotification("info", "Add to Cart success");
+      });
   };
   return (
     <Col span={8}>
@@ -87,13 +92,15 @@ const ProductItem: FC<{ product: IProduct }> = ({ product }) => {
           )}
         </div>
         <div className={styles["product-item_footer"]}>
-          <Button
-            block
-            className="bg-[#009bbe] rounded hover:bg-[#009bbe] hover:text-white text-white focus:bg-[#009bbe] focus:text-white"
+          <Link to={`/product/${product.id}`} className={styles["circle-icon"]}>
+            <EyeOutlined />
+          </Link>
+          <Text
+            className={`${styles["circle-icon"]} text-white ml-3`}
             onClick={handleClickAdd}
           >
-            Add To Cart
-          </Button>
+            <ShoppingCartOutlined />
+          </Text>
         </div>
       </div>
     </Col>

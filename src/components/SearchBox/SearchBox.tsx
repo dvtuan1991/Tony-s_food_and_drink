@@ -1,26 +1,12 @@
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
-import Select from "antd/lib/select";
 import { useSearchParams } from "react-router-dom";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
-import { getListCategories } from "store/category.slice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "store";
-import styles from "./searchBox.module.css";
-
-const { Option } = Select;
 const SearchBox = () => {
-  const { categories } = useSelector((state: RootState) => state.categories);
   const [searchQuerry, setSearchQuerry] = useSearchParams();
   const [inputValue, setInputValue] = useState<string>("");
-  const [selectValue, setSelectValue] = useState<number>(-1);
-  const dispatch = useDispatch<AppDispatch>();
-
-  const handleChangeSelect = (value: number) => {
-    setSelectValue(value);
-  };
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -34,65 +20,26 @@ const SearchBox = () => {
     inputValue.trim() !== ""
       ? (queryObj.name = inputValue)
       : delete queryObj.name;
-    queryObj.categoryId = selectValue + "";
     queryObj.index = "1";
     setSearchQuerry(queryObj);
     setInputValue("");
   };
-  useEffect(() => {
-    dispatch(getListCategories());
-  }, [dispatch, categories.length]);
 
-  useEffect(() => {
-    setSelectValue(
-      searchQuerry.get("categoryId")
-        ? Number(searchQuerry.get("categoryId"))
-        : -1
-    );
-  }, [searchQuerry]);
   return (
-    <div className={styles["search-box"]}>
-      <div className="w-2/4">
+    <div className="flex">
+      <div className="flex-grow-[2]">
         <Input
-          className="rounded text-black"
+          className=" text-black"
           placeholder="Enter food name here"
           value={inputValue}
           onChange={handleChangeInput}
           allowClear
         />
       </div>
-      <div className="w-1/3">
-        <Select
-          style={{ width: "100%" }}
-          value={selectValue}
-          onChange={handleChangeSelect}
-          defaultValue={
-            searchQuerry.get("categoryId")
-              ? Number(searchQuerry.get("categoryId"))
-              : -1
-          }
-        >
-          <Option key={-1} value={-1} label={"All"}>
-            All
-          </Option>
-          <Option key={-2} value={-2} label={"Sale"}>
-            Sale
-          </Option>
-          {categories.map((category) => (
-            <Option
-              key={category.id}
-              value={category.id}
-              label={category.name.toLocaleUpperCase()}
-            >
-              {category.name}
-            </Option>
-          ))}
-        </Select>
-      </div>
       <div>
         <Button
           onClick={handleClickSearch}
-          className="w-[60px] text-white bg-[#009bbe] rounded active:bg-primary focus:bg-primary focus:text-white"
+          className="w-[60px] text-white bg-[#009bbe]  active:bg-primary focus:bg-primary focus:text-white"
           icon={<SearchOutlined />}
         />
       </div>

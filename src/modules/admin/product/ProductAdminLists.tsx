@@ -85,7 +85,7 @@ const ProductAdminLists = () => {
               <Text>Sort By: </Text>
             </Col>
             <Col className="flex-grow">
-              <SelectSort pageSize={PAGE_SIZE} />
+              <SelectSort />
             </Col>
           </Row>
         </Col>
