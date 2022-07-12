@@ -24,18 +24,7 @@ export const getListCategories = createAsyncThunk(
 const categorySlice = createSlice({
   name: "categories",
   initialState: initCategoryState,
-  reducers: {
-    addCategory: (state, { payload }) => {
-      state.categories.unshift(payload);
-    },
-    updateCategory: (state, { payload }) => {
-      state.categories.forEach((category) => {
-        if (category.id === payload.id) {
-          category = payload;
-        }
-      });
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getListCategories.pending, (state) => {
@@ -50,5 +39,4 @@ const categorySlice = createSlice({
       );
   }
 });
-export const { addCategory, updateCategory } = categorySlice.actions;
 export default categorySlice.reducer;

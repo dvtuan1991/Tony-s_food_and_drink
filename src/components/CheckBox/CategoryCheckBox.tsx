@@ -2,8 +2,6 @@ import Checkbox from "antd/lib/checkbox";
 import Typography from "antd/lib/typography";
 import Tag from "antd/lib/tag";
 import { useEffect, useState } from "react";
-import Row from "antd/lib/row";
-import Col from "antd/lib/col";
 
 import { SERVICE_API } from "constants/configs";
 import { fetchApi } from "helpers/function";

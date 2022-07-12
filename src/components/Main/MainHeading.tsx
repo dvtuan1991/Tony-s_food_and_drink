@@ -1,5 +1,5 @@
 import { Col, Row, Typography } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import  { useCallback, useEffect, useState } from "react";
 import { IProduct } from "../../types/product.model";
 import HotProduct from "../Product/HotProduct";
 

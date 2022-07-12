@@ -3,7 +3,6 @@ import Row from "antd/lib/row";
 import Typography from "antd/lib/typography";
 import PhoneOutlined from "@ant-design/icons/PhoneOutlined";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 
 import banner from "assets/footer-banner.jpg";
 import styles from "./footer.module.css";
@@ -48,34 +47,34 @@ const FooterApp = () => {
           <Col span={"auto"}>
             <nav className="mt-16">
               <ul className={styles["list-solical"]}>
-                <li >
-                  <Link to={"/"}>
+                <li>
+                  <a href={"https://www.facebook.com"}>
                     <FontAwesomeIcon icon={["fab", "facebook-f"]} />
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link to={"/"}>
+                  <a href={"https://www.twitter.com/"}>
                     <FontAwesomeIcon icon={["fab", "twitter"]} />
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link to={"/"}>
+                  <a href={"https://www.instagram.com/"}>
                     <FontAwesomeIcon icon={["fab", "instagram"]} />
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link to={"/"}>
+                  <a href={"https://vn.linkedin.com/"}>
                     <FontAwesomeIcon icon={["fab", "linkedin-in"]} />
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </nav>
           </Col>
         </Row>
         <Row justify="center">
-        <Col span={"auto"} className="mt-5 mb-11">
-          <Text>© Copyright - Tony's Restaurant</Text>
-        </Col>
+          <Col span={"auto"} className="mt-5 mb-11">
+            <Text>© 2022 - Tony's Restaurant. All rights reserved</Text>
+          </Col>
         </Row>
       </div>
     </div>

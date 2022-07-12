@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Col from "antd/lib/col";
 import Row from "antd/lib/row";
 import Typography from "antd/lib/typography";
@@ -26,6 +26,9 @@ const StatisticComment: FC<StatisticCommentProp> = ({ leng, statistics }) => {
     dispatch(changeFilterComment(e.target.value));
     dispatch(changePageIndex(1));
   };
+  useEffect(() => {
+    dispatch(changeFilterComment(0));
+  }, []);
   return (
     <div>
       <div className="mb-5">

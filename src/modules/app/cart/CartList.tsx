@@ -65,7 +65,7 @@ const CartList = () => {
   }
 
   return (
-    <div className="">
+    <div className="min-h-[500px]">
       <div className="mb-5">
         <Title level={3}>
           Choose Your <span className="text-[#009bbe]">Food</span> :

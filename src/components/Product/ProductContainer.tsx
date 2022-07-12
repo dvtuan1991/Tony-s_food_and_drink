@@ -93,7 +93,7 @@ const ProductContainer = () => {
   }, [getData, pageIndex, searchQuerry]);
 
   return (
-    <div id="product" className="flex flex-col" ref={ref}>
+    <div id="product" className="flex flex-col min-h-[600px]" ref={ref}>
       <div className="px-5 mb-5">
         {searchQuerry.get("name") && searchQuerry.get("name") !== "" && (
           <Row align="middle" gutter={16}>

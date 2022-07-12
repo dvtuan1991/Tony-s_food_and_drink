@@ -13,7 +13,6 @@ const ProductAdminDetail = () => {
   const getData = useCallback(async () => {
     if (id) {
       const product: IProduct = await fetchApi(`${SERVICE_API}/product/${id}`);
-      console.log(product);
       if (product) {
         setProduct(product);
       } else {

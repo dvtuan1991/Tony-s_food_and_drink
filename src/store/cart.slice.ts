@@ -43,7 +43,6 @@ export const createCart = createAsyncThunk(
     });
     if (responseAddOrder.ok) {
       const result = await responseAddOrder.json();
-      console.log(result);
       return result;
     }
   }
@@ -193,6 +192,11 @@ const cartSlice = createSlice({
   }
 });
 
-export const { changeQuantity, setCartCheckOut, changeCartToOrder, removeCart, clearCart } =
-  cartSlice.actions;
+export const {
+  changeQuantity,
+  setCartCheckOut,
+  changeCartToOrder,
+  removeCart,
+  clearCart
+} = cartSlice.actions;
 export default cartSlice.reducer;

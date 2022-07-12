@@ -92,7 +92,6 @@ const ProductAdminForm: FC<{ product?: IProduct; isCreate?: boolean }> = ({
   };
 
   const handleClickSubmitForm = async (value: FormProduct) => {
-    console.log(value);
     const formData = new FormData();
     if (isCreate && !file) {
       openNotification("error", "Image required");

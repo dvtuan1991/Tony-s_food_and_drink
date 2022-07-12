@@ -1,6 +1,6 @@
 import Menu from "antd/lib/menu";
 import { ItemType } from "antd/lib/menu/hooks/useItems";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import {  NavLink, useLocation } from "react-router-dom";
 
 const NavbarCustomer = () => {
   const location = useLocation();

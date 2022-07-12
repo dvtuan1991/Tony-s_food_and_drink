@@ -63,34 +63,7 @@ export const getListProductApp = createAsyncThunk(
 const productSlice = createSlice({
   name: "products",
   initialState: initProductState,
-  reducers: {
-    changeSortType: (state, action) => {
-      state.sortType = action.payload;
-    },
-    changeFilterPrice: (
-      state,
-      action: PayloadAction<{ min: number; max: number }>
-    ) => {
-      state.minPrice = action.payload.min;
-      state.maxPrice = action.payload.max;
-    },
-    changeFilerByName: (state, { payload }) => {
-      state.filterProductName = payload;
-    },
-    changeFilterCategory: (state, { payload }) => {
-      state.filterCategory = payload;
-    },
-    changeProductPageSize: (state, { payload }) => {
-      state.productpageSize = payload;
-    },
-    resetFilter: (state) => {
-      state.minPrice = initProductState.minPrice;
-      state.maxPrice = initProductState.maxPrice;
-      state.filterCategory = initProductState.filterCategory;
-      state.filterProductName = initProductState.filterProductName;
-      state.productpageSize = initProductState.productpageSize;
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getListProductApp.pending, (state) => {
@@ -109,14 +82,5 @@ const productSlice = createSlice({
       );
   }
 });
-
-export const {
-  changeSortType,
-  changeFilterPrice,
-  changeFilerByName,
-  changeFilterCategory,
-  changeProductPageSize,
-  resetFilter
-} = productSlice.actions;
 
 export default productSlice.reducer;

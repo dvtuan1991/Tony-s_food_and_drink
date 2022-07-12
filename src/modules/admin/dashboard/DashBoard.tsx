@@ -29,7 +29,6 @@ const DashBoard = () => {
       const getAnalyticOrderList = await fetchApi(
         `${SERVICE_API}/orderlist/adminstatic`
       );
-      console.log(getAnalyticsOrder);
 
       setAnalyticData({
         totalIncome: getAnalyticsOrder.totalPrice,
