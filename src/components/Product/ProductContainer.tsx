@@ -75,7 +75,6 @@ const ProductContainer = () => {
       const url = `${SERVICE_API}/product/list?${
         queryObj.index ? "" : `index=${index}`
       }
-      
       &limit=${APP_PAGE_SIZE}&${new URLSearchParams(queryObj)}`;
       if (queryObj.index) {
         setPageIndex(Number(queryObj.index));
