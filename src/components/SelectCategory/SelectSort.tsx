@@ -1,5 +1,5 @@
 import Select from "antd/lib/select";
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { SortProductType } from "types/product.model";
@@ -22,7 +22,7 @@ const listSeclect = [
   }
 ];
 const { Option } = Select;
-const SelectSort: FC = () => {
+const SelectSort = () => {
   const [searchQuerry, setSearchQuerry] = useSearchParams();
 
   const hanleClickChooseSelect = useCallback(

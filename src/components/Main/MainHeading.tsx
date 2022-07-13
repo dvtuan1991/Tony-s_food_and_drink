@@ -1,10 +1,11 @@
 import { Col, Row, Typography } from "antd";
+import { FC } from "react";
 
 import SearchBox from "components/SearchBox/SearchBox";
 import Banner from "./Banner";
 
 const { Text } = Typography;
-const MainHeading = () => {
+const MainHeading: FC<{scroll: () => void}> = ({scroll}) => {
   return (
     <>
       <Row justify="space-around" align="middle">
@@ -15,7 +16,7 @@ const MainHeading = () => {
           <Text>Quick & Delicious</Text>
         </Col>
         <Col span={12}>
-          <SearchBox />
+          <SearchBox scroll={scroll} />
         </Col>
       </Row>
       <Banner />

@@ -10,6 +10,7 @@ import { openNotification } from "helpers/function";
 import { SERVICE_API } from "constants/configs";
 import ButtonAddNew from "components/Button/ButtonAddNew";
 import { defaultValidateMessages } from "helpers/common";
+import { useForm } from "antd/lib/form/Form";
 
 const ModalEditable = ({
   handleEdit,
@@ -22,6 +23,7 @@ const ModalEditable = ({
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const buttonRef = useRef<any>();
+  const [form] = useForm();
   const handleClickOpen = () => {
     setIsModalVisible(true);
   };
@@ -37,6 +39,7 @@ const ModalEditable = ({
       });
       if (res.ok) {
         handleEdit();
+        form.setFieldsValue({ name: "" });
         openNotification("success", "Create Success");
         setIsModalVisible(false);
       }
@@ -96,6 +99,7 @@ const ModalEditable = ({
           initialValues={{ name: isCreate ? "" : record?.name }}
           onFinish={handleFormValue}
           validateMessages={defaultValidateMessages}
+          form={form}
           className="p-5"
         >
           <Form.Item

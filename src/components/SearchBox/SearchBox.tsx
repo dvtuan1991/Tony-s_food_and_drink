@@ -2,26 +2,17 @@ import Input from "antd/lib/input";
 import Button from "antd/lib/button";
 import { useSearchParams } from "react-router-dom";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, FC } from "react";
 
-const SearchBox = () => {
+const SearchBox: FC<{ scroll: () => void }> = ({ scroll }) => {
   const [searchQuerry, setSearchQuerry] = useSearchParams();
   const [inputValue, setInputValue] = useState<string>("");
-
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
   const handleClickSearch = () => {
-    const queryObj: any = {};
-    searchQuerry.forEach((value, key) => {
-      queryObj[key] = value;
-    });
-    inputValue.trim() !== ""
-      ? (queryObj.name = inputValue)
-      : delete queryObj.name;
-    queryObj.index = "1";
-    setSearchQuerry(queryObj);
+    setSearchQuerry({ name: inputValue.toLowerCase() });
     setInputValue("");
   };
 
@@ -36,7 +27,7 @@ const SearchBox = () => {
           allowClear
         />
       </div>
-      <div>
+      <div onClick={scroll}>
         <Button
           onClick={handleClickSearch}
           className="w-[60px] text-white bg-[#009bbe]  active:bg-primary focus:bg-primary focus:text-white"

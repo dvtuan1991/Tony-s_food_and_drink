@@ -31,8 +31,8 @@ const OrderContent = () => {
   };
 
   const handleChange = (index: number) => {
-    setPageIndex(index);
     scollToView();
+    setPageIndex(index);
   };
 
   useEffect(() => {

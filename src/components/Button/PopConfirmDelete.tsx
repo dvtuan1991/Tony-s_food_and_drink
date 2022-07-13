@@ -6,7 +6,7 @@ import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 interface PopConfirmDeleteProps {
   title: string;
   id: number | string;
-  handleConfirmDelete: (id: number | string) => void;
+  handleConfirmDelete: (id: number | string) => Promise<void>;
 }
 
 const PopConfirmDelete: FC<PopConfirmDeleteProps> = ({
@@ -23,6 +23,8 @@ const PopConfirmDelete: FC<PopConfirmDeleteProps> = ({
   const handleok = () => {
     setConfirmLoading(true);
     handleConfirmDelete(id);
+    setConfirmLoading(false);
+    setVisible(false);
   };
 
   const handleClickButton = () => {

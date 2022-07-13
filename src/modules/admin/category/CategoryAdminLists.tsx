@@ -49,6 +49,9 @@ const CategoryAdminLists = () => {
         openNotification("success", "Delete Success");
       }
     }
+    if (responseProduct.length > 0) {
+      openNotification("error", "Can't not delete this Category");
+    }
   };
   useEffect(() => {
     getData(pageIndex);

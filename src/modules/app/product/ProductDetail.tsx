@@ -27,7 +27,7 @@ const ProductDetail = () => {
   }, [getData]);
 
   return (
-    <div className="product-content">
+    <div className="product-content min-h-[500px]">
       {product && (
         <>
           <ProductContent product={product} />

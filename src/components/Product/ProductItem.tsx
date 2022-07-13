@@ -1,13 +1,13 @@
 import { FC } from "react";
 import Typography from "antd/lib/typography";
 import Col from "antd/lib/col";
-import Button from "antd/lib/button";
 import Tag from "antd/lib/tag";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Space from "antd/lib/space";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import ShoppingCartOutlined from "@ant-design/icons/ShoppingCartOutlined";
+
 import { AppDispatch, RootState } from "store";
 import { createCart } from "store/cart.slice";
 import { SERVICE_API } from "constants/configs";

@@ -16,7 +16,7 @@ export type Breakpoint = "xxl" | "xl" | "lg" | "md" | "sm" | "xs";
 
 const ProductTable: FC<{
   data: IProduct[];
-  handleClickDelete: (id: number | string) => void;
+  handleClickDelete: (id: number | string) => Promise<void>;
 }> = ({ data, handleClickDelete }) => {
   const { isProductLoading } = useSelector(
     (state: RootState) => state.products

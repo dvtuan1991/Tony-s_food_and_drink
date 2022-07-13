@@ -89,12 +89,6 @@ const orderSlice = createSlice({
   name: "orders",
   initialState: initOrderState,
   reducers: {
-    changeSortType: (state, action) => {
-      state.sortType = action.payload;
-    },
-    changeOrderFilter: (state, action) => {
-      state.filter = action.payload;
-    },
     clearOrder: (state) => {
       state.orders = [];
     }
@@ -141,15 +135,13 @@ const orderSlice = createSlice({
         state.isOrderLoading = false;
       })
 
-      .addCase(
-        updateUserIdInOrder.fulfilled,
-        (state, action: PayloadAction<IOrder[]>) => {
-          state.orders = action.payload;
-          state.totalLeng = state.orders.length;
-        }
-      );
+      .addCase(updateUserIdInOrder.pending, (state) => {
+        state.isOrderLoading = true;
+      })
+      .addCase(updateUserIdInOrder.fulfilled, (state) => {
+        state.isOrderLoading = false;
+      });
   }
 });
 
-export const { changeSortType, changeOrderFilter } = orderSlice.actions;
 export default orderSlice.reducer;

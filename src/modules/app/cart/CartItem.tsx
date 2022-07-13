@@ -85,6 +85,7 @@ const CartItem: FC<{ cart: ICart }> = ({ cart }) => {
                   value={productQuantity}
                   onChange={handleChange}
                   disabled={isCartLoading}
+                  min={1}
                 />
               </Col>
               <Col span={6}>{`$${(productQuantity * product.newPrice).toFixed(
