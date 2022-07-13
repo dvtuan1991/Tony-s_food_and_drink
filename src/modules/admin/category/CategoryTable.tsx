@@ -8,7 +8,7 @@ import PopConfirmDelete from "components/Button/PopConfirmDelete";
 
 const CategoryTable: FC<{
   data: ICategory[];
-  handleClickDelete: (id: number | string) => void;
+  handleClickDelete: (id: number | string) => Promise<void>;
   handleEdit: () => void;
 }> = ({ data, handleClickDelete, handleEdit }) => {
   const colums: ColumnsType<ICategory> = [

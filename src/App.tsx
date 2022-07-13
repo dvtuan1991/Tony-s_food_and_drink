@@ -10,7 +10,8 @@ import {
   faMoneyBill1,
   faCartShopping,
   faUser,
-  faUtensils
+  faUtensils,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 
 import Container from "components/Layout/Container";
@@ -25,7 +26,8 @@ library.add(
   faFacebookF,
   faTwitter,
   faInstagram,
-  faLinkedinIn
+  faLinkedinIn,
+  faEye
 );
 function App() {
   return <Container />;

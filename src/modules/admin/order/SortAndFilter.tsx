@@ -2,10 +2,10 @@ import Row from "antd/lib/row";
 import Radio, { RadioChangeEvent } from "antd/lib/radio";
 import Col from "antd/lib/col";
 import Select from "antd/lib/select";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
-import { AppDispatch, RootState } from "store";
-import { changeOrderFilter, changeSortType } from "store/order.slice";
+import { AppDispatch } from "store";
 import { FilterOrderType, SortOrderType } from "types/order.model";
 import { Button } from "antd";
 
@@ -58,25 +58,44 @@ const listFilterOrder = [
 ];
 
 const SortAndFilter = () => {
-  const { filter, sortType } = useSelector((state: RootState) => state.orders);
+  const [searchQuerry, setSearchQuerry] = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
   const handleChangeSort = (value: string) => {
-    dispatch(changeSortType(value));
+    const queryObj: any = {};
+    searchQuerry.forEach((value, key) => {
+      queryObj[key] = value;
+    });
+    queryObj.sort = value;
+    queryObj.index = "1";
+    setSearchQuerry({
+      ...queryObj
+    });
   };
 
   const handleChangeFilter = (e: RadioChangeEvent) => {
-    dispatch(changeOrderFilter(e.target.value));
+    const queryObj: any = {};
+    searchQuerry.forEach((value, key) => {
+      queryObj[key] = value;
+    });
+    queryObj.status = e.target.value;
+    setSearchQuerry({
+      ...queryObj
+    });
+
   };
 
   const handleClickReset = () => {
-    dispatch(changeSortType(SortOrderType.DEFAULT));
-    dispatch(changeOrderFilter(FilterOrderType.DEFAULT));
+    setSearchQuerry({});
   };
   return (
     <Row align="middle" justify="space-between" className="mt-5" gutter={16}>
       <Col xs={24} sm={24} lg={6}>
         <Select
-          value={sortType}
+          value={
+            searchQuerry.get("sort")
+              ? searchQuerry.get("sort")
+              : SortOrderType.DEFAULT
+          }
           onChange={handleChangeSort}
           style={{ width: "100%" }}
         >
@@ -88,7 +107,14 @@ const SortAndFilter = () => {
         </Select>
       </Col>
       <Col xs={24} sm={24} lg={16}>
-        <Radio.Group value={filter} onChange={handleChangeFilter}>
+        <Radio.Group
+          value={
+            searchQuerry.get("status")
+              ? searchQuerry.get("status")
+              : FilterOrderType.DEFAULT
+          }
+          onChange={handleChangeFilter}
+        >
           {listFilterOrder.map((item) => (
             <Radio.Button
               key={item.id}

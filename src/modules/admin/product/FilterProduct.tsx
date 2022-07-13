@@ -84,7 +84,6 @@ const FilterProduct = () => {
                 placeholder="search name here"
               />
             </Col>
-
             <Col xs={24} sm={24} lg={6}>
               <Title level={5}>Category:</Title>
               <Select

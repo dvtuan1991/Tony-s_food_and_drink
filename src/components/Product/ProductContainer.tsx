@@ -1,11 +1,11 @@
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import CloseOutlined from "@ant-design/icons/CloseOutlined";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { Dispatch } from "@reduxjs/toolkit";
-import Pagination, { PaginationProps } from "antd/lib/pagination";
+import Pagination from "antd/lib/pagination";
 import Tag from "antd/lib/tag";
 import Typography from "antd/lib/typography";
 import Button from "antd/lib/button";
@@ -16,25 +16,8 @@ import { getListProductApp } from "store/product.slice";
 import { APP_PAGE_SIZE, SERVICE_API } from "constants/configs";
 import ProductItem from "./ProductItem";
 
-const itemRender: PaginationProps["itemRender"] = (
-  _,
-  type,
-  originalElement
-) => {
-  if (type === "prev") {
-    return (
-      <a href="#product" className="scroll-smooth">
-        Previous
-      </a>
-    );
-  }
-  if (type === "next") {
-    return <a href="#product">Next</a>;
-  }
-  return originalElement;
-};
 const { Title, Text } = Typography;
-const ProductContainer = () => {
+const ProductContainer: FC<{ scroll: () => void }> = ({ scroll }) => {
   const ref = useRef<any>(null);
   const [searchQuerry, setSearchQuerry] = useSearchParams();
   const [pageIndex, setPageIndex] = useState<number>(1);
@@ -42,12 +25,9 @@ const ProductContainer = () => {
     (state: RootState) => state.products
   );
   const dispatch: Dispatch<any> = useDispatch();
-  const executeScroll = () => {
-    ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
-  };
 
   const handleClickPagi = (index: number) => {
-    executeScroll();
+    scroll();
     setPageIndex(index);
     const queryObj: any = {};
     searchQuerry.forEach((value, key) => {
@@ -122,14 +102,13 @@ const ProductContainer = () => {
                   <ProductItem product={product} key={product.id} />
                 ))}
                 <Col span={24} className="mt-5">
-                  <div className="mb-5" onClick={executeScroll}>
+                  <div className="mb-5">
                     <Pagination
                       current={pageIndex}
                       showSizeChanger={false}
                       pageSize={APP_PAGE_SIZE}
                       total={totalProduct}
                       onChange={handleClickPagi}
-                      itemRender={itemRender}
                     />
                   </div>
                 </Col>

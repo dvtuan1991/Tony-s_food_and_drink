@@ -1,14 +1,18 @@
 import Table, { ColumnsType } from "antd/lib/table";
 import Typography from "antd/lib/typography";
+import { FC } from "react";
+import { useSelector } from "react-redux";
+
+import { changePriceOutput } from "helpers/function";
+import { RootState } from "store";
 import ModalOrderAdmin from "components/Modal/ModalOrderAdmin";
 import OrderStatusTag from "components/Tag/OrderStatusTag";
-import { changePriceOutput } from "helpers/function";
-import { FC } from "react";
-
 import { IOrder } from "types/order.model";
+import Spin from "antd/lib/spin";
 
 const { Text } = Typography;
 const OrderTable: FC<{ orders: IOrder[] }> = ({ orders }) => {
+  const { isOrderLoading } = useSelector((state: RootState) => state.orders);
   const colums: ColumnsType<IOrder> = [
     {
       dataIndex: "ordinalNum",
@@ -51,14 +55,16 @@ const OrderTable: FC<{ orders: IOrder[] }> = ({ orders }) => {
   ];
   return (
     <div className="py-5">
-      <Table
-        dataSource={orders}
-        columns={colums}
-        pagination={false}
-        className="min-h-[300px]"
-        rowKey={(record) => record.id}
-        scroll={{ x: 400 }}
-      />
+      <Spin spinning={isOrderLoading}>
+        <Table
+          dataSource={orders}
+          columns={colums}
+          pagination={false}
+          className="min-h-[300px]"
+          rowKey={(record) => record.id}
+          scroll={{ x: 400 }}
+        />
+      </Spin>
     </div>
   );
 };
