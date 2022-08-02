@@ -1,0 +1,8 @@
+.modal {
+  width: 50%;
+}
+
+.modal-image {
+  padding: 4px;
+  border: 1px solid #ccc;
+}

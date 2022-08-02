@@ -1,4 +1,13 @@
 {
+  "trailingComma": "none",
+  "semi": true,
   "singleQuote": false,
-  "printWidth": 120
+  "printWidth": 80,
+  "endOfLine": "auto",
+  "importOrder": [
+    "^@(assets|components|context|hooks|lib|pages|routes|services|styles|ui|utils)/?(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderParserPlugins": ["jsx", "typescript"]
 }

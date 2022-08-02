@@ -1,0 +1,47 @@
+.navbar-admin {
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 42px;
+  background: #343a40;
+  z-index: 5;
+}
+
+.navbar-admin > nav {
+  width: 100%;
+}
+
+.navbar-admin ul {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.navbar-admin ul li {
+  color: #ffffffa6;
+  padding: 0 8px;
+}
+
+@media (min-width: 992px) {
+  .navbar-admin {
+    width: 250px;
+    height: 100vh;
+  }
+
+  .navbar-admin > nav {
+    height: 100%;
+    padding: 1.5rem 1rem;
+  }
+  .navbar-admin ul {
+    flex-direction: column;
+    height: 100%;
+    align-items: baseline;
+  }
+
+  .navbar-admin ul li {
+    padding: 1rem;
+  }
+}

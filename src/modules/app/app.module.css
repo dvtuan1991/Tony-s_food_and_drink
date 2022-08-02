@@ -1,0 +1,8 @@
+.form-box {
+  width: 450px;
+  min-height: 300px;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 0 auto;
+  background-color: #cccebc;
+}

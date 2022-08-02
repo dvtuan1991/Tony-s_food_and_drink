@@ -1,0 +1,21 @@
+.wrapper {
+  padding: 0 16px;
+  background-color: #ffffff;
+}
+
+.main-admin {
+  background-color: #fbfbfb;
+}
+
+@media (min-width: 992px) {
+  .main-admin {
+    margin-left: 250px;
+  }
+}
+
+@media (min-width: 1240px) {
+  .wrapper {
+    width: 1240px;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,25 @@
+.order-content {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  background-color: #f4f5f9;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.order-box {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.order-header {
+  padding: 16px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+.order-item {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
